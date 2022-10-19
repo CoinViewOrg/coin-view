@@ -6,17 +6,13 @@ import React from "react";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage<{ data: CoinListItem[] }> = (props) => {
-  const [data, setData] = React.useState<CoinListItem[]>([]);
+  const [data, setData] = React.useState<CoinListItem[]>();
 
-  React.useEffect(() => {
-    setData(props.data);
-  }, [props.data]);
-
-  console.log({ data });
+  console.log({ clientData: data, serverData: props.data });
 
   const refreshList = React.useCallback(async () => {
     const res = await fetch("/api/list");
-    const {data: newData} = await res.json();
+    const { data: newData } = await res.json();
     setData(newData);
   }, []);
 
@@ -31,7 +27,7 @@ const Home: NextPage<{ data: CoinListItem[] }> = (props) => {
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to Coin View</h1>
         <button onClick={refreshList}>Refresh</button>
-        {data?.map((item) => (
+        {(data || props.data).map((item) => (
           <p key={item.id}>
             {item.name} {item.quote.USD.price.toFixed(4)}$
           </p>
