@@ -6,6 +6,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const data = await getCoinList();
+  const data = await getCoinList({ currency: "PLN" });
   res.status(200).json(data);
 }
