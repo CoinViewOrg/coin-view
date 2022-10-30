@@ -12,7 +12,8 @@ export interface CurrencyPriceData {
 }
 
 interface Quote {
-  USD: CurrencyPriceData;
+  USD?: CurrencyPriceData;
+  PLN?: CurrencyPriceData;
   BTC: CurrencyPriceData;
 }
 

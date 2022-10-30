@@ -1,14 +1,14 @@
-import { CoinListItem, getCoinList } from "@coin-view";
+import { getCoinList, getCoinsMetadata } from "@coin-view/api";
+import { CoinListItem } from "@coin-view/types";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 import styles from "../styles/Home.module.css";
 
-const Home: NextPage<{ data: CoinListItem[] }> = (props) => {
+const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
+  console.log({ props });
   const [data, setData] = React.useState<CoinListItem[]>();
-
-  console.log({ clientData: data, serverData: props.data });
 
   const refreshList = React.useCallback(async () => {
     const res = await fetch("/api/list");
@@ -29,7 +29,9 @@ const Home: NextPage<{ data: CoinListItem[] }> = (props) => {
         <button onClick={refreshList}>Refresh</button>
         {(data || props.data).map((item) => (
           <p key={item.id}>
-            {item.name} {item.quote.USD.price.toFixed(4)}$
+            {item.name}{" "}
+            {item.quote.USD && `${item.quote.USD.price.toFixed(4)} $`}
+            {item.quote.PLN && `${item.quote.PLN.price.toFixed(4)} zł`}
           </p>
         ))}
       </main>
@@ -52,10 +54,14 @@ const Home: NextPage<{ data: CoinListItem[] }> = (props) => {
 
 export async function getServerSideProps() {
   // Fetch data from external API
-  const { data } = await getCoinList();
-
+  const data = await getCoinList({
+    currency: "PLN",
+  });
+  const meta = await getCoinsMetadata({
+    ids: data.map((coin) => coin.id),
+  });
   // Pass data to the page via props
-  return { props: { data } };
+  return { props: { data, meta } };
 }
 
 export default Home;

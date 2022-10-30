@@ -16,7 +16,8 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@coin-view": ["src"]
+      "@coin-view/api": ["src/api"],
+      "@coin-view/types": ["src/types"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
