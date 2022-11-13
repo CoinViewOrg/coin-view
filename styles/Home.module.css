@@ -3,13 +3,23 @@
 }
 
 .main {
+  background-color: white;
+  color: black;
   min-height: 100vh;
-  padding: 4rem 0;
+  padding: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.mainLogo {
+  display: flex;
+}
+
+.container {
+  background-color: white;
 }
 
 .footer {
@@ -37,12 +47,6 @@
 .title a:focus,
 .title a:active {
   text-decoration: underline;
-}
-
-.title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
 }
 
 .title,
@@ -113,6 +117,44 @@
     width: 100%;
     flex-direction: column;
   }
+  .table{
+    text-align: center;
+    margin: 0 1vh 0 1vh;
+    padding: 0 10px 0 10px;
+    width: 100%;
+    height: 8vh;
+    display: flex;
+    align-items: center;
+    align-content: stretch;
+  }
+  .title {
+    font-family: 'Magical', 'LilitaOne-Regular', sans-serif;
+    margin: 0;
+    line-height: 1.15;
+    font-size: 10vmax;
+    color: #3a3a3a;
+  }
+  .coin {
+    font-family: "LilitaOne-Regular";
+    color: #3a3a3a;
+    margin-left: 5%;
+  }
+  .price {
+    font-family: "LilitaOne-Regular";
+    color: #3a3a3a;
+  }
+  .refreshBtn {
+    font-family: "LilitaOne-Regular";
+    color: white;
+    background-color: #3a3a3a;
+    border-radius: 10px;
+  }
+  .gridContext {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -126,4 +168,14 @@
   .logo img {
     filter: invert(1);
   }
+}
+
+@font-face {
+  font-family: "LilitaOne-Regular";
+  src: url(../public/LilitaOne-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "Magical";
+  src: url(../public/Magical.ttf) format('truetype');
 }

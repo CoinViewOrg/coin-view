@@ -27,13 +27,23 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Coin View</h1>
-        <button onClick={refreshList}>Refresh</button>
+        <div className={styles.mainLogo}>
+          <Image src ="/logo-square.svg" alt="logo" width={100} height={100}/>
+        </div>
+        <h1 className={styles.title}>Coin View</h1>
+        <button onClick={refreshList} className={styles.refreshBtn}>Refresh</button>
         {cryptoList.map((item) => (
-          <p key={item.id}>
-            {item.name}{" "}
-            {item.quote.USD && `${item.quote.USD.price.toFixed(4)} $`}
-            {item.quote.PLN && `${item.quote.PLN.price.toFixed(4)} zł`}
+          <p key={item.id} className={styles.table}>
+            <p>
+              {"ICO"}
+            </p>
+            <p className={styles.gridContext}>
+              <p className={styles.coin}>{item.name}{" "}</p>
+              <p className={styles.price}>
+                {item.quote.USD && `${item.quote.USD.price.toFixed(4)} $`}
+                {item.quote.PLN && `${item.quote.PLN.price.toFixed(4)} zł`}
+              </p>
+            </p>
           </p>
         ))}
       </main>
