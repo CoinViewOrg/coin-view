@@ -42,7 +42,7 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
         </div>
         {cryptoList.map((item) => (
           <div key={item.id} className={styles.grid}>
-            <div className={styles.gridIcon}><img id='logo' src={props.meta[item.id].logo}></img></div>
+            <div className={styles.gridIcon}><img className={styles.cryptoIcon} src={props.meta[item.id].logo}></img></div>
             <div className={styles.gridName}>{item.name} </div>
             <div className={styles.gridPrice}>
               {item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`}

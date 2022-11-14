@@ -15,11 +15,6 @@ a {
   box-sizing: border-box;
 }
 
-#logo {
-  height: 1em;
-  width: 1em;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

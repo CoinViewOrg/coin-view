@@ -54,16 +54,20 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 3fr 2fr;
+  grid-template-columns: 1fr 5fr 4fr;
   grid-template-areas: 'gridIcon gridName gridPrice';
   width: 60%;
   padding-top: 10px;
   padding-bottom: 10px;
+  align-items: center;
 }
 
 .gridIcon {
   text-align: center;
   grid-area: gridIcon;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .gridName {
@@ -112,4 +116,11 @@
 @font-face {
   font-family: "Magical";
   src: url(../public/Magical.ttf) format("truetype");
+}
+
+.cryptoIcon {
+  height: 1.5em;
+
+  background-color: white;
+  border-radius: 50%;
 }
