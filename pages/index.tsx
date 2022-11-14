@@ -17,6 +17,7 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
   }, []);
 
   const cryptoList = data || props.data;
+  
 
   return (
     <div className={styles.container}>
@@ -30,7 +31,9 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
         <h1 className={styles.title}>Welcome to Coin View</h1>
         <button onClick={refreshList}>Refresh</button>
         {cryptoList.map((item) => (
+
           <p key={item.id}>
+            <img id='logo' src={props.meta[item.id].logo}></img>
             {item.name}{" "}
             {item.quote.USD && `${item.quote.USD.price.toFixed(4)} $`}
             {item.quote.PLN && `${item.quote.PLN.price.toFixed(4)} zł`}
