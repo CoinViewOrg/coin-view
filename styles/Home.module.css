@@ -69,14 +69,6 @@
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
-.grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 800px;
-}
-
 .card {
   margin: 1rem;
   padding: 1.5rem;
@@ -113,19 +105,32 @@
 }
 
 @media (max-width: 600px) {
-  .grid {
+  .gridHeader {
+    display: grid;
+    grid-template-columns: 15% 50% 35%;
     width: 100%;
-    flex-direction: column;
+    border: 1px solid #d4d4d4;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
-  .table{
-    text-align: center;
-    margin: 0 1vh 0 1vh;
-    padding: 0 10px 0 10px;
+  .grid {
+    display: grid;
+    grid-template-columns: 15% 50% 35%;
     width: 100%;
-    height: 8vh;
-    display: flex;
-    align-items: center;
-    align-content: stretch;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .gridItem1 {
+    text-align: center;
+  }
+  .gridItem2 {
+    text-align: left;
+    font-family: "LilitaOne-Regular";
+  }
+  .gridItem3 {
+    text-align: right;
+    font-family: "LilitaOne-Regular";
+    padding-right: 10%;
   }
   .title {
     font-family: 'Magical', 'LilitaOne-Regular', sans-serif;
@@ -134,29 +139,50 @@
     font-size: 10vmax;
     color: #3a3a3a;
   }
-  .coin {
-    font-family: "LilitaOne-Regular";
-    color: #3a3a3a;
-    margin-left: 5%;
-  }
-  .price {
-    font-family: "LilitaOne-Regular";
-    color: #3a3a3a;
-  }
   .refreshBtn {
     font-family: "LilitaOne-Regular";
     color: white;
     background-color: #3a3a3a;
     border-radius: 10px;
-  }
-  .gridContext {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+    margin: 10px;
   }
 }
-
+@media (min-width: 600px) {
+  .gridHeader {
+    display: grid;
+    grid-template-columns: 15% 50% 35%;
+    width: 60%;
+    border: 1px solid #d4d4d4;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 15% 50% 35%;
+    width: 60%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .gridItem1 {
+    text-align: center;
+  }
+  .gridItem2 {
+    text-align: left;
+    font-family: "LilitaOne-Regular";
+  }
+  .gridItem3 {
+    text-align: right;
+    font-family: "LilitaOne-Regular";
+    padding-right: 10%;
+  }
+  .title {
+    font-family: 'Magical', 'LilitaOne-Regular', sans-serif;
+    margin: 0;
+    line-height: 1.15;
+    font-size: 10vmax;
+    color: #3a3a3a;
+  }
+}
 @media (prefers-color-scheme: dark) {
   .card,
   .footer {

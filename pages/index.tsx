@@ -32,19 +32,22 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
         </div>
         <h1 className={styles.title}>Coin View</h1>
         <button onClick={refreshList} className={styles.refreshBtn}>Refresh</button>
+        <div className={styles.gridHeader}>
+          <div className={styles.gridItem1}>{""}</div>
+          <div className={styles.gridItem2}>{"Nazwa"}</div>
+          <div className={styles.gridItem3}>{"Cena"}</div>
+        </div>
         {cryptoList.map((item) => (
-          <p key={item.id} className={styles.table}>
-            <p>
+          <div key={item.id} className={styles.grid}>
+            <div className={styles.gridItem1}>
               {"ICO"}
-            </p>
-            <p className={styles.gridContext}>
-              <p className={styles.coin}>{item.name}{" "}</p>
-              <p className={styles.price}>
-                {item.quote.USD && `${item.quote.USD.price.toFixed(4)} $`}
-                {item.quote.PLN && `${item.quote.PLN.price.toFixed(4)} zł`}
-              </p>
-            </p>
-          </p>
+            </div>
+              <div className={styles.gridItem2}>{item.name}{" "}</div>
+              <div className={styles.gridItem3}>
+                {item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`}
+                {item.quote.PLN && `${item.quote.PLN.price.toFixed(2)} zł`}
+              </div>
+          </div>
         ))}
       </main>
 
