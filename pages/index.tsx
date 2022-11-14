@@ -5,14 +5,15 @@ import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 import styles from "../styles/Home.module.css";
+import cx from "classnames";
 
 const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
   console.log({ props });
   const [data, setData] = React.useState<CoinListItem[]>();
-
+  
   const refreshList = React.useCallback(async () => {
     const res = await fetch("/api/list");
-    const { data: newData } = await res.json();
+    const newData = await res.json();
     setData(newData);
   }, []);
 
@@ -27,29 +28,30 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Coin View</h1>
-        <button onClick={refreshList}>Refresh</button>
+        <div className={styles.mainLogo}>
+          <Image src="/logo-square.svg" alt="logo" width={100} height={100} />
+        </div>
+        <h1 className={styles.title}>Coin View</h1>
+        {/* this button is temporary */}
+        <button className={styles.button} onClick={refreshList}>Refresh</button>
+        <div className={cx(styles.gridHeader, styles.grid)}>
+          <div className={styles.gridIcon}>{""}</div>
+          <div className={styles.gridName}>{"Nazwa"}</div>
+          <div className={styles.gridPrice}>{"Cena"}</div>
+        </div>
         {cryptoList.map((item) => (
-          <p key={item.id}>
-            {item.name}{" "}
-            {item.quote.USD && `${item.quote.USD.price.toFixed(4)} $`}
-            {item.quote.PLN && `${item.quote.PLN.price.toFixed(4)} zł`}
-          </p>
+          <div key={item.id} className={styles.grid}>
+            <div className={styles.gridIcon}>{"ICO"}</div>
+            <div className={styles.gridName}>{item.name} </div>
+            <div className={styles.gridPrice}>
+              {item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`}
+              {item.quote.PLN && `${item.quote.PLN.price.toFixed(2)} zł`}
+            </div>
+          </div>
         ))}
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <footer className={styles.footer}>CoinView®</footer>
     </div>
   );
 };
