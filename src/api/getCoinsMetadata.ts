@@ -1,7 +1,7 @@
 import { apiGetRequest } from "./apiGetRequest";
 
 type PropsType = {
-  ids: number[];
+  ids: string[] | number[];
 };
 
 export const getCoinsMetadata = async ({ ids }: PropsType) => {

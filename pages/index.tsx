@@ -104,8 +104,11 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
     meta,
   } = useListQuery();
 
-  const cryptoList = data || props.data;
-  const metaList = meta || props.meta;
+  const cryptoList = React.useMemo(
+    () => data || props.data,
+    [data, props.data]
+  );
+  const metaList = React.useMemo(() => meta || props.meta, [meta, props.meta]);
 
   return (
     <div className={styles.container}>

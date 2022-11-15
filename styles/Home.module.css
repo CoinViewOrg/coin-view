@@ -58,7 +58,8 @@
 }
 
 .gridHeader {
-  border: 1px solid #d4d4d4;
+  border: solid #d4d4d4;
+  border-width: 0 0 1px 0;
 }
 
 .grid {
@@ -71,12 +72,15 @@
   align-items: center;
 }
 
-.gridIcon {
-  text-align: center;
-  grid-area: gridIcon;
+.grid > div {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.gridIcon {
+  text-align: center;
+  grid-area: gridIcon;
 }
 
 .gridRank {
@@ -84,13 +88,13 @@
   grid-area: gridRank;
 }
 
-.gridName {
-  text-align: left;
+.grid .gridName {
+  justify-content: flex-start;
   grid-area: gridName;
 }
 
-.gridPrice {
-  text-align: right;
+.grid .gridPrice {
+  justify-content: flex-end;
   padding-right: 10%;
   grid-area: gridPrice;
 }
