@@ -180,8 +180,8 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
               </div>
               <div className={styles.gridName}>{item.name} </div>
               <div className={styles.gridPrice}>
-                {item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`}
-                {item.quote.PLN && `${item.quote.PLN.price.toFixed(2)} zł`}
+                {(item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`) ||
+                  (item.quote.PLN && `${item.quote.PLN.price.toFixed(2)} zł`)}
               </div>
             </div>
           ))}
@@ -205,8 +205,8 @@ export async function getServerSideProps() {
   const data = await getCoinList({
     currency: "PLN",
     sorting: defaultSort,
-    pageSize: String(pageSize),
-    startFrom: "1",
+    pageSize: pageSize,
+    startFrom: 1,
   });
 
   const meta = await getCoinsMetadata({

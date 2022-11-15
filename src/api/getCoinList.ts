@@ -1,11 +1,12 @@
 import { CoinListItem, SortingType } from "../types";
 import { apiGetRequest } from "./apiGetRequest";
+import mocks from "./mockData.json";
 
 type PropsType = {
   currency: "USD" | "PLN";
   sorting: SortingType;
-  pageSize: string;
-  startFrom: string;
+  pageSize: number;
+  startFrom: number;
 };
 
 export const getCoinList = async ({
@@ -14,16 +15,30 @@ export const getCoinList = async ({
   pageSize,
   startFrom,
 }: PropsType) => {
-  console.log({currency, sorting, pageSize, startFrom})
-  const { data } = await apiGetRequest({
-    url: "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
-    params: {
-      convert: currency,
-      sort: sorting,
-      limit: pageSize,
-      start: startFrom,
-    },
-  });
+  if (process.env.NODE_ENV === "production") {
+    const { data } = await apiGetRequest({
+      url: "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+      params: {
+        convert: currency,
+        sort: sorting,
+        limit: String(pageSize),
+        start: String(startFrom),
+      },
+    });
+    return data as CoinListItem[];
+  }
 
-  return data as CoinListItem[];
+  return mocks.data
+    .sort((a, b) => {
+      if (sorting === "market_cap") {
+        return a.cmc_rank - b.cmc_rank;
+      }
+
+      if (sorting === "name") {
+        return a.name.localeCompare(b.name);
+      }
+
+      return b.quote[currency].price - a.quote[currency].price;
+    })
+    .slice(startFrom - 1, startFrom + pageSize - 1);
 };

@@ -10,8 +10,8 @@ export default async function handler(
   const data = await getCoinList({
     currency: "PLN",
     sorting: req.query.sorting as SortingType,
-    pageSize: req.query.pageSize as string,
-    startFrom: req.query.startFrom as string
+    pageSize: Number(req.query.pageSize),
+    startFrom: Number(req.query.startFrom),
   });
   res.status(200).json(data);
 }
