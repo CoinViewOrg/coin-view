@@ -1,5 +1,5 @@
 .container {
-  padding: 0 2rem;
+  padding: 0 1rem;
   font-family: "LilitaOne-Regular";
   background-color: white;
   color: black;
@@ -145,4 +145,11 @@
 
   background-color: white;
   border-radius: 50%;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding: 0.5em;
 }
