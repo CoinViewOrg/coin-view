@@ -74,7 +74,7 @@ const useListQuery = () => {
     const newData = await sendListQuery(query);
     setData(newData);
     setLoading(false);
-  }, [pageSize, sorting, startFrom, sendListQuery]);
+  }, [sorting, startFrom, sendListQuery]);
 
   React.useEffect(() => {
     const query = getListQuery({ pageSize, sorting, startFrom });
@@ -92,7 +92,7 @@ const useListQuery = () => {
         setLoading(false);
       });
     }
-  }, [lastQuery, pageSize, sorting, startFrom]);
+  }, [lastQuery, sendListQuery, sorting, startFrom]);
 
   return {
     sorting,
