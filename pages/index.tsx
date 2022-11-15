@@ -23,6 +23,7 @@ const fetchList = async (query: string) => {
   return newData;
 };
 
+
 const fetchMeta = async (ids: number[]) => {
   const res = await fetch(`/api/meta?ids=${ids.join(",")}`);
   const newData = await res.json();
