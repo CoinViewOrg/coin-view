@@ -29,6 +29,24 @@ const fetchMeta = async (ids: number[]) => {
   return newData;
 };
 
+const getListQuery = ({
+  pageSize,
+  sorting,
+  startFrom,
+}: {
+  sorting: string;
+  startFrom: string | number;
+  pageSize: string | number;
+}) => {
+  return `sorting=${sorting}&startFrom=${startFrom}&pageSize=${pageSize}`;
+};
+
+const initialQuery = getListQuery({
+  pageSize,
+  sorting: defaultSort,
+  startFrom: 1,
+});
+
 const useListQuery = () => {
   const [sorting, setSorting] = React.useState<SortingType>(defaultSort);
 
@@ -41,32 +59,32 @@ const useListQuery = () => {
 
   const [loading, setLoading] = React.useState(false);
 
-  const query = React.useMemo(
-    () => `sorting=${sorting}&startFrom=${startFrom}&pageSize=${pageSize}`,
-    [sorting, startFrom, pageSize]
-  );
+  const [lastQuery, setLastQuery] = React.useState<string>(initialQuery);
+
+  const sendListQuery = React.useCallback(async (query: string) => {
+    setLastQuery(query);
+    const newData = await fetchList(query);
+    return newData;
+  }, []);
 
   const refreshList = React.useCallback(async () => {
     console.log("refetch");
     setLoading(true);
-    const newData = await fetchList(query);
+    const query = getListQuery({ pageSize, sorting, startFrom });
+    const newData = await sendListQuery(query);
     setData(newData);
     setLoading(false);
-  }, [query]);
-
-  const prevQuery = usePrevious(query);
+  }, [pageSize, sorting, startFrom, sendListQuery]);
 
   React.useEffect(() => {
-    const initialQuery = `sorting=${defaultSort}&startFrom=1&pageSize=${pageSize}`;
+    const query = getListQuery({ pageSize, sorting, startFrom });
 
-    const criteriaHaveChanged =
-      query !== initialQuery ||
-      (query !== prevQuery && prevQuery !== undefined);
+    const criteriaHaveChanged = query !== lastQuery;
 
     if (criteriaHaveChanged) {
-      console.log("refetch effect", query);
+      console.log("refetch effect", { query, lastQuery, criteriaHaveChanged });
       setLoading(true);
-      fetchList(query).then(async (data: CoinListItem[]) => {
+      sendListQuery(query).then(async (data: CoinListItem[]) => {
         const meta = await fetchMeta(data.map((coin) => coin.id));
 
         setData(data);
@@ -74,7 +92,7 @@ const useListQuery = () => {
         setLoading(false);
       });
     }
-  }, [query]);
+  }, [lastQuery, pageSize, sorting, startFrom]);
 
   return {
     sorting,
