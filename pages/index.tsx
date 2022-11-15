@@ -74,7 +74,7 @@ const useListQuery = () => {
     const newData = await sendListQuery(query);
     setData(newData);
     setLoading(false);
-  }, [pageSize, sorting, startFrom, sendListQuery]);
+  }, [sorting, startFrom, sendListQuery]);
 
   React.useEffect(() => {
     const query = getListQuery({ pageSize, sorting, startFrom });
@@ -92,7 +92,7 @@ const useListQuery = () => {
         setLoading(false);
       });
     }
-  }, [lastQuery, pageSize, sorting, startFrom]);
+  }, [lastQuery, sendListQuery, sorting, startFrom]);
 
   return {
     sorting,
@@ -180,8 +180,8 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
               </div>
               <div className={styles.gridName}>{item.name} </div>
               <div className={styles.gridPrice}>
-                {item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`}
-                {item.quote.PLN && `${item.quote.PLN.price.toFixed(2)} zł`}
+                {(item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`) ||
+                  (item.quote.PLN && `${item.quote.PLN.price.toFixed(2)} zł`)}
               </div>
             </div>
           ))}
@@ -205,8 +205,8 @@ export async function getServerSideProps() {
   const data = await getCoinList({
     currency: "PLN",
     sorting: defaultSort,
-    pageSize: String(pageSize),
-    startFrom: "1",
+    pageSize: pageSize,
+    startFrom: 1,
   });
 
   const meta = await getCoinsMetadata({
