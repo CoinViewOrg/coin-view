@@ -23,6 +23,12 @@ const fetchList = async (query: string) => {
   return newData;
 };
 
+const fetchMeta = async (ids: number[]) => {
+  const res = await fetch(`/api/meta?ids=${ids.join(",")}`);
+  const newData = await res.json();
+  return newData;
+};
+
 const useListQuery = () => {
   const [sorting, setSorting] = React.useState<SortingType>(defaultSort);
 
@@ -31,6 +37,7 @@ const useListQuery = () => {
   const startFrom = React.useMemo(() => 1 + pageSize * page, [page]);
 
   const [data, setData] = React.useState<CoinListItem[]>();
+  const [meta, setMeta] = React.useState<any>();
 
   const [loading, setLoading] = React.useState(false);
 
@@ -59,9 +66,12 @@ const useListQuery = () => {
     if (criteriaHaveChanged) {
       console.log("refetch effect", query);
       setLoading(true);
-      fetchList(query).then((data) => {
-        setLoading(false);
+      fetchList(query).then(async (data: CoinListItem[]) => {
+        const meta = await fetchMeta(data.map((coin) => coin.id));
+
         setData(data);
+        setMeta(meta);
+        setLoading(false);
       });
     }
   }, [query]);
@@ -75,6 +85,7 @@ const useListQuery = () => {
     data,
     refreshList,
     loading,
+    meta,
   };
 };
 
@@ -90,9 +101,11 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
     setSorting,
     sorting,
     loading,
+    meta,
   } = useListQuery();
 
   const cryptoList = data || props.data;
+  const metaList = meta || props.meta;
 
   return (
     <div className={styles.container}>
@@ -138,7 +151,12 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
           {cryptoList.map((item) => (
             <div key={item.id} className={cx(styles.grid, styles.listItem)}>
               <div className={styles.gridRank}>{item.cmc_rank}</div>
-              <div className={styles.gridIcon}>{"ICO"}</div>
+              <div className={styles.gridIcon}>
+                <img
+                  className={styles.cryptoIcon}
+                  src={metaList[item.id].logo}
+                ></img>
+              </div>
               <div className={styles.gridName}>{item.name} </div>
               <div className={styles.gridPrice}>
                 {item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`}
