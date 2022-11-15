@@ -41,7 +41,11 @@ const getListQuery = ({
   return `sorting=${sorting}&startFrom=${startFrom}&pageSize=${pageSize}`;
 };
 
-const initialQuery = `sorting=${defaultSort}&startFrom=1&pageSize=${pageSize}`;
+const initialQuery = getListQuery({
+  pageSize,
+  sorting: defaultSort,
+  startFrom: 1,
+});
 
 const useListQuery = () => {
   const [sorting, setSorting] = React.useState<SortingType>(defaultSort);
@@ -57,14 +61,11 @@ const useListQuery = () => {
 
   const [lastQuery, setLastQuery] = React.useState<string>(initialQuery);
 
-  const sendListQuery = React.useCallback(
-    async (query: string) => {
-      setLastQuery(query);
-      const newData = await fetchList(query);
-      return newData;
-    },
-    [sorting, pageSize, startFrom]
-  );
+  const sendListQuery = React.useCallback(async (query: string) => {
+    setLastQuery(query);
+    const newData = await fetchList(query);
+    return newData;
+  }, []);
 
   const refreshList = React.useCallback(async () => {
     console.log("refetch");
@@ -91,7 +92,7 @@ const useListQuery = () => {
         setLoading(false);
       });
     }
-  }, [lastQuery, pageSize, sorting ,startFrom]);
+  }, [lastQuery, pageSize, sorting, startFrom]);
 
   return {
     sorting,
