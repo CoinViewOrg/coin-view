@@ -1,21 +1,96 @@
 import { getCoinList, getCoinsMetadata } from "@coin-view/api";
-import { CoinListItem } from "@coin-view/types";
+import { CoinListItem, SortingType } from "@coin-view/types";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 import styles from "../styles/Home.module.css";
 import cx from "classnames";
+import {
+  Button,
+  ListNavigation,
+  LoadingSpinner,
+  usePaging,
+  usePrevious,
+} from "@coin-view/client";
+
+const defaultSort: SortingType = "market_cap";
+const pageSize = 20;
+
+const fetchList = async (query: string) => {
+  const res = await fetch(`/api/list?${query}`);
+  const newData = await res.json();
+  return newData;
+};
+
+const useListQuery = () => {
+  const [sorting, setSorting] = React.useState<SortingType>(defaultSort);
+
+  const { nextPage, page, prevPage } = usePaging();
+
+  const startFrom = React.useMemo(() => 1 + pageSize * page, [page]);
+
+  const [data, setData] = React.useState<CoinListItem[]>();
+
+  const [loading, setLoading] = React.useState(false);
+
+  const query = React.useMemo(
+    () => `sorting=${sorting}&startFrom=${startFrom}&pageSize=${pageSize}`,
+    [sorting, startFrom, pageSize]
+  );
+
+  const refreshList = React.useCallback(async () => {
+    console.log("refetch");
+    setLoading(true);
+    const newData = await fetchList(query);
+    setData(newData);
+    setLoading(false);
+  }, [query]);
+
+  const prevQuery = usePrevious(query);
+
+  React.useEffect(() => {
+    const initialQuery = `sorting=${defaultSort}&startFrom=1&pageSize=${pageSize}`;
+
+    const criteriaHaveChanged =
+      query !== initialQuery ||
+      (query !== prevQuery && prevQuery !== undefined);
+
+    if (criteriaHaveChanged) {
+      console.log("refetch effect", query);
+      setLoading(true);
+      fetchList(query).then((data) => {
+        setLoading(false);
+        setData(data);
+      });
+    }
+  }, [query]);
+
+  return {
+    sorting,
+    setSorting,
+    page,
+    prevPage,
+    nextPage,
+    data,
+    refreshList,
+    loading,
+  };
+};
 
 const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
   console.log({ props });
-  const [data, setData] = React.useState<CoinListItem[]>();
-  
-  const refreshList = React.useCallback(async () => {
-    const res = await fetch("/api/list");
-    const newData = await res.json();
-    setData(newData);
-  }, []);
+
+  const {
+    data,
+    nextPage,
+    page,
+    prevPage,
+    refreshList,
+    setSorting,
+    sorting,
+    loading,
+  } = useListQuery();
 
   const cryptoList = data || props.data;
 
@@ -33,22 +108,52 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
         </div>
         <h1 className={styles.title}>Coin View</h1>
         {/* this button is temporary */}
-        <button className={styles.button} onClick={refreshList}>Refresh</button>
-        <div className={cx(styles.gridHeader, styles.grid)}>
-          <div className={styles.gridIcon}>{""}</div>
-          <div className={styles.gridName}>{"Nazwa"}</div>
-          <div className={styles.gridPrice}>{"Cena"}</div>
-        </div>
-        {cryptoList.map((item) => (
-          <div key={item.id} className={styles.grid}>
-            <div className={styles.gridIcon}>{"ICO"}</div>
-            <div className={styles.gridName}>{item.name} </div>
-            <div className={styles.gridPrice}>
-              {item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`}
-              {item.quote.PLN && `${item.quote.PLN.price.toFixed(2)} zł`}
+        <Button onClick={refreshList}>Refresh</Button>
+        <div
+          className={cx(styles.listContainer, {
+            [styles.loadingBlur]: loading,
+          })}
+        >
+          <div className={cx(styles.gridHeader, styles.grid)}>
+            <div
+              className={cx(styles.gridRank, styles.sorter)}
+              onClick={() => setSorting("market_cap")}
+            >
+              Rank
+            </div>
+            <div className={styles.gridIcon}>{""}</div>
+            <div
+              className={cx(styles.gridName, styles.sorter)}
+              onClick={() => setSorting("name")}
+            >
+              Name
+            </div>
+            <div
+              className={cx(styles.gridPrice, styles.sorter)}
+              onClick={() => setSorting("price")}
+            >
+              Price
             </div>
           </div>
-        ))}
+          {cryptoList.map((item) => (
+            <div key={item.id} className={cx(styles.grid, styles.listItem)}>
+              <div className={styles.gridRank}>{item.cmc_rank}</div>
+              <div className={styles.gridIcon}>{"ICO"}</div>
+              <div className={styles.gridName}>{item.name} </div>
+              <div className={styles.gridPrice}>
+                {item.quote.USD && `${item.quote.USD.price.toFixed(2)} $`}
+                {item.quote.PLN && `${item.quote.PLN.price.toFixed(2)} zł`}
+              </div>
+            </div>
+          ))}
+          {loading && (
+            <div className={styles.spinner}>
+              <LoadingSpinner />
+            </div>
+          )}
+        </div>
+
+        <ListNavigation nextPage={nextPage} page={page} prevPage={prevPage} />
       </main>
 
       <footer className={styles.footer}>CoinView®</footer>
@@ -60,7 +165,11 @@ export async function getServerSideProps() {
   // Fetch data from external API
   const data = await getCoinList({
     currency: "PLN",
+    sorting: defaultSort,
+    pageSize: String(pageSize),
+    startFrom: "1",
   });
+
   const meta = await getCoinsMetadata({
     ids: data.map((coin) => coin.id),
   });
