@@ -17,6 +17,7 @@ import {
 const defaultSort: SortingType = "market_cap";
 const pageSize = 20;
 
+
 const fetchList = async (query: string) => {
   const res = await fetch(`/api/list?${query}`);
   const newData = await res.json();
