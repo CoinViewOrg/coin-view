@@ -14,8 +14,9 @@ export interface CurrencyPriceData {
 interface Quote {
   USD?: CurrencyPriceData;
   PLN?: CurrencyPriceData;
-  BTC: CurrencyPriceData;
 }
+
+export type CurrencyType = keyof Quote;
 
 export interface CoinListItem {
   id: number;
