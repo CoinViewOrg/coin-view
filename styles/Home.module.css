@@ -15,17 +15,26 @@
   align-items: center;
 }
 
-.mainLogo {
+.listContainer {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  position: relative;
 }
 
-.button {
-  border: solid black 1px;
-  border-radius: 10px;
-  padding: 0.50em 0.75em;
-  margin: 0.5em;
-  font-family: "LilitaOne-Regular";
-  cursor: pointer;
+.loadingBlur .listItem {
+  filter: blur(2px);
+}
+
+.spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.mainLogo {
+  display: flex;
 }
 
 .footer {
@@ -49,36 +58,49 @@
 }
 
 .gridHeader {
-  border: 1px solid #d4d4d4;
+  border: solid #d4d4d4;
+  border-width: 0 0 1px 0;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 5fr 4fr;
-  grid-template-areas: 'gridIcon gridName gridPrice';
+  grid-template-columns: 1fr 1fr 5fr 4fr;
+  grid-template-areas: "gridRank gridIcon gridName gridPrice";
   width: 60%;
   padding-top: 10px;
   padding-bottom: 10px;
   align-items: center;
 }
 
-.gridIcon {
-  text-align: center;
-  grid-area: gridIcon;
+.grid > div {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.gridName {
-  text-align: left;
+.gridIcon {
+  text-align: center;
+  grid-area: gridIcon;
+}
+
+.gridRank {
+  text-align: center;
+  grid-area: gridRank;
+}
+
+.grid .gridName {
+  justify-content: flex-start;
   grid-area: gridName;
 }
 
-.gridPrice {
-  text-align: right;
+.grid .gridPrice {
+  justify-content: flex-end;
   padding-right: 10%;
   grid-area: gridPrice;
+}
+.sorter:hover {
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .title {
