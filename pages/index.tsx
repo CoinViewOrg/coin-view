@@ -7,13 +7,12 @@ import React from "react";
 import styles from "../styles/Home.module.css";
 import cx from "classnames";
 import {
-  Button,
   CurrencyToggler,
   ListNavigation,
   LoadingSpinner,
+  useAutoRefresh,
   useCurrencyToggle,
   usePaging,
-  usePrevious,
 } from "@coin-view/client";
 
 const defaultSort: SortingType = "market_cap";
@@ -25,7 +24,6 @@ const fetchList = async (query: string) => {
   const newData = await res.json();
   return newData;
 };
-
 
 const fetchMeta = async (ids: number[]) => {
   const res = await fetch(`/api/meta?ids=${ids.join(",")}`);
@@ -76,14 +74,19 @@ const useListLogic = () => {
     return newData;
   }, []);
 
-  const refreshList = React.useCallback(async () => {
-    console.log("refetch");
-    setLoading(true);
-    const query = getListQuery({ pageSize, sorting, startFrom, currency });
-    const newData = await sendListQuery(query);
-    setData(newData);
-    setLoading(false);
-  }, [sorting, startFrom, sendListQuery, currency]);
+  const refreshList = React.useCallback(
+    async (showLoading: boolean) => {
+      console.log("refetch");
+      if (showLoading) {
+        setLoading(true);
+      }
+      const query = getListQuery({ pageSize, sorting, startFrom, currency });
+      const newData = await sendListQuery(query);
+      setData(newData);
+      setLoading(false);
+    },
+    [sorting, startFrom, sendListQuery, currency]
+  );
 
   React.useEffect(() => {
     const query = getListQuery({ pageSize, sorting, startFrom, currency });
@@ -102,6 +105,8 @@ const useListLogic = () => {
       });
     }
   }, [lastQuery, sendListQuery, sorting, startFrom, currency]);
+
+  useAutoRefresh(refreshList);
 
   return {
     sorting,
@@ -156,8 +161,6 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
           <Image src="/logo-square.svg" alt="logo" width={100} height={100} />
         </div>
         <h1 className={styles.title}>Coin View</h1>
-        {/* this button is temporary */}
-        <Button onClick={refreshList}>Refresh</Button>
         <div
           className={cx(styles.listContainer, {
             [styles.loadingBlur]: loading,
