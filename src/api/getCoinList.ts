@@ -1,9 +1,9 @@
-import { CoinListItem, SortingType } from "../types";
+import { CoinListItem, CurrencyType, SortingType } from "../types";
 import { apiGetRequest } from "./apiGetRequest";
 import mocks from "./mockData.json";
 
 type PropsType = {
-  currency: "USD" | "PLN";
+  currency: CurrencyType;
   sorting: SortingType;
   pageSize: number;
   startFrom: number;
@@ -37,7 +37,7 @@ export const getCoinList = async ({
       if (sorting === "name") {
         return a.name.localeCompare(b.name);
       }
-
+      
       return b.quote[currency].price - a.quote[currency].price;
     })
     .slice(startFrom - 1, startFrom + pageSize - 1);
