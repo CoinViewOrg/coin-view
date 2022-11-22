@@ -98,6 +98,11 @@
   padding-right: 10%;
   grid-area: gridPrice;
 }
+
+.sorter {
+  user-select: none;
+}
+
 .sorter:hover {
   cursor: pointer;
   font-weight: bold;
