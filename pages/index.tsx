@@ -70,6 +70,7 @@ const useListLogic = () => {
       if (sort === sorting) {
         setSortDirection((dir) => -dir);
       } else {
+        setSortDirection(1);
         setSortingValue(sort);
       }
     },

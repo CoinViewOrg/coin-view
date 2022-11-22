@@ -17,7 +17,7 @@ export const getCoinList = async ({
   startFrom,
   sortDir,
 }: PropsType) => {
-  const sortDirection = sortDir === 1 ? "asc" : "desc";
+  const sortDirection = sortDir === 1 ? "desc" : "asc";
 
   if (process.env.NODE_ENV === "production") {
     const { data } = await apiGetRequest({
@@ -27,7 +27,7 @@ export const getCoinList = async ({
         sort: sorting,
         limit: String(pageSize),
         start: String(startFrom),
-        sortDir: sortDirection,
+        sort_dir: sortDirection,
       },
     });
     return data as CoinListItem[];
