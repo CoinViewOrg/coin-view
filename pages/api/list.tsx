@@ -12,6 +12,7 @@ export default async function handler(
     sorting: req.query.sorting as SortingType,
     pageSize: Number(req.query.pageSize),
     startFrom: Number(req.query.startFrom),
+    sortDir: Number(req.query.sortDir),
   });
   res.status(200).json(data);
 }
