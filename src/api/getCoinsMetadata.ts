@@ -1,3 +1,4 @@
+import { CoinMetaType } from "@coin-view/types";
 import { apiGetRequest } from "./apiGetRequest";
 import mocks from "./mockData.json";
 
@@ -14,7 +15,7 @@ export const getCoinsMetadata = async ({ ids }: PropsType) => {
       },
     });
 
-    return data;
+    return data as Record<string, CoinMetaType>;
   }
 
   return mocks.meta;

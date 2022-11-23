@@ -1,5 +1,10 @@
 import { getCoinList, getCoinsMetadata } from "@coin-view/api";
-import { CoinListItem, CurrencyType, SortingType } from "@coin-view/types";
+import {
+  CoinListItem,
+  CoinMetaType,
+  CurrencyType,
+  SortingType,
+} from "@coin-view/types";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -7,13 +12,12 @@ import React from "react";
 import styles from "../styles/Home.module.css";
 import cx from "classnames";
 import {
-  Button,
   CurrencyToggler,
   ListNavigation,
   LoadingSpinner,
+  useAutoRefresh,
   useCurrencyToggle,
   usePaging,
-  usePrevious,
 } from "@coin-view/client";
 
 const defaultSort: SortingType = "market_cap";
@@ -37,13 +41,15 @@ const getListQuery = ({
   sorting,
   startFrom,
   currency,
+  sortDirection,
 }: {
   sorting: string;
   startFrom: string | number;
   pageSize: string | number;
   currency: CurrencyType;
+  sortDirection: number;
 }) => {
-  return `sorting=${sorting}&startFrom=${startFrom}&pageSize=${pageSize}&currency=${currency}`;
+  return `sorting=${sorting}&startFrom=${startFrom}&pageSize=${pageSize}&currency=${currency}&sortDir=${sortDirection}`;
 };
 
 const initialQuery = getListQuery({
@@ -51,10 +57,25 @@ const initialQuery = getListQuery({
   sorting: defaultSort,
   startFrom: 1,
   currency: defaultCurrency,
+  sortDirection: 1,
 });
 
 const useListLogic = () => {
-  const [sorting, setSorting] = React.useState<SortingType>(defaultSort);
+  const [sorting, setSortingValue] = React.useState<SortingType>(defaultSort);
+
+  const [sortDirection, setSortDirection] = React.useState(1);
+
+  const setSorting = React.useCallback(
+    (sort: SortingType) => {
+      if (sort === sorting) {
+        setSortDirection((dir) => -dir);
+      } else {
+        setSortDirection(1);
+        setSortingValue(sort);
+      }
+    },
+    [sorting]
+  );
 
   const { nextPage, page, prevPage } = usePaging();
 
@@ -75,17 +96,34 @@ const useListLogic = () => {
     return newData;
   }, []);
 
-  const refreshList = React.useCallback(async () => {
-    console.log("refetch");
-    setLoading(true);
-    const query = getListQuery({ pageSize, sorting, startFrom, currency });
-    const newData = await sendListQuery(query);
-    setData(newData);
-    setLoading(false);
-  }, [sorting, startFrom, sendListQuery, currency]);
+  const refreshList = React.useCallback(
+    async (showLoading: boolean) => {
+      console.log("refetch");
+      if (showLoading) {
+        setLoading(true);
+      }
+      const query = getListQuery({
+        pageSize,
+        sorting,
+        startFrom,
+        currency,
+        sortDirection,
+      });
+      const newData = await sendListQuery(query);
+      setData(newData);
+      setLoading(false);
+    },
+    [sorting, startFrom, sendListQuery, currency, sortDirection]
+  );
 
   React.useEffect(() => {
-    const query = getListQuery({ pageSize, sorting, startFrom, currency });
+    const query = getListQuery({
+      pageSize,
+      sorting,
+      startFrom,
+      currency,
+      sortDirection,
+    });
 
     const criteriaHaveChanged = query !== lastQuery;
 
@@ -100,7 +138,9 @@ const useListLogic = () => {
         setLoading(false);
       });
     }
-  }, [lastQuery, sendListQuery, sorting, startFrom, currency]);
+  }, [lastQuery, sendListQuery, sorting, startFrom, currency, sortDirection]);
+
+  useAutoRefresh(refreshList);
 
   return {
     sorting,
@@ -155,8 +195,6 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
           <Image src="/logo-square.svg" alt="logo" width={100} height={100} />
         </div>
         <h1 className={styles.title}>Coin View</h1>
-        {/* this button is temporary */}
-        <Button onClick={refreshList}>Refresh</Button>
         <div
           className={cx(styles.listContainer, {
             [styles.loadingBlur]: loading,
@@ -216,16 +254,40 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
 
 export async function getServerSideProps() {
   // Fetch data from external API
-  const data = await getCoinList({
+  const fullData = await getCoinList({
     currency: defaultCurrency,
     sorting: defaultSort,
     pageSize: pageSize,
-    startFrom: 1,//c
+    startFrom: 1,
+    sortDir: 1,
   });
 
-  const meta = await getCoinsMetadata({
+  // pass only needed data
+  const dataKeys: Partial<keyof CoinListItem>[] = [
+    "id",
+    "name",
+    "quote",
+    "cmc_rank",
+  ];
+
+  const data = fullData.map((item) =>
+    Object.fromEntries(dataKeys.map((key) => [key, item[key]]))
+  ) as CoinListItem[];
+
+  // pass only needed meta data
+  const metaKeys: Partial<keyof CoinMetaType>[] = ["logo"];
+
+  const fullMeta = await getCoinsMetadata({
     ids: data.map((coin) => coin.id),
   });
+
+  const meta = Object.fromEntries(
+    Object.entries(fullMeta).map(([id, metaItem]) => [
+      id,
+      Object.fromEntries(metaKeys.map((key) => [key, metaItem[key]])),
+    ])
+  ) as Record<string, CoinMetaType>;
+
   // Pass data to the page via props
   return { props: { data, meta } };
 }
