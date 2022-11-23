@@ -220,7 +220,7 @@ export async function getServerSideProps() {
     currency: defaultCurrency,
     sorting: defaultSort,
     pageSize: pageSize,
-    startFrom: 1,
+    startFrom: 1,//c
   });
 
   const meta = await getCoinsMetadata({
