@@ -11,7 +11,7 @@ export interface CurrencyPriceData {
   last_updated: Date;
 }
 
-interface Quote {
+export interface Quote {
   USD?: CurrencyPriceData;
   PLN?: CurrencyPriceData;
 }
