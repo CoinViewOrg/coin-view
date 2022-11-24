@@ -11,11 +11,12 @@ export interface CurrencyPriceData {
   last_updated: string;
 }
 
-interface Quote {
+export interface Quote {
   USD?: CurrencyPriceData;
   PLN?: CurrencyPriceData;
-  BTC: CurrencyPriceData;
 }
+
+export type CurrencyType = keyof Quote;
 
 export interface CoinListItem {
   id: number;
@@ -54,3 +55,41 @@ export type SortingType =
   | "market_cap_by_total_supply_strict"
   | "volume_7d"
   | "volume_30";
+
+export interface UrlsType {
+  website: string[];
+  twitter: any[];
+  message_board: string[];
+  chat: any[];
+  facebook: any[];
+  explorer: string[];
+  reddit: string[];
+  technical_doc: string[];
+  source_code: string[];
+  announcement: any[];
+}
+
+export interface CoinMetaType {
+  id: number;
+  name: string;
+  symbol: string;
+  category: string;
+  description: string;
+  slug: string;
+  logo: string;
+  subreddit: string;
+  notice: string;
+  tags: string[];
+  "tag-names": string[];
+  "tag-groups": string[];
+  urls: UrlsType;
+  platform?: any;
+  date_added: Date;
+  twitter_username: string;
+  is_hidden: number;
+  date_launched?: any;
+  contract_address: any[];
+  self_reported_circulating_supply?: any;
+  self_reported_tags?: any;
+  self_reported_market_cap?: any;
+}
