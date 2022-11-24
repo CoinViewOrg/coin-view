@@ -27,7 +27,7 @@ export interface CoinListItem {
   num_market_pairs: number;
   circulating_supply: number;
   total_supply: number;
-  max_supply: number;
+  max_supply: number | null;
   last_updated: string;
   date_added: string;
   tags: string[];
