@@ -13,3 +13,16 @@ export const formatPrice = (quote: Quote, currency: CurrencyType) => {
 
   return `${formatted} ${availableCurrency}`;
 };
+
+export const formatVolume = (quote: Quote, currency: CurrencyType) => {
+  const availableCurrency: CurrencyType = quote[currency]
+    ? currency
+    : currency === "PLN"
+    ? "USD"
+    : "PLN";
+
+  const volume = quote[availableCurrency]?.volume_24h || 0;
+  const formatted = Math.floor(volume);
+
+  return `${formatted} ${availableCurrency}`;
+};
