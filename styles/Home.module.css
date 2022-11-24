@@ -64,8 +64,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 5fr 4fr;
-  grid-template-areas: "gridRank gridIcon gridName gridPrice";
+  grid-template-columns: 1fr 1fr 3fr 5fr 4fr;
+  grid-template-areas: "gridRank gridIcon gridName gridVolume gridPrice";
   width: 60%;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -97,6 +97,10 @@
   justify-content: flex-end;
   padding-right: 10%;
   grid-area: gridPrice;
+}
+
+.grid .gridVolume {
+  grid-area: gridVolume;
 }
 
 .sorter {

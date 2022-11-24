@@ -214,6 +214,14 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
             >
               Name
             </div>
+
+            <div
+              className={cx(styles.gridVolume, styles.sorter)}
+              onClick={() => setSorting('volume_24h')}
+            >
+              Volume 24h
+            </div>
+
             <div
               className={cx(styles.gridPrice, styles.sorter)}
               onClick={() => setSorting("price")}
@@ -232,8 +240,7 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
                 ></img>
               </div>
               <div className={styles.gridName}>{item.name} </div>
-              <div className={styles.gridWolumen}></div>
-              <div className={styles.gridPercentChange}></div>
+              <div className={styles.gridVolume}>{item.quote.PLN?.volume_24h} </div>
               <div className={styles.gridPrice}>
                 {`${(item.quote[currency]?.price || 0).toFixed(2)}`} &nbsp;{" "}
                 {currency}
@@ -271,6 +278,7 @@ export async function getServerSideProps() {
     "name",
     "quote",
     "cmc_rank",
+    "circulating_supply",
   ];
 
   const data = fullData.map((item) =>
