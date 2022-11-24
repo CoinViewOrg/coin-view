@@ -1,14 +1,12 @@
-import { render, screen } from '@testing-library/react'
-import Home from '../pages/index'
+import { render, screen } from "@testing-library/react";
+import Home from "../pages/index";
+import { mockData, mockMeta } from "@coin-view/api";
 
-describe('Home', () => {
-  it('renders a heading', () => {
-    const { container } = render(<Home data={[]} meta={undefined} />)
+describe("Home", () => {
+  it("renders a heading", () => {
+    render(<Home data={mockData} meta={mockMeta} />);
 
-    const title = screen.getByText('Coin View')
-    const element = screen.getByText((content, element) => content.startsWith('Coin'))
-    expect(title).toBeInTheDocument()
-
-    expect(container).toMatchSnapshot()
-  })
-})
+    const title = screen.getByText("Coin View");
+    expect(title).toBeInTheDocument();
+  });
+});

@@ -8,7 +8,7 @@ export interface CurrencyPriceData {
   market_cap: number;
   market_cap_dominance: number;
   fully_diluted_market_cap: number;
-  last_updated: Date;
+  last_updated: string;
 }
 
 interface Quote {
@@ -27,8 +27,8 @@ export interface CoinListItem {
   circulating_supply: number;
   total_supply: number;
   max_supply: number;
-  last_updated: Date;
-  date_added: Date;
+  last_updated: string;
+  date_added: string;
   tags: string[];
   platform?: any;
   self_reported_circulating_supply?: any;
