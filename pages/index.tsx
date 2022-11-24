@@ -19,6 +19,7 @@ import {
   useCurrencyToggle,
   usePaging,
 } from "@coin-view/client";
+import { formatPrice } from "@coin-view/utils";
 
 const defaultSort: SortingType = "market_cap";
 const pageSize = 20;
@@ -242,8 +243,7 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
               <div className={styles.gridName}>{item.name} </div>
               <div className={styles.gridVolume}>{item.quote.PLN?.volume_24h} </div>
               <div className={styles.gridPrice}>
-                {`${(item.quote[currency]?.price || 0).toFixed(2)}`} &nbsp;{" "}
-                {currency}
+                {formatPrice(item.quote, currency)}
               </div>
             </div>
           ))}

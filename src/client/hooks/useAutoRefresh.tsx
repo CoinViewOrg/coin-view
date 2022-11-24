@@ -4,7 +4,11 @@ const AUTO_REFRESH = 1000 * 60;
 
 export const useAutoRefresh = (refresh: (showLoading: boolean) => void) => {
   React.useEffect(() => {
-    const interval = setInterval(() => refresh(false), AUTO_REFRESH);
+    const interval = setInterval(() => {
+      if (!document.hidden) {
+        refresh(false);
+      }
+    }, AUTO_REFRESH);
 
     return () => {
       clearInterval(interval);
