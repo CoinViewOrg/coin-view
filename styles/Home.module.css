@@ -64,12 +64,13 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 3fr 5fr 4fr;
-  grid-template-areas: "gridRank gridIcon gridName gridVolume gridPrice";
+  grid-template-columns: 1fr 1fr 2fr 3fr 3fr 3fr;
+  grid-template-areas: "gridRank gridIcon gridName gridPrice gridPercentChange gridVolume";
   width: 60%;
   padding-top: 10px;
   padding-bottom: 10px;
   align-items: center;
+  transition: all 0.5s;
 }
 
 .grid > div {
@@ -94,9 +95,11 @@
 }
 
 .grid .gridPrice {
-  justify-content: flex-end;
-  padding-right: 10%;
   grid-area: gridPrice;
+}
+
+.grid .gridPercentChange {
+  grid-area: gridPercentChange;
 }
 
 .grid .gridVolume {
@@ -120,13 +123,21 @@
   color: #3a3a3a;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .gridHeader {
     width: 100%;
   }
   .grid {
     width: 100%;
+    grid-template-columns: 1fr 1fr 2fr 3fr 3fr;
+    grid-template-areas: "gridRank gridIcon gridName gridPrice gridPercentChange";
+    font-size: 0.9em;
   }
+
+  .grid .gridVolume {
+    display: none;
+  }
+  
 }
 
 @media (prefers-color-scheme: dark) {

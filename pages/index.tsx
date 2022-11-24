@@ -15,11 +15,12 @@ import {
   CurrencyToggler,
   ListNavigation,
   LoadingSpinner,
+  PercentChange,
   useAutoRefresh,
   useCurrencyToggle,
   usePaging,
 } from "@coin-view/client";
-import { formatPrice } from "@coin-view/utils";
+import { formatPrice, formatVolume } from "@coin-view/utils";
 
 const defaultSort: SortingType = "market_cap";
 const pageSize = 20;
@@ -217,20 +218,24 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
             </div>
 
             <div
-              className={cx(styles.gridVolume, styles.sorter)}
-              onClick={() => setSorting('volume_24h')}
-            >
-              Volume 24h
-            </div>
-
-            <div
               className={cx(styles.gridPrice, styles.sorter)}
               onClick={() => setSorting("price")}
             >
               Price
             </div>
+            <div
+              className={cx(styles.gridPercentChange, styles.sorter)}
+              onClick={() => setSorting('percent_change_24h')}
+            >
+              24h %
+            </div>
+            <div
+              className={cx(styles.gridVolume, styles.sorter)}
+              onClick={() => setSorting('volume_24h')}
+            >
+              Volume 24h
+            </div>
           </div>
-
           {cryptoList.map((item) => (
             <div key={item.id} className={cx(styles.grid, styles.listItem)}>
               <div className={styles.gridRank}>{item.cmc_rank}</div>
@@ -241,10 +246,15 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
                 ></img>
               </div>
               <div className={styles.gridName}>{item.name} </div>
-              <div className={styles.gridVolume}>{item.quote.PLN?.volume_24h} </div>
               <div className={styles.gridPrice}>
                 {formatPrice(item.quote, currency)}
               </div>
+              <div className={styles.gridPercentChange}>
+                <PercentChange currency={currency} quote={item.quote}/>
+              </div>
+              <div className={styles.gridVolume}>{formatVolume(item.quote, currency)} </div>
+             
+       
             </div>
           ))}
           {loading && (
