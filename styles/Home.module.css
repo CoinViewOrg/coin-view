@@ -131,7 +131,7 @@
     width: 100%;
     grid-template-columns: 1fr 1fr 2fr 3fr 3fr;
     grid-template-areas: "gridRank gridIcon gridName gridPrice gridPercentChange";
-    font-size: 0.9em;
+    font-size: 0.85em;
   }
 
   .grid .gridVolume {
