@@ -1,10 +1,17 @@
+.container {
+    display: flex;
+    align-items: center;
+
+}
+
 .up {
   color: green;
 }
 
 .up,
 .down {
-  padding: 0.1em;
+  padding: 0 0.2em;
+  font-size: 1.5em;
 }
 
 .down {

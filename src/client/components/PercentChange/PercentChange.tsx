@@ -19,7 +19,7 @@ export const PercentChange = ({ currency, quote }: PropsType) => {
   const up = change > 0;
 
   return (
-    <div>
+    <div className={styles.container}>
       {up ? (
         <span className={styles.up}>&#8599;</span>
       ) : (
