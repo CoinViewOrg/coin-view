@@ -1,8 +1,19 @@
+.container {
+    display: flex;
+    align-items: center;
+
+}
 
 .up {
-    color: green;
-} 
+  color: green;
+}
+
+.up,
+.down {
+  padding: 0 0.2em;
+  font-size: 1.5em;
+}
 
 .down {
-    color: red;
+  color: red;
 }

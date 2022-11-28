@@ -43,6 +43,21 @@ export const getCoinList = async ({
         return a.name.localeCompare(b.name) * sortDir;
       }
 
+      if (sorting === "percent_change_24h") {
+        return (
+          (b.quote[currency].percent_change_24h -
+            a.quote[currency].percent_change_24h) *
+          sortDir
+        );
+      }
+
+      if (sorting === "volume_24h") {
+        return (
+          (b.quote[currency].volume_24h - a.quote[currency].volume_24h) *
+          sortDir
+        );
+      }
+
       return (b.quote[currency].price - a.quote[currency].price) * sortDir;
     })
     .slice(startFrom - 1, startFrom + pageSize - 1);

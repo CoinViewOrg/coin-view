@@ -19,11 +19,11 @@ export const PercentChange = ({ currency, quote }: PropsType) => {
   const up = change > 0;
 
   return (
-    <div>
+    <div className={styles.container}>
       {up ? (
-        <span className={styles.up}>&#129149;</span>
+        <span className={styles.up}>&#8599;</span>
       ) : (
-        <span className={styles.down}>&#129150;</span>
+        <span className={styles.down}>&#8600;</span>
       )} {" "}
       {formatted} %
     </div>
