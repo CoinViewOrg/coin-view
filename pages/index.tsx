@@ -289,6 +289,7 @@ export async function getServerSideProps() {
     "quote",
     "cmc_rank",
     "circulating_supply",
+    "symbol"
   ];
 
   const data = fullData.map((item) =>
