@@ -173,7 +173,6 @@ const useListLogic = () => {
 };
 
 const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
-  console.log({ props });
 
   const {
     data,

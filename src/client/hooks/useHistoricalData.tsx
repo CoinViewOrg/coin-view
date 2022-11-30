@@ -30,6 +30,12 @@ export const useHistoricalData = ({ currency }: PropsType) => {
     [currency]
   );
 
+  React.useEffect(() => {
+    if (current) {
+      getHistoricalData([current]);
+    }
+  }, [currency, current]);
+
   return {
     getHistoricalData,
     loadingHistorical: loading,

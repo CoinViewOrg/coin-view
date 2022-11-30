@@ -53,7 +53,6 @@ type PropsType = {
 };
 
 export function CryptoChart({ historicalData, loading }: PropsType) {
-  console.log({ historicalData });
   const data = React.useMemo(
     () =>
       historicalData && {
@@ -77,8 +76,6 @@ export function CryptoChart({ historicalData, loading }: PropsType) {
       },
     [historicalData]
   );
-
-  console.log({data})
 
   return (
     <div className={styles.container}>
