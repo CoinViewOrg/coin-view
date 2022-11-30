@@ -1,0 +1,40 @@
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation-name: slidedown;
+  animation-duration: 0.33s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+@keyframes slidedown {
+  from {
+    min-height: 0;
+  }
+
+  to {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  @keyframes slidedown {
+    from {
+      min-height: 0;
+    }
+
+    to {
+      min-height: 180px;
+    }
+  }
+}
+
+.spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
