@@ -21,6 +21,7 @@ export const getHistoricalData = async ({ currency, symbols }: PropsType) => {
 
   const market = marketMap[currency];
 
+  console.log(process.env.NODE_ENV);
   if (process.env.NODE_ENV === "production") {
     const promises = symbols.map(async (symbol) => {
       try {
@@ -37,9 +38,12 @@ export const getHistoricalData = async ({ currency, symbols }: PropsType) => {
 
     const data = await Promise.all(promises);
     return Object.fromEntries(data);
-  }
+  } else {
+    // sleep so we get to see loading in dev mode
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  return Object.fromEntries(
-    symbols.map((symbol) => [symbol, mockData[periods]])
-  );
+    return Object.fromEntries(
+      symbols.map((symbol) => [symbol, mockData[periods]])
+    );
+  }
 };
