@@ -140,8 +140,7 @@ const useListLogic = ({ initialMeta }: { initialMeta: any }) => {
           .map((coin) => coin.id)
           .filter((key) => !existingMeta.includes(String(key)));
 
-        console.log({ existingMeta, newKeys });
-
+        // use cached meta instead of refetching
         if (newKeys.length) {
           const newMeta = await fetchMeta(newKeys);
           setMeta((currentMeta: any) => ({ ...currentMeta, ...newMeta }));
@@ -213,8 +212,6 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
     [data, props.data]
   );
   const metaList = React.useMemo(() => meta || props.meta, [meta, props.meta]);
-
-  console.log({ metaList });
 
   return (
     <div className={styles.container}>

@@ -40,7 +40,6 @@ export const useHistoricalData = ({ currency }: PropsType) => {
   const previousCurrency = usePrevious(currency);
 
   React.useEffect(() => {
-    console.log('EFFECT')
     if (current && previousCurrency !== currency) {
       getHistoricalData(current, true);
     }
