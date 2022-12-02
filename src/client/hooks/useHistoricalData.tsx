@@ -5,7 +5,7 @@ type PropsType = {
   currency: CurrencyType;
 };
 
-type HistoricalDataType = Record<string, Array<Array<number>>>;
+export type HistoricalDataType = Record<string, Array<Array<number>>>;
 
 export const useHistoricalData = ({ currency }: PropsType) => {
   const [dataMap, setDataMap] = React.useState<

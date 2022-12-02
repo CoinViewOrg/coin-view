@@ -5,13 +5,14 @@ import Head from "next/head";
 import Image from "next/image";
 import { CurrencyToggler, useCurrencyToggle } from "@coin-view/client";
 import styles from "../styles/App.module.css";
+import { useRouter } from "next/router";
 
 export const defaultCurrency = "PLN";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const GTM_ID = "G-R8PPSMRFS0";
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
-
+  const { push } = useRouter();
   return (
     <>
       <Head>
@@ -29,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         })(window,document,'script','dataLayer','${GTM_ID}');
       `}
       </Script>
-      
+
       <div className={styles.container}>
         <header className={styles.header}>
           <CurrencyToggler
@@ -38,10 +39,18 @@ function MyApp({ Component, pageProps }: AppProps) {
           />
         </header>
         <main className={styles.main}>
-          <div className={styles.mainLogo}>
-            <Image src="/logo-square.svg" alt="logo" width={100} height={100} />
+          <div className={styles.mainLogo} onClick={() => push("/")}>
+            <div className={styles.logoContainer}>
+              <Image
+                src="/logo-square.svg"
+                alt="logo"
+                width={100}
+                height={100}
+                layout="responsive"
+              />
+            </div>
+            <h1 className={styles.title}>Coin View</h1>
           </div>
-          <h1 className={styles.title}>Coin View</h1>
           <Component {...pageProps} currency={currency} />
         </main>
         <footer className={styles.footer}>CoinView®</footer>

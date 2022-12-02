@@ -8,19 +8,15 @@ import {
 import type { NextPage } from "next";
 import React from "react";
 import styles from "../styles/Home.module.css";
-import cx from "classnames";
 import {
-  CryptoChart,
-  CurrencyToggler,
+  CryptoList,
   ListNavigation,
-  LoadingSpinner,
-  PercentChange,
+  SearchBar,
   useAutoRefresh,
-  useCurrencyToggle,
   useHistoricalData,
   usePaging,
 } from "@coin-view/client";
-import { formatPrice, formatVolume } from "@coin-view/utils";
+
 import { defaultCurrency } from "./_app";
 
 const defaultSort: SortingType = "market_cap";
@@ -224,83 +220,18 @@ const Home: NextPage<{
 
   return (
     <>
-      <div
-        className={cx(styles.listContainer, {
-          [styles.loadingBlur]: loading,
-        })}
-      >
-        <div className={cx(styles.gridHeader, styles.grid)}>
-          <div
-            className={cx(styles.gridRank, styles.sorter)}
-            onClick={() => setSorting("market_cap")}
-          >
-            Rank
-          </div>
-          <div className={styles.gridIcon}>{""}</div>
-          <div
-            className={cx(styles.gridName, styles.sorter)}
-            onClick={() => setSorting("name")}
-          >
-            Name
-          </div>
-
-          <div
-            className={cx(styles.gridPrice, styles.sorter)}
-            onClick={() => setSorting("price")}
-          >
-            Price
-          </div>
-          <div
-            className={cx(styles.gridPercentChange, styles.sorter)}
-            onClick={() => setSorting("percent_change_24h")}
-          >
-            24h %
-          </div>
-          <div
-            className={cx(styles.gridVolume, styles.sorter)}
-            onClick={() => setSorting("volume_24h")}
-          >
-            Volume 24h
-          </div>
-        </div>
-        {cryptoList.map((item) => (
-          <React.Fragment key={item.id}>
-            <div
-              className={cx(styles.grid, styles.listItem)}
-              onClick={() => getHistoricalData(item.symbol)}
-            >
-              <div className={styles.gridRank}>{item.cmc_rank}</div>
-              <div className={styles.gridIcon}>
-                <img
-                  className={styles.cryptoIcon}
-                  src={metaList[item.id]?.logo}
-                ></img>
-              </div>
-              <div className={styles.gridName}>{item.name} </div>
-              <div className={styles.gridPrice}>
-                {formatPrice(item.quote, currency)}
-              </div>
-              <div className={styles.gridPercentChange}>
-                <PercentChange currency={currency} quote={item.quote} />
-              </div>
-              <div className={styles.gridVolume}>
-                {formatVolume(item.quote, currency)}{" "}
-              </div>
-            </div>
-            {currentHistoricalData === item.symbol && (
-              <CryptoChart
-                loading={loadingHistorical}
-                historicalData={historicalData[currency][item.symbol]}
-              />
-            )}
-          </React.Fragment>
-        ))}
-        {loading && (
-          <div className={styles.spinner}>
-            <LoadingSpinner />
-          </div>
-        )}
-      </div>
+      <SearchBar />
+      <CryptoList
+        cryptoList={cryptoList}
+        currency={currency}
+        currentHistoricalData={currentHistoricalData}
+        getHistoricalData={getHistoricalData}
+        historicalData={historicalData}
+        loading={loading}
+        loadingHistorical={loadingHistorical}
+        metaList={metaList}
+        setSorting={setSorting}
+      />
 
       <ListNavigation nextPage={nextPage} page={page} prevPage={prevPage} />
     </>

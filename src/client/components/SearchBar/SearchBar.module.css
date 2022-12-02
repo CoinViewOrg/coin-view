@@ -1,8 +1,11 @@
-.button {
+.container {
+  margin-bottom: 1em;
+}
+
+.input {
   border: solid 1px;
   border-radius: 10px;
   padding: 0.5em 0.75em;
   margin: 0.5em;
   font-family: "LilitaOne-Regular";
-  cursor: pointer;
 }

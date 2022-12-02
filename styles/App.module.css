@@ -1,4 +1,3 @@
-
 @font-face {
   font-family: "LilitaOne-Regular";
   src: url(../public/LilitaOne-Regular.ttf) format("truetype");
@@ -29,12 +28,16 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .mainLogo {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1em;
+  cursor: pointer;
 }
 
 .footer {
@@ -46,25 +49,27 @@
   align-items: center;
 }
 
-.logo {
-  height: 1em;
-  margin-left: 0.5rem;
+.logoContainer {
+  display: block;
+  width: 15vmin;
 }
 
 .title {
+  padding: 0 0.2em;
   font-family: "Magical", "LilitaOne-Regular", sans-serif;
   margin: 0;
-  line-height: 1.15;
-  font-size: 8vmax;
+  font-size: 13vmin;
   color: #3a3a3a;
+  line-height: 15vmin;
+  height: 13vmin;
 }
 
 @media (prefers-color-scheme: dark) {
-    .container {
-      background-color: #111;
-      color: #c5c5c5;
-    }
-    .title {
-      color: #c5c5c5;
-    }
+  .container {
+    background-color: #111;
+    color: #c5c5c5;
   }
+  .title {
+    color: #c5c5c5;
+  }
+}
