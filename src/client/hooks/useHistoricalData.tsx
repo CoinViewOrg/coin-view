@@ -1,5 +1,6 @@
 import { CurrencyType } from "@coin-view/types";
 import React from "react";
+import { usePrevious } from "./usePrevious";
 
 type PropsType = {
   currency: CurrencyType;
@@ -15,11 +16,17 @@ export const useHistoricalData = ({ currency }: PropsType) => {
   const [current, setCurrent] = React.useState<string>();
 
   const getHistoricalData = React.useCallback(
-    async (symbols: string[]) => {
+    async (symbol: string, force: boolean) => {
+      setCurrent(symbol);
+
+      if (dataMap[symbol] && !force) {
+        return;
+      }
+
       setLoading(true);
-      setCurrent(symbols[0]);
+      setCurrent(symbol);
       const result = await fetch(
-        `/api/historical?symbols=${symbols.join(",")}&currency=${currency}`
+        `/api/historical?symbols=${symbol}&currency=${currency}`
       );
 
       const data = await result.json();
@@ -27,14 +34,17 @@ export const useHistoricalData = ({ currency }: PropsType) => {
       setDataMap((map) => ({ ...map, ...data }));
       setLoading(false);
     },
-    [currency]
+    [currency, dataMap]
   );
 
+  const previousCurrency = usePrevious(currency);
+
   React.useEffect(() => {
-    if (current) {
-      getHistoricalData([current]);
+    console.log('EFFECT')
+    if (current && previousCurrency !== currency) {
+      getHistoricalData(current, true);
     }
-  }, [currency, current]);
+  }, [currency, current, previousCurrency, getHistoricalData]);
 
   return {
     getHistoricalData,

@@ -64,7 +64,7 @@ const initialQuery = getListQuery({
   sortDirection: 1,
 });
 
-const useListLogic = () => {
+const useListLogic = ({ initialMeta }: { initialMeta: any }) => {
   const [sorting, setSortingValue] = React.useState<SortingType>(defaultSort);
 
   const [sortDirection, setSortDirection] = React.useState(1);
@@ -86,7 +86,7 @@ const useListLogic = () => {
   const startFrom = React.useMemo(() => 1 + pageSize * page, [page]);
 
   const [data, setData] = React.useState<CoinListItem[]>();
-  const [meta, setMeta] = React.useState<any>();
+  const [meta, setMeta] = React.useState<any>(initialMeta);
 
   const [loading, setLoading] = React.useState(false);
 
@@ -135,14 +135,31 @@ const useListLogic = () => {
       console.log("refetch effect", { query, lastQuery, criteriaHaveChanged });
       setLoading(true);
       sendListQuery(query).then(async (data: CoinListItem[]) => {
-        const meta = await fetchMeta(data.map((coin) => coin.id));
+        const existingMeta = Object.keys(meta || {});
+        const newKeys = data
+          .map((coin) => coin.id)
+          .filter((key) => !existingMeta.includes(String(key)));
+
+        console.log({ existingMeta, newKeys });
+
+        if (newKeys.length) {
+          const newMeta = await fetchMeta(newKeys);
+          setMeta((currentMeta: any) => ({ ...currentMeta, ...newMeta }));
+        }
 
         setData(data);
-        setMeta(meta);
         setLoading(false);
       });
     }
-  }, [lastQuery, sendListQuery, sorting, startFrom, currency, sortDirection]);
+  }, [
+    lastQuery,
+    sendListQuery,
+    sorting,
+    startFrom,
+    currency,
+    sortDirection,
+    meta,
+  ]);
 
   useAutoRefresh(refreshList);
 
@@ -173,7 +190,6 @@ const useListLogic = () => {
 };
 
 const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
-
   const {
     data,
     nextPage,
@@ -190,13 +206,15 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
     historicalData,
     loadingHistorical,
     currentHistoricalData,
-  } = useListLogic();
+  } = useListLogic({ initialMeta: props.meta });
 
   const cryptoList = React.useMemo(
     () => data || props.data,
     [data, props.data]
   );
   const metaList = React.useMemo(() => meta || props.meta, [meta, props.meta]);
+
+  console.log({ metaList });
 
   return (
     <div className={styles.container}>
@@ -256,7 +274,7 @@ const Home: NextPage<{ data: CoinListItem[]; meta: any }> = (props) => {
             <React.Fragment key={item.id}>
               <div
                 className={cx(styles.grid, styles.listItem)}
-                onClick={() => getHistoricalData([item.symbol])}
+                onClick={() => getHistoricalData(item.symbol, false)}
               >
                 <div className={styles.gridRank}>{item.cmc_rank}</div>
                 <div className={styles.gridIcon}>
@@ -327,7 +345,7 @@ export async function getServerSideProps() {
   const metaKeys: Partial<keyof CoinMetaType>[] = ["logo"];
 
   const fullMeta = await getCoinsMetadata({
-    ids: data.map((coin) => coin.id),
+    ids: data.map((coin) => String(coin.id)),
   });
 
   const meta = Object.fromEntries(
