@@ -43,6 +43,7 @@ export const CryptoList = ({
     <div
       className={cx(styles.listContainer, {
         [styles.loadingBlur]: loading,
+        [styles.sortersClickable]: !!setSorting,
       })}
     >
       <div className={cx(styles.gridHeader, styles.grid)}>

@@ -1,18 +1,22 @@
+import { CurrencyType } from "@coin-view/types";
 import { useRouter } from "next/router";
 import React from "react";
 import { Button } from "../Button";
 import styles from "./SearchBar.module.css";
 
-type PropsType = {};
+type PropsType = {
+  initialValue?: string;
+  currency: CurrencyType;
+};
 
-export const SearchBar = ({}: PropsType) => {
-  const [phrase, setPhrase] = React.useState("");
+export const SearchBar = ({ initialValue, currency }: PropsType) => {
+  const [phrase, setPhrase] = React.useState(initialValue || "");
   const { push } = useRouter();
   const searchPhrase = React.useCallback(() => {
     if (phrase.length) {
-      push(`/search?phrase=${phrase}`);
+      push(`/search?phrase=${phrase}&currency=${currency}`);
     }
-  }, [phrase, push]);
+  }, [phrase, push, currency]);
 
   const submitOnEnter = React.useCallback(
     (evt: React.KeyboardEvent) => {

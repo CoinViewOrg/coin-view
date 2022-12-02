@@ -220,7 +220,7 @@ const Home: NextPage<{
 
   return (
     <>
-      <SearchBar />
+      <SearchBar currency={currency} />
       <CryptoList
         cryptoList={cryptoList}
         currency={currency}

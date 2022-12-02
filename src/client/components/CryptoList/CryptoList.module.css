@@ -1,4 +1,3 @@
-
 .listContainer {
   display: flex;
   flex-direction: column;
@@ -28,7 +27,6 @@
   left: 50%;
   top: 50%;
 }
-
 
 .gridHeader {
   border: solid #d4d4d4;
@@ -79,11 +77,11 @@
   grid-area: gridVolume;
 }
 
-.sorter {
+.sortersClickable .sorter {
   user-select: none;
 }
 
-.sorter:hover {
+.sortersClickable .sorter:hover {
   cursor: pointer;
   font-weight: bold;
 }
