@@ -21,7 +21,7 @@ export const useHistoricalData = ({ currency }: PropsType) => {
       setCurrent(symbol);
 
       // dont refetch if already exists, unless we want to (e.g. in case of currency change)
-      if (dataMap[currency][symbol]) {
+      if (loading || dataMap[currency][symbol]) {
         return;
       }
 
@@ -42,7 +42,7 @@ export const useHistoricalData = ({ currency }: PropsType) => {
       }));
       setLoading(false);
     },
-    [currency, dataMap]
+    [currency, dataMap, loading]
   );
 
   React.useEffect(() => {

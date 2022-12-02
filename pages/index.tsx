@@ -132,7 +132,7 @@ const useListLogic = ({
 
     const criteriaHaveChanged = query !== lastQuery;
 
-    if (criteriaHaveChanged) {
+    if (criteriaHaveChanged && !loading) {
       console.log("refetch effect", { query, lastQuery, criteriaHaveChanged });
       setLoading(true);
       sendListQuery(query).then(async (data: CoinListItem[]) => {
@@ -159,6 +159,7 @@ const useListLogic = ({
     currency,
     sortDirection,
     meta,
+    loading,
   ]);
 
   useAutoRefresh(refreshList);
@@ -215,8 +216,6 @@ const Home: NextPage<{
     [data, props.data]
   );
   const metaList = React.useMemo(() => meta || props.meta, [meta, props.meta]);
-
-  console.log({ cryptoList });
 
   return (
     <>

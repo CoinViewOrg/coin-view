@@ -35,7 +35,7 @@ const Search: NextPage<{
     if (currency !== previousCurrency) {
       replace(`/search?phrase=${phrase}&currency=${currency}`);
     }
-  }, [currency, previousCurrency, replace]);
+  }, [currency, previousCurrency, replace, phrase]);
 
   return (
     <>
