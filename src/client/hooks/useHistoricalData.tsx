@@ -1,25 +1,27 @@
 import { CurrencyType } from "@coin-view/types";
 import React from "react";
-import { usePrevious } from "./usePrevious";
 
 type PropsType = {
   currency: CurrencyType;
 };
 
+type HistoricalDataType = Record<string, Array<Array<number>>>;
+
 export const useHistoricalData = ({ currency }: PropsType) => {
   const [dataMap, setDataMap] = React.useState<
-    Record<string, Array<Array<number>>>
-  >({});
+    Record<CurrencyType, HistoricalDataType>
+  >({ PLN: {}, USD: {} });
 
   const [loading, setLoading] = React.useState(false);
 
   const [current, setCurrent] = React.useState<string>();
 
   const getHistoricalData = React.useCallback(
-    async (symbol: string, force: boolean) => {
+    async (symbol: string) => {
       setCurrent(symbol);
 
-      if (dataMap[symbol] && !force) {
+      // dont refetch if already exists, unless we want to (e.g. in case of currency change)
+      if (dataMap[currency][symbol]) {
         return;
       }
 
@@ -29,21 +31,25 @@ export const useHistoricalData = ({ currency }: PropsType) => {
         `/api/historical?symbols=${symbol}&currency=${currency}`
       );
 
-      const data = await result.json();
+      const data = (await result.json()) as HistoricalDataType;
 
-      setDataMap((map) => ({ ...map, ...data }));
+      setDataMap((map) => ({
+        ...map,
+        [currency]: {
+          ...map[currency],
+          ...data,
+        },
+      }));
       setLoading(false);
     },
     [currency, dataMap]
   );
 
-  const previousCurrency = usePrevious(currency);
-
   React.useEffect(() => {
-    if (current && previousCurrency !== currency) {
-      getHistoricalData(current, true);
+    if (current) {
+      getHistoricalData(current);
     }
-  }, [currency, current, previousCurrency, getHistoricalData]);
+  }, [current, getHistoricalData]);
 
   return {
     getHistoricalData,
