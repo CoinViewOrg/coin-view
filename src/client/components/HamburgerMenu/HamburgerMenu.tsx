@@ -15,14 +15,6 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
 
   const [menuOpen, setMenuOpen] = React.useState(false);
 
-  const navigate = React.useCallback(
-    (evt: any, path: string) => {
-      evt.preventDefault();
-      push(path);
-    },
-    [push]
-  );
-
   return (
     <div className={styles.menu}>
       <HamburgerIcon
@@ -38,11 +30,7 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
             toggleCurrency={toggleCurrency}
           />
 
-          <a
-            href="/login"
-            className={styles.menuItem}
-            onClick={(evt) => navigate(evt, "/login")}
-          >
+          <div className={styles.menuItem} onClick={() => push("/login")}>
             <Image
               className={cx("svg-adaptive", styles.menuIcon, {
                 [styles.active]: pathname.includes("login"),
@@ -59,12 +47,8 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
             >
               Login
             </span>
-          </a>
-          <a
-            href="/register"
-            className={styles.menuItem}
-            onClick={(evt) => navigate(evt, "/register")}
-          >
+          </div>
+          <div className={styles.menuItem} onClick={() => push("/register")}>
             <Image
               className={cx("svg-adaptive", styles.menuIcon)}
               src="/register.svg"
@@ -79,7 +63,7 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
             >
               Register
             </span>
-          </a>
+          </div>
         </div>
       )}
     </div>

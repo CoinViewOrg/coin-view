@@ -87,7 +87,7 @@ const useListLogic = ({ initialMeta }: { initialMeta: any }) => {
   const [loading, setLoading] = React.useState(false);
 
   const [lastQuery, setLastQuery] = React.useState<string>(
-    getInitialQuery(currency)
+    getInitialQuery(defaultCurrency)
   );
 
   const sendListQuery = React.useCallback(async (query: string) => {
