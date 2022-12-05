@@ -2,15 +2,21 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
-import Image from "next/image";
-import { CurrencyToggler, useCurrencyToggle } from "@coin-view/client";
+import {
+  CurrencyToggler,
+  HamburgerMenu,
+  useCurrencyToggle,
+} from "@coin-view/client";
 import styles from "../styles/App.module.css";
 import { useRouter } from "next/router";
 import React from "react";
 import { AppContext, defaultCurrency } from "@coin-view/context";
+import cx from "classnames";
+import Image from "next/future/image";
+
+const GTM_ID = "G-R8PPSMRFS0";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const GTM_ID = "G-R8PPSMRFS0";
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
   const { push } = useRouter();
 
@@ -35,21 +41,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AppContext.Provider value={{ currency }}>
         <div className={styles.container}>
           <header className={styles.header}>
-            <CurrencyToggler
-              currency={currency}
-              toggleCurrency={toggleCurrency}
-            />
+            <HamburgerMenu toggleCurrency={toggleCurrency} />
           </header>
           <main className={styles.main}>
             <div className={styles.mainLogo} onClick={() => push("/")}>
               <div className={styles.logoContainer}>
-                <Image
-                  src="/logo-square.svg"
-                  alt="logo"
-                  width={100}
-                  height={100}
-                  layout="responsive"
-                />
+                <Image src="/logo-square.svg" alt="logo" fill sizes="15 vmin" />
               </div>
               <h1 className={styles.title}>Coin View</h1>
             </div>

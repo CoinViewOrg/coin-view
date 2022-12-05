@@ -50,8 +50,9 @@
 }
 
 .logoContainer {
-  display: block;
+  position: relative;
   width: 15vmin;
+  height: 15vmin;
 }
 
 .title {
@@ -66,7 +67,7 @@
 
 @media (prefers-color-scheme: dark) {
   .container {
-    background-color: #111;
+    background-color: #0e0c0b;
     color: #c5c5c5;
   }
   .title {

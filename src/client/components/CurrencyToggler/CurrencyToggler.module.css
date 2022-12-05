@@ -1,10 +1,12 @@
-
 .currencyToggler {
-    margin-left: 0.5em;
-    cursor: pointer;
-    user-select: none;
+  cursor: pointer;
+  user-select: none;
 }
 
 .currencyToggler .currencySelected {
-    text-decoration: underline;
+  color: rgb(0, 182, 0);
+}
+
+.icon {
+  margin-right: 1em;
 }
