@@ -46,3 +46,7 @@
 .menuItem > .menuIcon {
   margin-right: 1em;
 }
+
+.active {
+    text-decoration: underline;
+}

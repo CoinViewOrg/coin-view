@@ -11,9 +11,17 @@ type PropsType = {
 };
 
 export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
 
   const [menuOpen, setMenuOpen] = React.useState(false);
+
+  const navigate = React.useCallback(
+    (evt: any, path: string) => {
+      evt.preventDefault();
+      push(path);
+    },
+    [push]
+  );
 
   return (
     <div className={styles.menu}>
@@ -30,17 +38,33 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
             toggleCurrency={toggleCurrency}
           />
 
-          <a className={styles.menuItem} onClick={() => push("/login")}>
+          <a
+            href="/login"
+            className={styles.menuItem}
+            onClick={(evt) => navigate(evt, "/login")}
+          >
             <Image
-              className={cx("svg-adaptive", styles.menuIcon)}
+              className={cx("svg-adaptive", styles.menuIcon, {
+                [styles.active]: pathname.includes("login"),
+              })}
               src="/login.svg"
               width={30}
               height={30}
               alt="login"
             />
-            <span>Login</span>
+            <span
+              className={cx({
+                [styles.active]: pathname.includes("login"),
+              })}
+            >
+              Login
+            </span>
           </a>
-          <div className={styles.menuItem} onClick={() => push("/register")}>
+          <a
+            href="/register"
+            className={styles.menuItem}
+            onClick={(evt) => navigate(evt, "/register")}
+          >
             <Image
               className={cx("svg-adaptive", styles.menuIcon)}
               src="/register.svg"
@@ -48,8 +72,14 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
               height={30}
               alt="login"
             />
-            <span>Register</span>
-          </div>
+            <span
+              className={cx({
+                [styles.active]: pathname.includes("register"),
+              })}
+            >
+              Register
+            </span>
+          </a>
         </div>
       )}
     </div>
