@@ -3,3 +3,6 @@ export * from "./ListNavigation";
 export * from "./LoadingSpinner";
 export * from "./CurrencyToggler";
 export * from "./PercentChange";
+export * from "./CryptoChart";
+export * from "./SearchBar";
+export * from "./CryptoList";

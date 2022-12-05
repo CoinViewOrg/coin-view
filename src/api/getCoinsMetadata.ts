@@ -3,7 +3,7 @@ import { apiGetRequest } from "./apiGetRequest";
 import mocks from "./mockData.json";
 
 type PropsType = {
-  ids: string[] | number[];
+  ids: string[];
 };
 
 export const getCoinsMetadata = async ({ ids }: PropsType) => {
@@ -18,5 +18,7 @@ export const getCoinsMetadata = async ({ ids }: PropsType) => {
     return data as Record<string, CoinMetaType>;
   }
 
-  return mocks.meta;
+  return Object.fromEntries(
+    Object.entries(mocks.meta).filter(([id]) => ids.includes(id))
+  );
 };
