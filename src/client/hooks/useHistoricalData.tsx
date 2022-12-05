@@ -1,13 +1,12 @@
+import { AppContext } from "@coin-view/context";
 import { CurrencyType } from "@coin-view/types";
 import React from "react";
 
-type PropsType = {
-  currency: CurrencyType;
-};
-
 export type HistoricalDataType = Record<string, Array<Array<number>>>;
 
-export const useHistoricalData = ({ currency }: PropsType) => {
+export const useHistoricalData = () => {
+  const { currency } = React.useContext(AppContext);
+
   const [dataMap, setDataMap] = React.useState<
     Record<CurrencyType, HistoricalDataType>
   >({ PLN: {}, USD: {} });

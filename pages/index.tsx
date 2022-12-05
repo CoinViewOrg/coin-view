@@ -6,7 +6,7 @@ import {
   SortingType,
 } from "@coin-view/types";
 import type { NextPage } from "next";
-import React from "react";
+import React, { useContext } from "react";
 import styles from "../styles/Home.module.css";
 import {
   CryptoList,
@@ -16,8 +16,7 @@ import {
   useHistoricalData,
   usePaging,
 } from "@coin-view/client";
-
-import { defaultCurrency } from "./_app";
+import { AppContext, defaultCurrency } from "@coin-view/context";
 
 const defaultSort: SortingType = "market_cap";
 const pageSize = 20;
@@ -59,13 +58,9 @@ const getInitialQuery = (currency: CurrencyType) =>
     sortDirection: 1,
   });
 
-const useListLogic = ({
-  initialMeta,
-  currency,
-}: {
-  initialMeta: any;
-  currency: CurrencyType;
-}) => {
+const useListLogic = ({ initialMeta }: { initialMeta: any }) => {
+  const { currency } = useContext(AppContext);
+
   const [sorting, setSortingValue] = React.useState<SortingType>(defaultSort);
 
   const [sortDirection, setSortDirection] = React.useState(1);
@@ -169,7 +164,7 @@ const useListLogic = ({
     historicalData,
     loadingHistorical,
     currentHistoricalData,
-  } = useHistoricalData({ currency });
+  } = useHistoricalData();
 
   return {
     sorting,
@@ -192,7 +187,6 @@ const useListLogic = ({
 const Home: NextPage<{
   data: CoinListItem[];
   meta: any;
-  currency: CurrencyType;
 }> = (props) => {
   const {
     data,
@@ -204,12 +198,11 @@ const Home: NextPage<{
     sorting,
     loading,
     meta,
-    currency,
     getHistoricalData,
     historicalData,
     loadingHistorical,
     currentHistoricalData,
-  } = useListLogic({ initialMeta: props.meta, currency: props.currency });
+  } = useListLogic({ initialMeta: props.meta });
 
   const cryptoList = React.useMemo(
     () => data || props.data,
@@ -219,10 +212,9 @@ const Home: NextPage<{
 
   return (
     <>
-      <SearchBar currency={currency} />
+      <SearchBar />
       <CryptoList
         cryptoList={cryptoList}
-        currency={currency}
         currentHistoricalData={currentHistoricalData}
         getHistoricalData={getHistoricalData}
         historicalData={historicalData}

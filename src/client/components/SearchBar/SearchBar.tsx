@@ -1,3 +1,4 @@
+import { AppContext } from "@coin-view/context";
 import { CurrencyType } from "@coin-view/types";
 import { useRouter } from "next/router";
 import React from "react";
@@ -6,10 +7,11 @@ import styles from "./SearchBar.module.css";
 
 type PropsType = {
   initialValue?: string;
-  currency: CurrencyType;
 };
 
-export const SearchBar = ({ initialValue, currency }: PropsType) => {
+export const SearchBar = ({ initialValue }: PropsType) => {
+  const { currency } = React.useContext(AppContext);
+
   const [phrase, setPhrase] = React.useState(initialValue || "");
   const { push } = useRouter();
   const searchPhrase = React.useCallback(() => {
