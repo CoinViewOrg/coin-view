@@ -20,6 +20,7 @@
       "@coin-view/types": ["src/types"],
       "@coin-view/client": ["src/client"],
       "@coin-view/utils": ["src/utils"],
+      "@coin-view/context": ["src/context"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

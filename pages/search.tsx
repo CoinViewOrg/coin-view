@@ -10,13 +10,13 @@ import {
   useHistoricalData,
   usePrevious,
 } from "@coin-view/client";
+import { AppContext } from "@coin-view/context";
 
 const Search: NextPage<{
   data: CoinListItem[];
   meta: any;
-  currency: CurrencyType;
 }> = (props) => {
-  const { currency, data, meta } = props;
+  const { data, meta } = props;
   const { query } = useRouter();
   const phrase = query.phrase as string;
 
@@ -25,9 +25,11 @@ const Search: NextPage<{
     historicalData,
     loadingHistorical,
     currentHistoricalData,
-  } = useHistoricalData({ currency });
+  } = useHistoricalData();
 
   const { replace } = useRouter();
+
+  const { currency } = React.useContext(AppContext);
 
   const previousCurrency = usePrevious(currency);
 
@@ -39,10 +41,9 @@ const Search: NextPage<{
 
   return (
     <>
-      <SearchBar initialValue={phrase} currency={currency} />
+      <SearchBar initialValue={phrase} />
       <CryptoList
         cryptoList={data}
-        currency={currency}
         currentHistoricalData={currentHistoricalData}
         getHistoricalData={getHistoricalData}
         historicalData={historicalData}

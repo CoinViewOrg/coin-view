@@ -7,6 +7,7 @@ import { PercentChange } from "../PercentChange";
 import { CryptoChart } from "../CryptoChart";
 import { HistoricalDataType } from "../../hooks";
 import { LoadingSpinner } from "../LoadingSpinner";
+import { AppContext } from "@coin-view/context";
 
 type PropsType = {
   loading: boolean;
@@ -14,7 +15,6 @@ type PropsType = {
   cryptoList: CoinListItem[];
   getHistoricalData: (symbol: string) => void;
   metaList: any;
-  currency: CurrencyType;
   currentHistoricalData?: string;
   loadingHistorical: boolean;
   historicalData: Record<CurrencyType, HistoricalDataType>;
@@ -25,11 +25,12 @@ export const CryptoList = ({
   cryptoList,
   getHistoricalData,
   metaList,
-  currency,
   currentHistoricalData,
   loadingHistorical,
   historicalData,
 }: PropsType) => {
+  const { currency } = React.useContext(AppContext);
+
   const sort = React.useCallback(
     (sorType: SortingType) => {
       if (setSorting) {
