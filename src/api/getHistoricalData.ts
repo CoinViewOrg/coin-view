@@ -46,10 +46,13 @@ export const getHistoricalData = async ({ currency, symbols }: PropsType) => {
     return Object.fromEntries(
       symbols.map((symbol) => [
         symbol,
-        mockData[periods].map(([time, ...data]) => [
-          time,
-          ...data.map((price) => price * multiplier),
-        ]),
+        //we want some null values for testing
+        Math.random() > 0.1
+          ? mockData[periods].map(([time, ...data]) => [
+              time,
+              ...data.map((price) => price * multiplier),
+            ])
+          : null,
       ])
     );
   }
