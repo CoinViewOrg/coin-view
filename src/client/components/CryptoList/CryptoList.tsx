@@ -46,6 +46,7 @@ export const CryptoList = ({
         [styles.loadingBlur]: loading,
         [styles.sortersClickable]: !!setSorting,
       })}
+      data-testid="crypto_list"
     >
       <div className={cx(styles.gridHeader, styles.grid)}>
         <div
@@ -86,10 +87,12 @@ export const CryptoList = ({
           <div
             className={cx(styles.grid, styles.listItem)}
             onClick={() => getHistoricalData(item.symbol)}
+            data-testid={`crypto_list_item_${item.symbol}`}
           >
             <div className={styles.gridRank}>{item.cmc_rank}</div>
             <div className={styles.gridIcon}>
               <img
+                alt={`${item.symbol} logo`}
                 className={styles.cryptoIcon}
                 src={metaList[item.id]?.logo}
               ></img>

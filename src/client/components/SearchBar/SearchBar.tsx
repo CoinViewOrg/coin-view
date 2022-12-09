@@ -30,7 +30,7 @@ export const SearchBar = ({ initialValue }: PropsType) => {
   );
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="crypto_search">
       <input
         className={styles.input}
         onChange={(evt) => setPhrase(evt.target.value)}
