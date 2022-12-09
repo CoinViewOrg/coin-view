@@ -1,0 +1,109 @@
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  align-items: center;
+  position: relative;
+}
+
+.listItem {
+  cursor: pointer;
+}
+
+.listItem img {
+  transition: all 0.15s;
+}
+
+.listItem:hover img {
+  transform: scale(1.3);
+}
+
+.loadingBlur .listItem {
+  filter: blur(2px);
+}
+
+.spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.gridHeader {
+  border: solid #d4d4d4;
+  border-width: 0 0 1px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 3fr 3fr 3fr;
+  grid-template-areas: "gridRank gridIcon gridName gridPrice gridPercentChange gridVolume";
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  align-items: center;
+  transition: all 0.5s;
+}
+
+.grid > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gridIcon {
+  text-align: center;
+  grid-area: gridIcon;
+}
+
+.gridRank {
+  text-align: center;
+  grid-area: gridRank;
+}
+
+.grid .gridName {
+  justify-content: flex-start;
+  grid-area: gridName;
+}
+
+.grid .gridPrice {
+  grid-area: gridPrice;
+}
+
+.grid .gridPercentChange {
+  grid-area: gridPercentChange;
+}
+
+.grid .gridVolume {
+  grid-area: gridVolume;
+}
+
+.sortersClickable .sorter {
+  user-select: none;
+}
+
+.sortersClickable .sorter:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+  .listContainer {
+    width: 100%;
+  }
+  .grid {
+    grid-template-columns: 1fr 1fr 2fr 3fr 3fr;
+    grid-template-areas: "gridRank gridIcon gridName gridPrice gridPercentChange";
+    font-size: 0.85em;
+  }
+
+  .grid .gridVolume {
+    display: none;
+  }
+}
+
+.cryptoIcon {
+  height: 1.5em;
+
+  background-color: white;
+  border-radius: 50%;
+}

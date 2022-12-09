@@ -1,0 +1,76 @@
+@font-face {
+  font-family: "LilitaOne-Regular";
+  src: url(../public/LilitaOne-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Magical";
+  src: url(../public/Magical.ttf) format("truetype");
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding: 0.5em;
+}
+
+.container {
+  padding: 0 1rem;
+  font-family: "LilitaOne-Regular";
+  background-color: white;
+  color: black;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.mainLogo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1em;
+  cursor: pointer;
+}
+
+.footer {
+  display: flex;
+  flex: 1;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoContainer {
+  position: relative;
+  width: 15vmin;
+  height: 15vmin;
+}
+
+.title {
+  padding: 0 0.2em;
+  font-family: "Magical", "LilitaOne-Regular", sans-serif;
+  margin: 0;
+  font-size: 13vmin;
+  color: #3a3a3a;
+  line-height: 15vmin;
+  height: 13vmin;
+}
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background-color: #0e0c0b;
+    color: #c5c5c5;
+  }
+  .title {
+    color: #c5c5c5;
+  }
+}

@@ -23,4 +23,8 @@ a {
     color: white;
     background: black;
   }
+
+  .svg-adaptive {
+    filter: invert(0.9);
+  }
 }

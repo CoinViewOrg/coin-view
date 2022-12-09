@@ -1,21 +1,32 @@
 import styles from "./CurrencyToggler.module.css";
 import cx from "classnames";
 import { CurrencyType } from "@coin-view/types";
+import { AppContext } from "@coin-view/context";
+import React from "react";
+import Image from "next/future/image";
 
 type PropsType = {
-  currency: CurrencyType;
   toggleCurrency: () => void;
+  className: string;
 };
 
-export const CurrencyToggler = ({ currency, toggleCurrency }: PropsType) => {
+export const CurrencyToggler = ({ toggleCurrency, className }: PropsType) => {
+  const { currency } = React.useContext(AppContext);
+
   return (
-    <div>
-      Currency:
-      <span className={styles.currencyToggler} onClick={toggleCurrency}>
+    <div className={className} onClick={toggleCurrency}>
+      <Image
+        className={cx("svg-adaptive", styles.icon)}
+        src="/exchange.svg"
+        width={30}
+        height={30}
+        alt="change currency"
+      />
+      <span className={styles.currencyToggler}>
         <span className={cx({ [styles.currencySelected]: currency === "PLN" })}>
           PLN
-        </span>
-        {" "}/{" "}
+        </span>{" "}
+        /{" "}
         <span className={cx({ [styles.currencySelected]: currency === "USD" })}>
           USD
         </span>
