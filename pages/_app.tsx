@@ -11,12 +11,18 @@ import styles from "../styles/App.module.css";
 import { useRouter } from "next/router";
 import React from "react";
 import { AppContext, defaultCurrency } from "@coin-view/context";
-import cx from "classnames";
 import Image from "next/future/image";
+import { CoinListItem } from "@coin-view/types";
 
 const GTM_ID = "G-R8PPSMRFS0";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({
+  Component,
+  pageProps,
+}: AppProps<{
+  data: CoinListItem[];
+  meta: any;
+}>) {
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
   const { push } = useRouter();
 
