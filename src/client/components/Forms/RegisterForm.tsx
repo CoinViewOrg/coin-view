@@ -30,7 +30,7 @@ export const RegisterForm = () => {
       const confirmpassword = confirmPasswordRef.current?.value;
       const email = emailRef.current?.value;
     },
-    [passwordRef.current, confirmPasswordRef.current, emailRef.current]
+    [passwordRef, confirmPasswordRef, emailRef]
   );
 
   return (

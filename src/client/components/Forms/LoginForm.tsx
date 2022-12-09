@@ -17,7 +17,7 @@ export const LoginForm = () => {
       const password = passwordRef.current?.value;
       const email = emailRef.current?.value;
     },
-    [passwordRef.current, emailRef.current]
+    [passwordRef, emailRef]
   );
 
   return (
@@ -48,7 +48,7 @@ export const LoginForm = () => {
 
       <input className={styles.formSubmit} type="submit" value="Login" />
 
-      <Link href="/register">Don't have an account? Create one!</Link>
+      <Link href="/register">Do not have an account? Create one!</Link>
     </form>
   );
 };
