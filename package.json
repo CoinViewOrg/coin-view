@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next build && node prod.js",
     "lint": "next lint",
-    "test": "jest",
-    "type": "module"
+    "test": "jest"
+  },
+  "engines": {
+    "node": "16.15.0"
   },
   "dependencies": {
     "chart.js": "^3.9.1",
