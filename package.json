@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "engines": {
-    "node": "16.15.0"
+    "node": ">=16.15.0"
   },
   "dependencies": {
     "chart.js": "^3.9.1",
