@@ -13,6 +13,8 @@ import React from "react";
 import { AppContext, defaultCurrency } from "@coin-view/context";
 import Image from "next/future/image";
 import { CoinListItem } from "@coin-view/types";
+import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
 const GTM_ID = "G-R8PPSMRFS0";
 
@@ -22,6 +24,7 @@ function MyApp({
 }: AppProps<{
   data: CoinListItem[];
   meta: any;
+  session: Session;
 }>) {
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
   const { push } = useRouter();
@@ -43,24 +46,30 @@ function MyApp({
         })(window,document,'script','dataLayer','${GTM_ID}');
       `}
       </Script>
-
-      <AppContext.Provider value={{ currency }}>
-        <div className={styles.container}>
-          <header className={styles.header}>
-            <HamburgerMenu toggleCurrency={toggleCurrency} />
-          </header>
-          <main className={styles.main}>
-            <div className={styles.mainLogo} onClick={() => push("/")}>
-              <div className={styles.logoContainer}>
-                <Image src="/logo-square.svg" alt="logo" fill sizes="15 vmin" />
+      <SessionProvider session={pageProps.session}>
+        <AppContext.Provider value={{ currency }}>
+          <div className={styles.container}>
+            <header className={styles.header}>
+              <HamburgerMenu toggleCurrency={toggleCurrency} />
+            </header>
+            <main className={styles.main}>
+              <div className={styles.mainLogo} onClick={() => push("/")}>
+                <div className={styles.logoContainer}>
+                  <Image
+                    src="/logo-square.svg"
+                    alt="logo"
+                    fill
+                    sizes="15 vmin"
+                  />
+                </div>
+                <h1 className={styles.title}>Coin View</h1>
               </div>
-              <h1 className={styles.title}>Coin View</h1>
-            </div>
-            <Component {...pageProps} />
-          </main>
-          <footer className={styles.footer}>CoinView®</footer>
-        </div>
-      </AppContext.Provider>
+              <Component {...pageProps} />
+            </main>
+            <footer className={styles.footer}>CoinView®</footer>
+          </div>
+        </AppContext.Provider>
+      </SessionProvider>
     </>
   );
 }

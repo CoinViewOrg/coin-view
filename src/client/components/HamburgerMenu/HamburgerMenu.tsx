@@ -5,6 +5,7 @@ import styles from "./HamburgerMenu.module.css";
 import cx from "classnames";
 import { CurrencyToggler } from "../CurrencyToggler";
 import Image from "next/future/image";
+import { signOut, useSession } from "next-auth/react";
 
 type PropsType = {
   toggleCurrency: () => void;
@@ -13,6 +14,7 @@ type PropsType = {
 export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
   const { push, pathname } = useRouter();
 
+  const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   return (
@@ -30,40 +32,70 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
             toggleCurrency={toggleCurrency}
           />
 
-          <div className={styles.menuItem} onClick={() => push("/login")}>
-            <Image
-              className={cx("svg-adaptive", styles.menuIcon, {
-                [styles.active]: pathname.includes("login"),
-              })}
-              src="/login.svg"
-              width={30}
-              height={30}
-              alt="login"
-            />
-            <span
-              className={cx({
-                [styles.active]: pathname.includes("login"),
-              })}
-            >
-              Login
-            </span>
-          </div>
-          <div className={styles.menuItem} onClick={() => push("/register")}>
-            <Image
-              className={cx("svg-adaptive", styles.menuIcon)}
-              src="/register.svg"
-              width={30}
-              height={30}
-              alt="login"
-            />
-            <span
-              className={cx({
-                [styles.active]: pathname.includes("register"),
-              })}
-            >
-              Register
-            </span>
-          </div>
+          {status !== "authenticated" ? (
+            <>
+              <div className={styles.menuItem} onClick={() => push("/login")}>
+                <Image
+                  className={cx("svg-adaptive", styles.menuIcon, {
+                    [styles.active]: pathname.includes("login"),
+                  })}
+                  src="/login.svg"
+                  width={30}
+                  height={30}
+                  alt="login"
+                />
+                <span
+                  className={cx({
+                    [styles.active]: pathname.includes("login"),
+                  })}
+                >
+                  Login
+                </span>
+              </div>
+              <div
+                className={styles.menuItem}
+                onClick={() => push("/register")}
+              >
+                <Image
+                  className={cx("svg-adaptive", styles.menuIcon)}
+                  src="/register.svg"
+                  width={30}
+                  height={30}
+                  alt="login"
+                />
+                <span
+                  className={cx({
+                    [styles.active]: pathname.includes("register"),
+                  })}
+                >
+                  Register
+                </span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.menuItem} onClick={() => push("/profile")}>
+                <Image
+                  className={cx("svg-adaptive", styles.menuIcon)}
+                  src="/profile.svg"
+                  width={30}
+                  height={30}
+                  alt="profile"
+                />
+                <span>{session.user?.name}</span>
+              </div>
+              <div className={styles.menuItem} onClick={() => signOut()}>
+                <Image
+                  className={cx("svg-adaptive", styles.menuIcon)}
+                  src="/logout.svg"
+                  width={30}
+                  height={30}
+                  alt="logout"
+                />
+                <span>Sign out</span>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
