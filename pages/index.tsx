@@ -213,8 +213,6 @@ const Home: NextPage<{
   );
   const metaList = React.useMemo(() => meta || props.meta, [meta, props.meta]);
 
-  const { data: session, status } = useSession();
-  console.log({ session, status });
   return (
     <>
       <SearchBar />
@@ -273,7 +271,6 @@ export async function getServerSideProps({ req, res }: { req: any; res: any }) {
   ) as Record<string, CoinMetaType>;
 
   const session = await unstable_getServerSession(req, res, authOptions);
-  console.log({ session });
   // Pass data to the page via props
   return {
     props: { data, meta, session: JSON.parse(JSON.stringify(session)) },
