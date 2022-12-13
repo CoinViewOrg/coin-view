@@ -5,7 +5,7 @@ import {
   CurrencyType,
   SortingType,
 } from "@coin-view/types";
-import type { NextPage } from "next";
+import type { NextPage, NextPageContext } from "next";
 import React, { useContext } from "react";
 import styles from "../styles/Home.module.css";
 import {
@@ -17,6 +17,9 @@ import {
   usePaging,
 } from "@coin-view/client";
 import { AppContext, defaultCurrency } from "@coin-view/context";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { useSession } from "next-auth/react";
 
 const defaultSort: SortingType = "market_cap";
 const pageSize = 20;
@@ -229,7 +232,7 @@ const Home: NextPage<{
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res }: { req: any; res: any }) {
   // Fetch data from external API
   const fullData = await getCoinList({
     currency: defaultCurrency,
@@ -267,8 +270,11 @@ export async function getServerSideProps() {
     ])
   ) as Record<string, CoinMetaType>;
 
+  const session = await unstable_getServerSession(req, res, authOptions);
   // Pass data to the page via props
-  return { props: { data, meta } };
+  return {
+    props: { data, meta, session: JSON.parse(JSON.stringify(session)) },
+  };
 }
 
 export default Home;

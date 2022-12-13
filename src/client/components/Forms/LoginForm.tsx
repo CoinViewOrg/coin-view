@@ -2,12 +2,19 @@ import Link from "next/link";
 import React from "react";
 import styles from "./Form.module.css";
 
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+
 export const LoginForm = () => {
-  const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
+  const usernameRef = React.useRef<HTMLInputElement>(null);
+
+  const { query } = useRouter();
+
+  const { error, registered } = query;
 
   const submitForm = React.useCallback(
-    (evt: React.FormEvent<HTMLFormElement>) => {
+    async (evt: React.FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
       const form = evt.target as HTMLFormElement;
       if (!form.checkValidity()) {
@@ -15,26 +22,35 @@ export const LoginForm = () => {
       }
 
       const password = passwordRef.current?.value;
-      const email = emailRef.current?.value;
+      const username = usernameRef.current?.value;
+
+      if (!username || !password) {
+        return;
+      }
+
+      signIn("credentials", {
+        password,
+        username,
+        redirect: true,
+        callbackUrl: "/",
+      });
     },
-    [passwordRef, emailRef]
+    [passwordRef]
   );
 
   return (
     <form className={styles.container} onSubmit={submitForm}>
       <h2>Log in to your account</h2>
       <div className={styles.formItem}>
-        <label htmlFor="email">E-mail address</label>
+        <label htmlFor="username">Username</label>
         <input
-          id="email"
-          type="email"
-          name="email"
-          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          id="username"
+          type="username"
+          name="username"
           required
-          ref={emailRef}
+          ref={usernameRef}
         />
       </div>
-
       <div className={styles.formItem}>
         <label htmlFor="password">Password</label>
         <input
@@ -49,6 +65,14 @@ export const LoginForm = () => {
       <input className={styles.formSubmit} type="submit" value="Login" />
 
       <Link href="/register">Do not have an account? Create one!</Link>
+      {error && (
+        <span className={styles.error}>Invalid username or password!</span>
+      )}
+      {registered && (
+        <span className={styles.success}>
+          You have successfully created a new account! <br></br> You can log in now.
+        </span>
+      )}
     </form>
   );
 };
