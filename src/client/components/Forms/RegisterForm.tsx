@@ -54,7 +54,7 @@ export const RegisterForm = () => {
         push(`/login?registered=1`);
       }
     },
-    [passwordRef, confirmPasswordRef, emailRef]
+    [passwordRef, emailRef, push]
   );
 
   return (
