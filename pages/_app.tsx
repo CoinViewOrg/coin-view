@@ -25,6 +25,7 @@ function MyApp({
   data: CoinListItem[];
   meta: any;
   session: Session;
+  favorites?: any[];
 }>) {
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
   const { push } = useRouter();
@@ -47,7 +48,9 @@ function MyApp({
       `}
       </Script>
       <SessionProvider session={pageProps.session}>
-        <AppContext.Provider value={{ currency }}>
+        <AppContext.Provider
+          value={{ currency, favorites: pageProps.favorites }}
+        >
           <div className={styles.container}>
             <header className={styles.header}>
               <HamburgerMenu toggleCurrency={toggleCurrency} />

@@ -5,7 +5,7 @@ const pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_DATABASE,
-  connectionLimit: 5,
+  connectionLimit: 100,
 });
 
 export const querySQL = (query: string) =>

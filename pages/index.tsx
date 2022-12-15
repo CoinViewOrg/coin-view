@@ -1,25 +1,29 @@
-import { getCoinList, getCoinsMetadata } from "@coin-view/api";
+import {
+  getCoinList,
+  getCoinsMetadata,
+  getFavoriteCryptos,
+} from "@coin-view/api";
 import {
   CoinListItem,
   CoinMetaType,
   CurrencyType,
   SortingType,
 } from "@coin-view/types";
-import type { NextPage, NextPageContext } from "next";
+import type { NextPage } from "next";
 import React, { useContext } from "react";
 import styles from "../styles/Home.module.css";
 import {
   CryptoList,
   ListNavigation,
+  ListSwitcher,
   SearchBar,
   useAutoRefresh,
   useHistoricalData,
   usePaging,
 } from "@coin-view/client";
 import { AppContext, defaultCurrency } from "@coin-view/context";
-import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { useSession } from "next-auth/react";
+
+import { getSession, useSession } from "next-auth/react";
 
 const defaultSort: SortingType = "market_cap";
 const pageSize = 20;
@@ -213,9 +217,12 @@ const Home: NextPage<{
   );
   const metaList = React.useMemo(() => meta || props.meta, [meta, props.meta]);
 
+  const { status } = useSession();
+
   return (
     <>
       <SearchBar />
+      {status === "authenticated" && <ListSwitcher />}
       <CryptoList
         cryptoList={cryptoList}
         currentHistoricalData={currentHistoricalData}
@@ -270,10 +277,25 @@ export async function getServerSideProps({ req, res }: { req: any; res: any }) {
     ])
   ) as Record<string, CoinMetaType>;
 
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await getSession({ req });
+
+  let favorites = null;
+
+  if (session) {
+    // @ts-ignore
+    const userid = session?.user?.id;
+    favorites = await getFavoriteCryptos(userid);
+    favorites = favorites.map((row: any) => row.Cf_CryptoId);
+  }
+
   // Pass data to the page via props
   return {
-    props: { data, meta, session: JSON.parse(JSON.stringify(session)) },
+    props: {
+      data,
+      meta,
+      session: JSON.parse(JSON.stringify(session)),
+      favorites: JSON.parse(JSON.stringify(favorites)),
+    },
   };
 }
 

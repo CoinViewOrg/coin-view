@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+
+  width: 300px;
+  justify-content: space-evenly;
+}
+
+.button {
+  margin: 0 1em;
+  padding: 0.5em 1em;
+  width: 50%;
+  cursor: pointer;
+  border-radius: 5px;
+  box-sizing: border-box;
+  border: none;
+  outline: 1px solid;
+  background-color: transparent;
+}
+
+.button.active {
+  box-shadow: inset 0px 0px 15px;
+}

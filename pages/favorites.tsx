@@ -10,20 +10,20 @@ import {
 } from "@coin-view/api";
 import {
   CryptoList,
+  ListSwitcher,
   SearchBar,
   useHistoricalData,
   usePrevious,
 } from "@coin-view/client";
-import { AppContext } from "@coin-view/context";
+import { AppContext, defaultCurrency } from "@coin-view/context";
 import { getSession } from "next-auth/react";
 
-const Search: NextPage<{
+const Favorites: NextPage<{
   data: CoinListItem[];
   meta: any;
 }> = (props) => {
   const { data, meta } = props;
   const { query } = useRouter();
-  const phrase = query.phrase as string;
 
   const {
     getHistoricalData,
@@ -40,13 +40,14 @@ const Search: NextPage<{
 
   React.useEffect(() => {
     if (currency !== previousCurrency) {
-      replace(`/search?phrase=${phrase}&currency=${currency}`);
+      replace(`/favorites?currency=${currency}`);
     }
-  }, [currency, previousCurrency, replace, phrase]);
+  }, [currency, previousCurrency, replace]);
 
   return (
     <>
-      <SearchBar initialValue={phrase} />
+      <SearchBar />
+      <ListSwitcher />
       <CryptoList
         cryptoList={data}
         currentHistoricalData={currentHistoricalData}
@@ -67,10 +68,26 @@ export async function getServerSideProps({
   query: NextApiRequestQuery;
   req: any;
 }) {
+  const session = await getSession({ req });
+  // Pass data to the page via props
+
+  let favorites = null;
+
+  if (session) {
+    // @ts-ignore
+    const userid = session?.user?.id;
+    favorites = await getFavoriteCryptos(userid);
+    favorites = favorites.map((row: any) => row.Cf_CryptoId);
+  }
+
+  if (!favorites) {
+    return;
+  }
+
   // Fetch data from external API
   const fullData = await getFilteredCoinList({
     currency: query.currency as CurrencyType,
-    phrase: query.phrase as string,
+    ids: favorites,
   });
 
   // pass only needed data
@@ -100,17 +117,7 @@ export async function getServerSideProps({
       Object.fromEntries(metaKeys.map((key) => [key, metaItem[key]])),
     ])
   ) as Record<string, CoinMetaType>;
-  const session = await getSession({ req });
-  // Pass data to the page via props
 
-  let favorites = null;
-
-  if (session) {
-    // @ts-ignore
-    const userid = session?.user?.id;
-    favorites = await getFavoriteCryptos(userid);
-    favorites = favorites.map((row: any) => row.Cf_CryptoId);
-  }
   return {
     props: {
       data,
@@ -121,4 +128,4 @@ export async function getServerSideProps({
   };
 }
 
-export default Search;
+export default Favorites;

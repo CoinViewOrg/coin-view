@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./CryptoList.module.css";
 import cx from "classnames";
 import { CoinListItem, CurrencyType, SortingType } from "@coin-view/types";
@@ -8,6 +8,9 @@ import { CryptoChart } from "../CryptoChart";
 import { HistoricalDataType } from "../../hooks";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { AppContext } from "@coin-view/context";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 type PropsType = {
   loading: boolean;
@@ -40,6 +43,41 @@ export const CryptoList = ({
     [setSorting]
   );
 
+  const { favorites } = useContext(AppContext);
+
+  const [allFavorites, setAllFavorites] = React.useState(favorites);
+
+  const { status } = useSession();
+
+  const { push } = useRouter();
+
+  const addToFavorites = React.useCallback(
+    async (evt: any, cryptoId: number) => {
+      evt.stopPropagation();
+
+      if (status === "unauthenticated") {
+        push("/login");
+        return;
+      }
+
+      const response = await fetch(`/api/favorite?id=${cryptoId}`);
+      const { error, isFavorite } = await response.json();
+
+      const newFavorites = [...(allFavorites || [])];
+      if (isFavorite && !newFavorites.includes(cryptoId)) {
+        newFavorites.push(cryptoId);
+      }
+
+      if (!isFavorite && newFavorites.includes(cryptoId)) {
+        const index = newFavorites.findIndex((item) => item === cryptoId);
+        newFavorites.splice(index, 1);
+      }
+
+      setAllFavorites(newFavorites);
+    },
+    [allFavorites]
+  );
+
   return (
     <div
       className={cx(styles.listContainer, {
@@ -49,6 +87,7 @@ export const CryptoList = ({
       data-testid="crypto_list"
     >
       <div className={cx(styles.gridHeader, styles.grid)}>
+        <div className={cx(styles.gridStar)}></div>
         <div
           className={cx(styles.gridRank, styles.sorter)}
           onClick={() => sort("market_cap")}
@@ -89,6 +128,21 @@ export const CryptoList = ({
             onClick={() => getHistoricalData(item.symbol)}
             data-testid={`crypto_list_item_${item.symbol}`}
           >
+            <div
+              className={styles.gridStar}
+              onClick={(evt) => addToFavorites(evt, item.id)}
+            >
+              {allFavorites?.includes(item.id) ? (
+                <Image src={"/star-full.svg"} width={15} height={15} />
+              ) : (
+                <Image
+                  src={"/star-empty.svg"}
+                  className="svg-adaptive"
+                  width={15}
+                  height={15}
+                />
+              )}
+            </div>
             <div className={styles.gridRank}>{item.cmc_rank}</div>
             <div className={styles.gridIcon}>
               <img
