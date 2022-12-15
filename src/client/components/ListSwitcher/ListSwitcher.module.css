@@ -15,6 +15,7 @@
   border: none;
   outline: 1px solid;
   background-color: transparent;
+  font-family: "LilitaOne-Regular";
 }
 
 .button.active {

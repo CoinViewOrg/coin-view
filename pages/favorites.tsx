@@ -80,7 +80,14 @@ export async function getServerSideProps({
   }
 
   if (!favorites) {
-    return;
+    return {
+      props: {
+        data: [],
+        meta: {},
+        session: null,
+        favorites: [],
+      },
+    };
   }
 
   // Fetch data from external API
