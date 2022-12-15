@@ -75,7 +75,7 @@ export const CryptoList = ({
 
       setAllFavorites(newFavorites);
     },
-    [allFavorites]
+    [allFavorites, push, status]
   );
 
   return (

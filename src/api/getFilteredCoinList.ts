@@ -24,8 +24,8 @@ export const getFilteredCoinList = async ({
       url: "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest",
       params: {
         convert: currency,
-        slug: phrase || "",
-        id: id || "",
+        slug: phrase,
+        id: id,
       },
     });
     return Object.values(data || {}) as CoinListItem[];

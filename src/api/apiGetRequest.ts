@@ -1,6 +1,6 @@
 type PropsType = {
   url: string;
-  params?: Record<string, string>;
+  params?: Record<string, string | undefined>;
 };
 
 export const apiGetRequest = async ({ params = {}, url }: PropsType) => {
@@ -14,7 +14,9 @@ export const apiGetRequest = async ({ params = {}, url }: PropsType) => {
 
   const requestUrl = new URL(url);
   Object.entries(params).forEach(([param, value]) => {
-    requestUrl.searchParams.set(param, value);
+    if (value) {
+      requestUrl.searchParams.set(param, value);
+    }
   });
 
   const data = await new Promise<{ data: any }>(async (resolve, reject) => {
@@ -36,6 +38,6 @@ export const apiGetRequest = async ({ params = {}, url }: PropsType) => {
       resolve(json);
     }
   });
- 
+
   return data;
 };

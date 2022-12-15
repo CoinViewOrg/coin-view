@@ -23,7 +23,6 @@ const Favorites: NextPage<{
   meta: any;
 }> = (props) => {
   const { data, meta } = props;
-  const { query } = useRouter();
 
   const {
     getHistoricalData,
