@@ -114,7 +114,7 @@ export async function getServerSideProps({
   const session = await getSession({ req });
   // Pass data to the page via props
 
-  let favorites,
+  let favorites = null,
     thresholds = null;
 
   if (session) {

@@ -25,7 +25,7 @@ export const useAlertThresholds = () => {
 
       const { error, newthreshold } = await response.json();
 
-      if (newthreshold) {
+      if (!error) {
         setAllThresholds((current) => ({
           ...current,
           [cryptoId]: newthreshold,

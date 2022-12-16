@@ -33,6 +33,16 @@ export default async function handler(
   response = (await querySQL(findThreshold)) as Array<any>;
 
   if (response.length) {
+    const currentThreshold = response[0].Cn_Treshold;
+
+    if (currentThreshold === threshold) {
+      const deleteQuery = `DELETE FROM CryptoNotification where Cn_UaId = '${userid}' and Cn_CryptoId = '${cryptoid}'`;
+      await querySQL(deleteQuery);
+
+      res.status(200).json({ error: 0, newthreshold: undefined });
+      return;
+    }
+
     const updateQuery = `UPDATE CryptoNotification set Cn_Treshold = '${threshold}'  where Cn_UaId = '${userid}' and Cn_CryptoId = '${cryptoid}'`;
     await querySQL(updateQuery);
 

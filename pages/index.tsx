@@ -289,7 +289,7 @@ export async function getServerSideProps({ req, res }: { req: any; res: any }) {
 
   const session = await getSession({ req });
 
-  let favorites,
+  let favorites = null,
     thresholds = null;
 
   if (session) {
@@ -313,8 +313,8 @@ export async function getServerSideProps({ req, res }: { req: any; res: any }) {
       data,
       meta,
       session: dehydrate(session),
-      favorites: dehydrate(favorites),
-      thresholds: dehydrate(thresholds),
+      favorites: favorites,
+      thresholds: thresholds,
     },
   };
 }
