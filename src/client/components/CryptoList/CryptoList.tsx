@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import styles from "./CryptoList.module.css";
 import cx from "classnames";
 import { CoinListItem, CurrencyType, SortingType } from "@coin-view/types";
@@ -9,8 +9,7 @@ import { HistoricalDataType } from "../../hooks";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { AppContext } from "@coin-view/context";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { ThresholdSelect } from "@coin-view/client";
 
 type PropsType = {
   loading: boolean;
@@ -21,6 +20,10 @@ type PropsType = {
   currentHistoricalData?: string;
   loadingHistorical: boolean;
   historicalData: Record<CurrencyType, HistoricalDataType>;
+  addToFavorites: (evt: any, cryptoId: number) => void;
+  favorites: number[];
+  thresholds: Record<number, number>;
+  setThreshold: (cryptoId: number, threshold: number) => void;
 };
 export const CryptoList = ({
   loading,
@@ -31,6 +34,10 @@ export const CryptoList = ({
   currentHistoricalData,
   loadingHistorical,
   historicalData,
+  addToFavorites,
+  favorites,
+  thresholds,
+  setThreshold,
 }: PropsType) => {
   const { currency } = React.useContext(AppContext);
 
@@ -41,41 +48,6 @@ export const CryptoList = ({
       }
     },
     [setSorting]
-  );
-
-  const { favorites } = useContext(AppContext);
-
-  const [allFavorites, setAllFavorites] = React.useState(favorites);
-
-  const { status } = useSession();
-
-  const { push } = useRouter();
-
-  const addToFavorites = React.useCallback(
-    async (evt: any, cryptoId: number) => {
-      evt.stopPropagation();
-
-      if (status === "unauthenticated") {
-        push("/login");
-        return;
-      }
-
-      const response = await fetch(`/api/favorite?id=${cryptoId}`);
-      const { error, isFavorite } = await response.json();
-
-      const newFavorites = [...(allFavorites || [])];
-      if (isFavorite && !newFavorites.includes(cryptoId)) {
-        newFavorites.push(cryptoId);
-      }
-
-      if (!isFavorite && newFavorites.includes(cryptoId)) {
-        const index = newFavorites.findIndex((item) => item === cryptoId);
-        newFavorites.splice(index, 1);
-      }
-
-      setAllFavorites(newFavorites);
-    },
-    [allFavorites, push, status]
   );
 
   return (
@@ -132,7 +104,7 @@ export const CryptoList = ({
               className={styles.gridStar}
               onClick={(evt) => addToFavorites(evt, item.id)}
             >
-              {allFavorites?.includes(item.id) ? (
+              {favorites?.includes(item.id) ? (
                 <Image src={"/star-full.svg"} width={15} height={15} />
               ) : (
                 <Image
@@ -163,10 +135,19 @@ export const CryptoList = ({
             </div>
           </div>
           {currentHistoricalData === item.symbol && (
-            <CryptoChart
-              loading={loadingHistorical}
-              historicalData={historicalData[currency][item.symbol]}
-            />
+            <div className={styles.cryptoDetails}>
+              <ThresholdSelect
+                className={styles.thresholdSelect}
+                cryptoId={item.id}
+                cryptoThresholds={thresholds}
+                setCryptothreshold={setThreshold}
+              />
+              <CryptoChart
+                className={styles.chart}
+                loading={loadingHistorical}
+                historicalData={historicalData[currency][item.symbol]}
+              />
+            </div>
           )}
         </React.Fragment>
       ))}

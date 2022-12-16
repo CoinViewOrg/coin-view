@@ -19,14 +19,17 @@ export const useHistoricalData = () => {
     async (symbol: string) => {
       setCurrent(symbol);
 
-      // dont refetch if already exists, unless we want to (e.g. in case of currency change), 
+      // dont refetch if already exists, unless we want to (e.g. in case of currency change),
       // also don't refetch if null because it means there was already a fetch but with no data returned
-      if (loading || dataMap[currency][symbol] || dataMap[currency][symbol] === null) {
+      if (
+        loading ||
+        dataMap[currency][symbol] ||
+        dataMap[currency][symbol] === null
+      ) {
         return;
       }
 
       setLoading(true);
-      setCurrent(symbol);
       const result = await fetch(
         `/api/historical?symbols=${symbol}&currency=${currency}`
       );

@@ -25,7 +25,8 @@ function MyApp({
   data: CoinListItem[];
   meta: any;
   session: Session;
-  favorites?: any[];
+  favorites?: number[];
+  thresholds?: Record<number, number>;
 }>) {
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
   const { push } = useRouter();
@@ -49,7 +50,11 @@ function MyApp({
       </Script>
       <SessionProvider session={pageProps.session}>
         <AppContext.Provider
-          value={{ currency, favorites: pageProps.favorites }}
+          value={{
+            currency,
+            favorites: pageProps.favorites || [],
+            thresholds: pageProps.thresholds || {},
+          }}
         >
           <div className={styles.container}>
             <header className={styles.header}>

@@ -1,6 +1,8 @@
 import {
+  dehydrate,
   getCoinList,
   getCoinsMetadata,
+  getCryptothresholds,
   getFavoriteCryptos,
 } from "@coin-view/api";
 import {
@@ -17,7 +19,9 @@ import {
   ListNavigation,
   ListSwitcher,
   SearchBar,
+  useAlertThresholds,
   useAutoRefresh,
+  useFavorites,
   useHistoricalData,
   usePaging,
 } from "@coin-view/client";
@@ -200,9 +204,7 @@ const Home: NextPage<{
     nextPage,
     page,
     prevPage,
-    refreshList,
     setSorting,
-    sorting,
     loading,
     meta,
     getHistoricalData,
@@ -219,6 +221,10 @@ const Home: NextPage<{
 
   const { status } = useSession();
 
+  const { addToFavorites, favorites } = useFavorites();
+
+  const { setThreshold, thresholds } = useAlertThresholds();
+
   return (
     <>
       <SearchBar />
@@ -232,6 +238,10 @@ const Home: NextPage<{
         loadingHistorical={loadingHistorical}
         metaList={metaList}
         setSorting={setSorting}
+        addToFavorites={addToFavorites}
+        favorites={favorites}
+        setThreshold={setThreshold}
+        thresholds={thresholds}
       />
 
       <ListNavigation nextPage={nextPage} page={page} prevPage={prevPage} />
@@ -279,13 +289,22 @@ export async function getServerSideProps({ req, res }: { req: any; res: any }) {
 
   const session = await getSession({ req });
 
-  let favorites = null;
+  let favorites,
+    thresholds = null;
 
   if (session) {
     // @ts-ignore
     const userid = session?.user?.id;
-    favorites = await getFavoriteCryptos(userid);
-    favorites = favorites.map((row: any) => row.Cf_CryptoId);
+    favorites = (await getFavoriteCryptos(userid)).map(
+      (row: any) => row.Cf_CryptoId
+    );
+
+    thresholds = Object.fromEntries(
+      (await getCryptothresholds(userid)).map((row: any) => [
+        row.Cn_CryptoId,
+        row.Cn_Treshold,
+      ])
+    );
   }
 
   // Pass data to the page via props
@@ -293,8 +312,9 @@ export async function getServerSideProps({ req, res }: { req: any; res: any }) {
     props: {
       data,
       meta,
-      session: JSON.parse(JSON.stringify(session)),
-      favorites: JSON.parse(JSON.stringify(favorites)),
+      session: dehydrate(session),
+      favorites: dehydrate(favorites),
+      thresholds: dehydrate(thresholds),
     },
   };
 }

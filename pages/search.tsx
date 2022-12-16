@@ -5,12 +5,15 @@ import React from "react";
 import { CoinListItem, CoinMetaType, CurrencyType } from "@coin-view/types";
 import {
   getCoinsMetadata,
+  getCryptothresholds,
   getFavoriteCryptos,
   getFilteredCoinList,
 } from "@coin-view/api";
 import {
   CryptoList,
   SearchBar,
+  useAlertThresholds,
+  useFavorites,
   useHistoricalData,
   usePrevious,
 } from "@coin-view/client";
@@ -44,6 +47,10 @@ const Search: NextPage<{
     }
   }, [currency, previousCurrency, replace, phrase]);
 
+  const { addToFavorites, favorites } = useFavorites();
+
+  const { setThreshold, thresholds } = useAlertThresholds();
+
   return (
     <>
       <SearchBar initialValue={phrase} />
@@ -55,6 +62,10 @@ const Search: NextPage<{
         loading={false}
         loadingHistorical={loadingHistorical}
         metaList={meta}
+        addToFavorites={addToFavorites}
+        favorites={favorites}
+        setThreshold={setThreshold}
+        thresholds={thresholds}
       />
     </>
   );
@@ -103,13 +114,20 @@ export async function getServerSideProps({
   const session = await getSession({ req });
   // Pass data to the page via props
 
-  let favorites = null;
+  let favorites,
+    thresholds = null;
 
   if (session) {
     // @ts-ignore
     const userid = session?.user?.id;
     favorites = await getFavoriteCryptos(userid);
     favorites = favorites.map((row: any) => row.Cf_CryptoId);
+    thresholds = Object.fromEntries(
+      (await getCryptothresholds(userid)).map((row: any) => [
+        row.Cn_CryptoId,
+        row.Cn_Treshold,
+      ])
+    );
   }
   return {
     props: {

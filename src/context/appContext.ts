@@ -5,10 +5,12 @@ export const defaultCurrency = "PLN";
 
 type AppContextType = {
   currency: CurrencyType;
-  favorites?: any[];
+  favorites: number[];
+  thresholds: Record<number, number>;
 };
 
 export const AppContext = React.createContext<AppContextType>({
   currency: defaultCurrency,
-  favorites: undefined,
+  favorites: [],
+  thresholds: {},
 });
