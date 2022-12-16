@@ -11,6 +11,7 @@ import {
 } from "@coin-view/api";
 import {
   CryptoList,
+  ListSwitcher,
   SearchBar,
   useAlertThresholds,
   useFavorites,
@@ -54,6 +55,7 @@ const Search: NextPage<{
   return (
     <>
       <SearchBar initialValue={phrase} />
+      <ListSwitcher />
       <CryptoList
         cryptoList={data}
         currentHistoricalData={currentHistoricalData}
@@ -135,6 +137,7 @@ export async function getServerSideProps({
       meta,
       session: JSON.parse(JSON.stringify(session)),
       favorites,
+      thresholds,
     },
   };
 }

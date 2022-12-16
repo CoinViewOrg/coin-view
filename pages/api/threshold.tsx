@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import { querySQL } from "src";
+import { querySQL } from "@coin-view/api";
 
 type Data = {
   error: number;

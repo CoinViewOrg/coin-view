@@ -7,3 +7,4 @@ export * from "./auth";
 export * from "./getFavoriteCryptos";
 export * from "./getCryptothresholds";
 export * from "./utils";
+export * from "./auth";
