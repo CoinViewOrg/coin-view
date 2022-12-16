@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./thresholdSelect.module.css";
+import styles from "./ThresholdSelect.module.css";
 import cx from "classnames";
 
 const threshold_OPTIONS = [5, 8, 10];
