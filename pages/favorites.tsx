@@ -11,22 +11,21 @@ import {
 } from "@coin-view/api";
 import {
   CryptoList,
+  ListSwitcher,
   SearchBar,
   useAlertThresholds,
   useFavorites,
   useHistoricalData,
   usePrevious,
 } from "@coin-view/client";
-import { AppContext } from "@coin-view/context";
+import { AppContext, defaultCurrency } from "@coin-view/context";
 import { getSession } from "next-auth/react";
 
-const Search: NextPage<{
+const Favorites: NextPage<{
   data: CoinListItem[];
   meta: any;
 }> = (props) => {
   const { data, meta } = props;
-  const { query } = useRouter();
-  const phrase = query.phrase as string;
 
   const {
     getHistoricalData,
@@ -43,9 +42,9 @@ const Search: NextPage<{
 
   React.useEffect(() => {
     if (currency !== previousCurrency) {
-      replace(`/search?phrase=${phrase}&currency=${currency}`);
+      replace(`/favorites?currency=${currency}`);
     }
-  }, [currency, previousCurrency, replace, phrase]);
+  }, [currency, previousCurrency, replace]);
 
   const { addToFavorites, favorites } = useFavorites();
 
@@ -53,7 +52,8 @@ const Search: NextPage<{
 
   return (
     <>
-      <SearchBar initialValue={phrase} />
+      <SearchBar />
+      <ListSwitcher />
       <CryptoList
         cryptoList={data}
         currentHistoricalData={currentHistoricalData}
@@ -78,10 +78,41 @@ export async function getServerSideProps({
   query: NextApiRequestQuery;
   req: any;
 }) {
+  const session = await getSession({ req });
+  // Pass data to the page via props
+
+  let favorites = null,
+    thresholds = null;
+    
+  if (session) {
+    // @ts-ignore
+    const userid = session?.user?.id;
+    favorites = await getFavoriteCryptos(userid);
+    favorites = favorites.map((row: any) => row.Cf_CryptoId);
+    thresholds = Object.fromEntries(
+      (await getCryptothresholds(userid)).map((row: any) => [
+        row.Cn_CryptoId,
+        row.Cn_Treshold,
+      ])
+    );
+  }
+
+  if (!favorites) {
+    return {
+      props: {
+        data: [],
+        meta: {},
+        session: null,
+        favorites: [],
+        thresholds: {},
+      },
+    };
+  }
+
   // Fetch data from external API
   const fullData = await getFilteredCoinList({
     currency: query.currency as CurrencyType,
-    phrase: query.phrase as string,
+    ids: favorites,
   });
 
   // pass only needed data
@@ -111,32 +142,16 @@ export async function getServerSideProps({
       Object.fromEntries(metaKeys.map((key) => [key, metaItem[key]])),
     ])
   ) as Record<string, CoinMetaType>;
-  const session = await getSession({ req });
-  // Pass data to the page via props
 
-  let favorites = null,
-    thresholds = null;
-
-  if (session) {
-    // @ts-ignore
-    const userid = session?.user?.id;
-    favorites = await getFavoriteCryptos(userid);
-    favorites = favorites.map((row: any) => row.Cf_CryptoId);
-    thresholds = Object.fromEntries(
-      (await getCryptothresholds(userid)).map((row: any) => [
-        row.Cn_CryptoId,
-        row.Cn_Treshold,
-      ])
-    );
-  }
   return {
     props: {
       data,
       meta,
       session: JSON.parse(JSON.stringify(session)),
       favorites,
+      thresholds,
     },
   };
 }
 
-export default Search;
+export default Favorites;

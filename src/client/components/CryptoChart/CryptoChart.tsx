@@ -12,6 +12,7 @@ import {
 import { Line } from "react-chartjs-2";
 import styles from "./CryptoChart.module.css";
 import { LoadingSpinner } from "../LoadingSpinner";
+import cx from "classnames";
 
 ChartJS.register(
   CategoryScale,
@@ -50,9 +51,10 @@ historicalData: [
 type PropsType = {
   historicalData: number[][] | null;
   loading: boolean;
+  className?: string;
 };
 
-export function CryptoChart({ historicalData, loading }: PropsType) {
+export function CryptoChart({ historicalData, loading, className }: PropsType) {
   const data = React.useMemo(
     () =>
       historicalData && {
@@ -78,7 +80,7 @@ export function CryptoChart({ historicalData, loading }: PropsType) {
   );
 
   return (
-    <div className={styles.container}>
+    <div className={cx(styles.container, className)}>
       {loading ? (
         <div className={styles.spinner}>
           <LoadingSpinner />

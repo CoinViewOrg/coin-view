@@ -1,25 +1,33 @@
-import { getCoinList, getCoinsMetadata } from "@coin-view/api";
+import {
+  dehydrate,
+  getCoinList,
+  getCoinsMetadata,
+  getCryptothresholds,
+  getFavoriteCryptos,
+} from "@coin-view/api";
 import {
   CoinListItem,
   CoinMetaType,
   CurrencyType,
   SortingType,
 } from "@coin-view/types";
-import type { NextPage, NextPageContext } from "next";
+import type { NextPage } from "next";
 import React, { useContext } from "react";
 import styles from "../styles/Home.module.css";
 import {
   CryptoList,
   ListNavigation,
+  ListSwitcher,
   SearchBar,
+  useAlertThresholds,
   useAutoRefresh,
+  useFavorites,
   useHistoricalData,
   usePaging,
 } from "@coin-view/client";
 import { AppContext, defaultCurrency } from "@coin-view/context";
-import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { useSession } from "next-auth/react";
+
+import { getSession, useSession } from "next-auth/react";
 
 const defaultSort: SortingType = "market_cap";
 const pageSize = 20;
@@ -196,9 +204,7 @@ const Home: NextPage<{
     nextPage,
     page,
     prevPage,
-    refreshList,
     setSorting,
-    sorting,
     loading,
     meta,
     getHistoricalData,
@@ -213,9 +219,16 @@ const Home: NextPage<{
   );
   const metaList = React.useMemo(() => meta || props.meta, [meta, props.meta]);
 
+  const { status } = useSession();
+
+  const { addToFavorites, favorites } = useFavorites();
+
+  const { setThreshold, thresholds } = useAlertThresholds();
+
   return (
     <>
       <SearchBar />
+      {status === "authenticated" && <ListSwitcher />}
       <CryptoList
         cryptoList={cryptoList}
         currentHistoricalData={currentHistoricalData}
@@ -225,6 +238,10 @@ const Home: NextPage<{
         loadingHistorical={loadingHistorical}
         metaList={metaList}
         setSorting={setSorting}
+        addToFavorites={addToFavorites}
+        favorites={favorites}
+        setThreshold={setThreshold}
+        thresholds={thresholds}
       />
 
       <ListNavigation nextPage={nextPage} page={page} prevPage={prevPage} />
@@ -270,10 +287,35 @@ export async function getServerSideProps({ req, res }: { req: any; res: any }) {
     ])
   ) as Record<string, CoinMetaType>;
 
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await getSession({ req });
+
+  let favorites = null,
+    thresholds = null;
+
+  if (session) {
+    // @ts-ignore
+    const userid = session?.user?.id;
+    favorites = (await getFavoriteCryptos(userid)).map(
+      (row: any) => row.Cf_CryptoId
+    );
+
+    thresholds = Object.fromEntries(
+      (await getCryptothresholds(userid)).map((row: any) => [
+        row.Cn_CryptoId,
+        row.Cn_Treshold,
+      ])
+    );
+  }
+
   // Pass data to the page via props
   return {
-    props: { data, meta, session: JSON.parse(JSON.stringify(session)) },
+    props: {
+      data,
+      meta,
+      session: dehydrate(session),
+      favorites: favorites,
+      thresholds: thresholds,
+    },
   };
 }
 

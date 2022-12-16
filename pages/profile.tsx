@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/Profile.module.css";
@@ -26,7 +26,7 @@ const Profile: NextPage = (props) => {
 export default Profile;
 
 export async function getServerSideProps({ req, res }: { req: any; res: any }) {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await getSession({ req });
 
   return {
     props: { session: JSON.parse(JSON.stringify(session)) },

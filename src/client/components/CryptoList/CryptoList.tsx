@@ -8,6 +8,8 @@ import { CryptoChart } from "../CryptoChart";
 import { HistoricalDataType } from "../../hooks";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { AppContext } from "@coin-view/context";
+import Image from "next/image";
+import { ThresholdSelect } from "@coin-view/client";
 
 type PropsType = {
   loading: boolean;
@@ -18,6 +20,10 @@ type PropsType = {
   currentHistoricalData?: string;
   loadingHistorical: boolean;
   historicalData: Record<CurrencyType, HistoricalDataType>;
+  addToFavorites: (evt: any, cryptoId: number) => void;
+  favorites: number[];
+  thresholds: Record<number, number>;
+  setThreshold: (cryptoId: number, threshold: number) => void;
 };
 export const CryptoList = ({
   loading,
@@ -28,6 +34,10 @@ export const CryptoList = ({
   currentHistoricalData,
   loadingHistorical,
   historicalData,
+  addToFavorites,
+  favorites,
+  thresholds,
+  setThreshold,
 }: PropsType) => {
   const { currency } = React.useContext(AppContext);
 
@@ -49,6 +59,7 @@ export const CryptoList = ({
       data-testid="crypto_list"
     >
       <div className={cx(styles.gridHeader, styles.grid)}>
+        <div className={cx(styles.gridStar)}></div>
         <div
           className={cx(styles.gridRank, styles.sorter)}
           onClick={() => sort("market_cap")}
@@ -89,6 +100,21 @@ export const CryptoList = ({
             onClick={() => getHistoricalData(item.symbol)}
             data-testid={`crypto_list_item_${item.symbol}`}
           >
+            <div
+              className={styles.gridStar}
+              onClick={(evt) => addToFavorites(evt, item.id)}
+            >
+              {favorites?.includes(item.id) ? (
+                <Image src={"/star-full.svg"} width={15} height={15} />
+              ) : (
+                <Image
+                  src={"/star-empty.svg"}
+                  className="svg-adaptive"
+                  width={15}
+                  height={15}
+                />
+              )}
+            </div>
             <div className={styles.gridRank}>{item.cmc_rank}</div>
             <div className={styles.gridIcon}>
               <img
@@ -109,10 +135,19 @@ export const CryptoList = ({
             </div>
           </div>
           {currentHistoricalData === item.symbol && (
-            <CryptoChart
-              loading={loadingHistorical}
-              historicalData={historicalData[currency][item.symbol]}
-            />
+            <div className={styles.cryptoDetails}>
+              <ThresholdSelect
+                className={styles.thresholdSelect}
+                cryptoId={item.id}
+                cryptoThresholds={thresholds}
+                setCryptothreshold={setThreshold}
+              />
+              <CryptoChart
+                className={styles.chart}
+                loading={loadingHistorical}
+                historicalData={historicalData[currency][item.symbol]}
+              />
+            </div>
           )}
         </React.Fragment>
       ))}

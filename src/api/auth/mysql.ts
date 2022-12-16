@@ -5,20 +5,15 @@ const pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_DATABASE,
-  connectionLimit: 5,
+  connectionLimit: 99,
 });
 
 export const querySQL = (query: string) =>
   new Promise((resolve, reject) => {
     try {
-      pool.getConnection(function (err, connection) {
+      pool.query(query, function (err, result) {
         if (err) throw err;
-
-        connection.query(query, function (err, result) {
-          if (err) throw err;
-          connection.release();
-          resolve(result);
-        });
+        resolve(result);
       });
     } catch (e) {
       console.log(e);
