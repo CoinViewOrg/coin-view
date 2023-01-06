@@ -1,10 +1,8 @@
 import type { NextPage } from "next";
-import { unstable_getServerSession } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/Profile.module.css";
-import { authOptions } from "./api/auth/[...nextauth]";
 
 const Profile: NextPage = (props) => {
   const { data: session, status } = useSession();

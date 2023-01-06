@@ -25,6 +25,10 @@ export const useAlertThresholds = () => {
 
       const { error, newthreshold } = await response.json();
 
+      if (error === 2) {
+        alert("Please confirm your email address first!");
+      }
+
       if (!error) {
         setAllThresholds((current) => ({
           ...current,

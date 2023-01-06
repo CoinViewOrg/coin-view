@@ -28,6 +28,15 @@ export default async function handler(
   }
 
   let response;
+
+  const getConfirmedEmail = `select EmailVerified from UsrAccount where Ua_Id = '${userid}'`;
+  response = (await querySQL(getConfirmedEmail)) as Array<any>;
+
+  if (response[0].EmailVerified === 0) {
+    res.status(200).json({ error: 2 });
+    return;
+  }
+
   const findThreshold = `SELECT Cn_UaId, Cn_CryptoId, Cn_Treshold FROM CryptoNotification where Cn_UaId = '${userid}' and  Cn_CryptoId = '${cryptoid}'`;
 
   response = (await querySQL(findThreshold)) as Array<any>;
