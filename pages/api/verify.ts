@@ -10,7 +10,6 @@ export default async function handler(
 
   const verifySql = `UPDATE UsrAccount SET EmailVerified = 1 WHERE VerificationId='${requestId}'`;
   response = (await querySQL(verifySql)) as any;
-  console.log({ response });
   if (response.changedRows > 0) {
     res.redirect(`/info?message=Successfully verified!`);
     return;
