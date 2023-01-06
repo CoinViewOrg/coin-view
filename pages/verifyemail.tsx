@@ -2,11 +2,10 @@ import { querySQL } from "@coin-view/api";
 import type { NextPage } from "next";
 import { NextApiRequestQuery } from "next/dist/server/api-utils";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 import styles from "../styles/Home.module.css";
 
-const Info: NextPage<{ message: string }> = (props) => {
+const VerifyEmail: NextPage<{ message: string }> = (props) => {
   return (
     <div className={styles.container}>
       <h2>{props.message}</h2>
@@ -22,7 +21,7 @@ export async function getServerSideProps({
   query: NextApiRequestQuery;
   req: any;
 }) {
-  const requestId = query.request;
+  const requestId = query.requestid;
   let response;
 
   const verifySql = `UPDATE UsrAccount SET EmailVerified = 1 WHERE VerificationId='${requestId}'`;
@@ -43,4 +42,4 @@ export async function getServerSideProps({
   };
 }
 
-export default Info;
+export default VerifyEmail;
