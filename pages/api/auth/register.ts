@@ -4,7 +4,6 @@ import { querySQL } from "src";
 import ses from "node-ses";
 import { v4 as uuidv4 } from "uuid";
 
-
 const sesClient = ses.createClient({
   key: process.env.AWS_SES_ACCESS_KEY_ID || "",
   secret: process.env.AWS_SES_SECRET_ACCESS_KEY || "",
@@ -48,7 +47,7 @@ export default async function handler(
       <head></head>
       <body>
         <h1>Verify your email adress here:</h1>
-        <p>https://coin-view.krzotki.com/api/verify?request=${requestId}</p>
+        <p>https://coin-view.krzotki.com/verify?request=${requestId}</p>
       </body>
     </html>
   `;
