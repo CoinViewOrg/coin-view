@@ -13,13 +13,13 @@
     "test": "jest"
   },
   "dependencies": {
-    "aws-sdk": "^2.1289.0",
     "chart.js": "^3.9.1",
     "classnames": "^2.3.2",
     "dotenv": "^16.0.3",
     "mysql": "^2.18.1",
     "next": "12.3.1",
     "next-auth": "4.15.1",
+    "node-ses": "^3.0.3",
     "react": "18.2.0",
     "react-chartjs-2": "^4.3.1",
     "react-dom": "18.2.0",

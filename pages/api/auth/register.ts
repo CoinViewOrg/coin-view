@@ -1,19 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { querySQL } from "src";
-import AWS from "aws-sdk";
+import ses from "node-ses";
 import { v4 as uuidv4 } from "uuid";
 
-const CHARSET = "UTF-8";
 
-AWS.config.update({
-  region: "eu-central-1",
-  account: {
-    credentials: {
-      accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID || "",
-      secretAccessKey: process.env.AWS_SES_SECRET_ACCESS_KEY || "",
-    },
-  },
+const sesClient = ses.createClient({
+  key: process.env.AWS_SES_ACCESS_KEY_ID || "",
+  secret: process.env.AWS_SES_SECRET_ACCESS_KEY || "",
+  amazon: `https://email.eu-central-1.amazonaws.com`,
 });
 
 type Data = {
@@ -58,24 +53,19 @@ export default async function handler(
     </html>
   `;
 
-  await new AWS.SES()
-    .sendEmail({
-      Message: {
-        Body: {
-          Html: {
-            Charset: CHARSET,
-            Data: emailHTML,
-          },
-        },
-        Subject: {
-          Charset: CHARSET,
-          Data: "Coin-View: Verify your email address",
-        },
-      },
-      Destination: { ToAddresses: [email] },
-      Source: "aws.krzotki@gmail.com",
-    })
-    .promise();
-    
+  await sesClient.sendEmail(
+    {
+      to: email,
+      message: emailHTML,
+      subject: "Coin-View: Verify your email address",
+      from: "aws.krzotki@gmail.com",
+    },
+    function (err, data, res) {
+      if (err) {
+        console.log(err, data, res);
+      }
+    }
+  );
+
   res.status(200).json({ error: 0 });
 }
