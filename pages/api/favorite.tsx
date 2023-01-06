@@ -36,7 +36,7 @@ export default async function handler(
     return;
   }
 
-  const addQuery = `INSERT INTO CryptoFavorites values (${userid}, ${cryptoid}, "")`;
+  const addQuery = `INSERT INTO CryptoFavorites values (${userid}, ${cryptoid})`;
   await querySQL(addQuery);
 
   res.status(200).json({ error: 0, isFavorite: true });

@@ -50,7 +50,7 @@ export default async function handler(
     return;
   }
 
-  const addQuery = `INSERT INTO CryptoNotification values (${userid}, ${cryptoid}, "", ${threshold})`;
+  const addQuery = `INSERT INTO CryptoNotification values (${userid}, ${cryptoid}, ${threshold})`;
   await querySQL(addQuery);
 
   res.status(200).json({ error: 0, newthreshold: threshold });
