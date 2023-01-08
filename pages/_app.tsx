@@ -69,7 +69,7 @@ function MyApp({
               <HamburgerMenu toggleCurrency={toggleCurrency} />
             </header>
             <main className={styles.main}>
-              <div className={styles.mainLogo} onClick={() => push("/")}>
+              <div className={styles.mainLogo} onClick={() => push("/list")}>
                 <div className={styles.logoContainer}>
                   <Image
                     src="/logo-square.svg"

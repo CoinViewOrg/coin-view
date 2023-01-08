@@ -32,7 +32,7 @@ export const LoginForm = () => {
         password,
         username,
         redirect: true,
-        callbackUrl: "/",
+        callbackUrl: "/list",
       });
     },
     [passwordRef]
@@ -70,7 +70,8 @@ export const LoginForm = () => {
       )}
       {registered && (
         <span className={styles.success}>
-          You have successfully created a new account! <br></br> You can log in now.
+          You have successfully created a new account! <br></br> You can log in
+          now.
         </span>
       )}
     </form>

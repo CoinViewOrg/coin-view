@@ -10,14 +10,14 @@ type PropsType = {};
 export const ListSwitcher = ({}: PropsType) => {
   const { pathname, replace } = useRouter();
   const { currency } = useContext(AppContext);
-  
+
   return (
     <div className={styles.container}>
       <button
         className={cx(styles.button, {
-          [styles.active]: pathname === "/",
+          [styles.active]: pathname.includes("list"),
         })}
-        onClick={() => replace(`/?currency=${currency}`)}
+        onClick={() => replace(`/list?currency=${currency}`)}
       >
         All
       </button>
