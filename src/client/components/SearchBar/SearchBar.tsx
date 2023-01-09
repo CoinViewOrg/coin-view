@@ -1,3 +1,4 @@
+import { useCustomTranslation } from "@coin-view/client";
 import { AppContext } from "@coin-view/context";
 import { CurrencyType } from "@coin-view/types";
 import { useRouter } from "next/router";
@@ -29,6 +30,8 @@ export const SearchBar = ({ initialValue }: PropsType) => {
     [searchPhrase]
   );
 
+  const { t } = useCustomTranslation();
+
   return (
     <div className={styles.container} data-testid="crypto_search">
       <input
@@ -36,9 +39,9 @@ export const SearchBar = ({ initialValue }: PropsType) => {
         onChange={(evt) => setPhrase(evt.target.value)}
         onKeyDown={submitOnEnter}
         value={phrase}
-        placeholder="Find by name..."
+        placeholder={t("find_by_name")}
       />
-      <Button onClick={searchPhrase}>Search</Button>
+      <Button onClick={searchPhrase}>{t("search")}</Button>
     </div>
   );
 };
