@@ -7,7 +7,7 @@ import React from "react";
 import styles from "../styles/Home.module.css";
 import { authOptions } from "./api/auth/[...nextauth]";
 
-const Health: NextPage = () => {
+const Login: NextPage = () => {
   return (
     <div className={styles.container}>
       <LoginForm />
@@ -15,7 +15,7 @@ const Health: NextPage = () => {
   );
 };
 
-export default Health;
+export default Login;
 
 export async function getServerSideProps({
   req,
