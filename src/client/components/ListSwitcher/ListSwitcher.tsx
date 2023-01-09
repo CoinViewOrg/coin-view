@@ -4,12 +4,15 @@ import { Button } from "../Button";
 import styles from "./ListSwitcher.module.css";
 import cx from "classnames";
 import { AppContext } from "@coin-view/context";
+import { useCustomTranslation } from "@coin-view/client";
 
 type PropsType = {};
 
 export const ListSwitcher = ({}: PropsType) => {
   const { pathname, replace } = useRouter();
   const { currency } = useContext(AppContext);
+
+  const { t } = useCustomTranslation();
 
   return (
     <div className={styles.container}>
@@ -19,7 +22,7 @@ export const ListSwitcher = ({}: PropsType) => {
         })}
         onClick={() => replace(`/list?currency=${currency}`)}
       >
-        All
+        {t('all')}
       </button>
       <button
         className={cx(styles.button, {

@@ -20,6 +20,7 @@ import {
 } from "@coin-view/client";
 import { AppContext } from "@coin-view/context";
 import { getSession } from "next-auth/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Search: NextPage<{
   data: CoinListItem[];
@@ -76,9 +77,11 @@ const Search: NextPage<{
 export async function getServerSideProps({
   query,
   req,
+  locale,
 }: {
   query: NextApiRequestQuery;
   req: any;
+  locale: string;
 }) {
   // Fetch data from external API
   const fullData = await getFilteredCoinList({
@@ -138,6 +141,7 @@ export async function getServerSideProps({
       session: JSON.parse(JSON.stringify(session)),
       favorites,
       thresholds,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 }

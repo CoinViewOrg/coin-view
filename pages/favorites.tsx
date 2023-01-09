@@ -20,6 +20,7 @@ import {
 } from "@coin-view/client";
 import { AppContext, defaultCurrency } from "@coin-view/context";
 import { getSession } from "next-auth/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Favorites: NextPage<{
   data: CoinListItem[];
@@ -74,16 +75,18 @@ const Favorites: NextPage<{
 export async function getServerSideProps({
   query,
   req,
+  locale,
 }: {
   query: NextApiRequestQuery;
   req: any;
+  locale: string;
 }) {
   const session = await getSession({ req });
   // Pass data to the page via props
 
   let favorites = null,
     thresholds = null;
-    
+
   if (session) {
     // @ts-ignore
     const userid = session?.user?.id;
@@ -97,6 +100,8 @@ export async function getServerSideProps({
     );
   }
 
+  const traslations = await serverSideTranslations(locale, ["common"]);
+
   if (!favorites) {
     return {
       props: {
@@ -105,6 +110,7 @@ export async function getServerSideProps({
         session: null,
         favorites: [],
         thresholds: {},
+        ...traslations,
       },
     };
   }
@@ -150,6 +156,7 @@ export async function getServerSideProps({
       session: JSON.parse(JSON.stringify(session)),
       favorites,
       thresholds,
+      ...traslations,
     },
   };
 }

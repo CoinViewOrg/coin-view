@@ -15,6 +15,7 @@ import Image from "next/future/image";
 import { CoinListItem } from "@coin-view/types";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
+import { appWithTranslation } from "next-i18next";
 
 const GTM_ID = "G-R8PPSMRFS0";
 
@@ -90,4 +91,4 @@ function MyApp({
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

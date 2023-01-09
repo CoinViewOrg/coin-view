@@ -25,7 +25,7 @@ import {
   usePaging,
 } from "@coin-view/client";
 import { AppContext, defaultCurrency } from "@coin-view/context";
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { getSession, useSession } from "next-auth/react";
 
 const defaultSort: SortingType = "market_cap";
@@ -248,7 +248,15 @@ const List: NextPage<{
   );
 };
 
-export async function getServerSideProps({ req, res }: { req: any; res: any }) {
+export async function getServerSideProps({
+  req,
+  res,
+  locale,
+}: {
+  req: any;
+  res: any;
+  locale: string;
+}) {
   // Fetch data from external API
   const fullData = await getCoinList({
     currency: defaultCurrency,
@@ -314,6 +322,7 @@ export async function getServerSideProps({ req, res }: { req: any; res: any }) {
       session: dehydrate(session),
       favorites: favorites,
       thresholds: thresholds,
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 }

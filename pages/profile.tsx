@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/Profile.module.css";
@@ -23,10 +24,21 @@ const Profile: NextPage = (props) => {
 
 export default Profile;
 
-export async function getServerSideProps({ req, res }: { req: any; res: any }) {
+export async function getServerSideProps({
+  req,
+  res,
+  locale,
+}: {
+  req: any;
+  res: any;
+  locale: string;
+}) {
   const session = await getSession({ req });
 
   return {
-    props: { session: JSON.parse(JSON.stringify(session)) },
+    props: {
+      session: JSON.parse(JSON.stringify(session)),
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
   };
 }

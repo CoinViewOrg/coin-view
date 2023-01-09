@@ -6,16 +6,26 @@ import cx from "classnames";
 import { CurrencyToggler } from "../CurrencyToggler";
 import Image from "next/future/image";
 import { signOut, useSession } from "next-auth/react";
+import { useCustomTranslation } from "src/client/hooks";
 
 type PropsType = {
   toggleCurrency: () => void;
 };
 
 export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
-  const { push, pathname } = useRouter();
+  const { push, pathname, replace } = useRouter();
 
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const { changeLanguage, language } = useCustomTranslation();
+  const secondLanguage = language === "pl" ? "en" : "pl";
+
+  const toggleLanguage = React.useCallback(() => {
+    //change language without calling server side rendering
+    changeLanguage(secondLanguage, () => {
+      replace(pathname, undefined, { locale: secondLanguage, shallow: true });
+    });
+  }, [changeLanguage, secondLanguage, pathname, replace]);
 
   return (
     <div className={styles.menu}>
@@ -31,7 +41,34 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
             className={styles.menuItem}
             toggleCurrency={toggleCurrency}
           />
-
+          <div
+            className={cx(styles.menuItem, styles.language)}
+            onClick={toggleLanguage}
+          >
+            <Image
+              className={cx("svg-adaptive", styles.menuIcon)}
+              src="/language.svg"
+              width={30}
+              height={30}
+              alt="language"
+            />
+            <span>Language:</span>
+            <span
+              className={cx({
+                [styles.active]: language === "en",
+              })}
+            >
+              EN
+            </span>
+            <span>/</span>
+            <span
+              className={cx({
+                [styles.active]: language === "pl",
+              })}
+            >
+              PL
+            </span>
+          </div>
           {status !== "authenticated" ? (
             <>
               <div className={styles.menuItem} onClick={() => push("/login")}>

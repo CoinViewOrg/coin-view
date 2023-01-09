@@ -1,14 +1,19 @@
 import { querySQL } from "@coin-view/api";
+import { useCustomTranslation } from "@coin-view/client";
 import type { NextPage } from "next";
+import { getSession } from "next-auth/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NextApiRequestQuery } from "next/dist/server/api-utils";
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/Home.module.css";
 
 const VerifyEmail: NextPage<{ message: string }> = (props) => {
+  const { t } = useCustomTranslation();
+
   return (
     <div className={styles.container}>
-      <h2>{props.message}</h2>
+      <h2>{t(props.message)}</h2>
       <Link href="/">Go to main page.</Link>
     </div>
   );
@@ -17,9 +22,11 @@ const VerifyEmail: NextPage<{ message: string }> = (props) => {
 export async function getServerSideProps({
   query,
   req,
+  locale,
 }: {
   query: NextApiRequestQuery;
   req: any;
+  locale: string;
 }) {
   const requestId = query.requestid;
   let response;
@@ -27,7 +34,7 @@ export async function getServerSideProps({
   const verifySql = `UPDATE UsrAccount SET EmailVerified = 1 WHERE VerificationId='${requestId}'`;
   response = (await querySQL(verifySql)) as any;
 
-  let message = "Invalid request id!";
+  let message = "verify_invalid_request_id";
 
   if (response.changedRows > 0) {
     message = "Successfully verified!";
@@ -35,9 +42,13 @@ export async function getServerSideProps({
     message = "Email already verified!";
   }
 
+  const session = await getSession({ req });
+
   return {
     props: {
       message,
+      session: JSON.parse(JSON.stringify(session)),
+      ...(await serverSideTranslations(locale, ["common"])),
     },
   };
 }
