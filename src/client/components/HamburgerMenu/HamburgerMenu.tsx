@@ -12,10 +12,16 @@ type PropsType = {
 };
 
 export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
-  const { push, pathname } = useRouter();
+  const { push, pathname, replace, locale } = useRouter();
 
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = React.useState(false);
+
+  const secondLanguage = locale === "pl" ? "en" : "pl";
+
+  const toggleLanguage = React.useCallback(() => {
+    replace(pathname, undefined, { locale: secondLanguage });
+  }, [secondLanguage, locale]);
 
   return (
     <div className={styles.menu}>
@@ -31,7 +37,34 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
             className={styles.menuItem}
             toggleCurrency={toggleCurrency}
           />
-
+          <div
+            className={cx(styles.menuItem, styles.language)}
+            onClick={toggleLanguage}
+          >
+            <Image
+              className={cx("svg-adaptive", styles.menuIcon)}
+              src="/language.svg"
+              width={30}
+              height={30}
+              alt="language"
+            />
+            <span>Language:</span>
+            <span
+              className={cx({
+                [styles.active]: locale === "en",
+              })}
+            >
+              EN
+            </span>
+            <span>/</span>
+            <span
+              className={cx({
+                [styles.active]: locale === "pl",
+              })}
+            >
+              PL
+            </span>
+          </div>
           {status !== "authenticated" ? (
             <>
               <div className={styles.menuItem} onClick={() => push("/login")}>

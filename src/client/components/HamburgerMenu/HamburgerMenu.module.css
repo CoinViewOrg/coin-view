@@ -51,6 +51,14 @@
   text-decoration: underline;
 }
 
+.language span {
+  margin-right: 0.5em;
+}
+
+.language span.active {
+  color: rgb(53, 107, 255);
+} 
+
 @media (prefers-color-scheme: dark) {
   .menuContent {
     background-color: #282828;

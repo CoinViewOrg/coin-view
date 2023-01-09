@@ -2,7 +2,10 @@ import React from "react";
 import { useTranslation as useNextTranslation } from "next-i18next";
 
 export const useCustomTranslation = () => {
-  const { t: translate } = useNextTranslation();
+  const {
+    t: translate,
+    i18n: { changeLanguage, language },
+  } = useNextTranslation();
 
   const t = React.useCallback(
     (phrase: string) => {
@@ -12,5 +15,5 @@ export const useCustomTranslation = () => {
     [translate]
   );
 
-  return { t };
+  return { t, changeLanguage, language };
 };
