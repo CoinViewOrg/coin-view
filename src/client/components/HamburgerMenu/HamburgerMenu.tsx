@@ -6,22 +6,26 @@ import cx from "classnames";
 import { CurrencyToggler } from "../CurrencyToggler";
 import Image from "next/future/image";
 import { signOut, useSession } from "next-auth/react";
+import { useCustomTranslation } from "src/client/hooks";
 
 type PropsType = {
   toggleCurrency: () => void;
 };
 
 export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
-  const { push, pathname, replace, locale } = useRouter();
+  const { push, pathname, replace } = useRouter();
 
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = React.useState(false);
-
-  const secondLanguage = locale === "pl" ? "en" : "pl";
+  const { changeLanguage, language } = useCustomTranslation();
+  const secondLanguage = language === "pl" ? "en" : "pl";
 
   const toggleLanguage = React.useCallback(() => {
-    replace(pathname, undefined, { locale: secondLanguage });
-  }, [secondLanguage, locale]);
+    //change language without calling server side rendering
+    changeLanguage(secondLanguage, () => {
+      replace(pathname, undefined, { locale: secondLanguage, shallow: true });
+    });
+  }, [changeLanguage, secondLanguage, pathname, replace]);
 
   return (
     <div className={styles.menu}>
@@ -51,7 +55,7 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
             <span>Language:</span>
             <span
               className={cx({
-                [styles.active]: locale === "en",
+                [styles.active]: language === "en",
               })}
             >
               EN
@@ -59,7 +63,7 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
             <span>/</span>
             <span
               className={cx({
-                [styles.active]: locale === "pl",
+                [styles.active]: language === "pl",
               })}
             >
               PL
