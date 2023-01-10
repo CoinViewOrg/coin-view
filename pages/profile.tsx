@@ -4,19 +4,21 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/Profile.module.css";
+import { useCustomTranslation } from "@coin-view/client";
 
 const Profile: NextPage = (props) => {
+  const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
 
   return (
     <div className={styles.container}>
       {session ? (
         <>
-          <h1>Protected Page</h1>
-          <p>You can view this page because you are signed in.</p>
+          <h1>{t("logged_in_header")}</h1>
+          <p>{t("logged_in_paragraph")}</p>
         </>
       ) : (
-        <Link href="/login">Please log in to see this page</Link>
+        <Link href="/login">{t("logged_in_redirect_login")}</Link>
       )}
     </div>
   );

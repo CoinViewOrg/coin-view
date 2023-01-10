@@ -6,7 +6,7 @@ import cx from "classnames";
 import { CurrencyToggler } from "../CurrencyToggler";
 import Image from "next/future/image";
 import { signOut, useSession } from "next-auth/react";
-import { useCustomTranslation } from "src/client/hooks";
+import { useCustomTranslation } from "@coin-view/client";
 
 type PropsType = {
   toggleCurrency: () => void;
@@ -14,7 +14,7 @@ type PropsType = {
 
 export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
   const { push, pathname, replace } = useRouter();
-
+  const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const { changeLanguage, language } = useCustomTranslation();
@@ -52,7 +52,7 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
               height={30}
               alt="language"
             />
-            <span>Language:</span>
+            <span>{t("language")}:</span>
             <span
               className={cx({
                 [styles.active]: language === "en",
@@ -86,7 +86,7 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
                     [styles.active]: pathname.includes("login"),
                   })}
                 >
-                  Login
+                  {t("login")}
                 </span>
               </div>
               <div
@@ -105,7 +105,7 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
                     [styles.active]: pathname.includes("register"),
                   })}
                 >
-                  Register
+                  {t("register")}
                 </span>
               </div>
             </>
@@ -129,7 +129,7 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
                   height={30}
                   alt="logout"
                 />
-                <span>Sign out</span>
+                <span>{t("sign_out")}</span>
               </div>
             </>
           )}

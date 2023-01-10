@@ -2,5 +2,49 @@
   "search": "Szukaj",
   "find_by_name": "Szukaj po nazwie...",
   "all": "Wszystkie",
-  "verify_invalid_request_id": "Nieprawidłowe żądanie!"
+  "verify_invalid_request_id": "Nieprawidłowe żądanie!",
+  
+  "language": "Jezyk",
+  "login": "Zaloguj sie",
+  "register": "Zarejestruj sie",
+  "sign_out": "Wyloguj sie",
+
+  "rank": "Pozycja",
+  "name": "Nazwa",
+  "price": "Cena",
+  "volume24h": "Wolumen 24h",
+  
+  "High_price": "Wysoka cena",
+  "Low_price": "Niska cena",
+  "chart_no_hist_data": "Brak danych historycznych dla tej kryptowaluty :(",
+
+  "prev_page": "Poprzednia strona",
+  "next_page": "Nastepna strona",
+
+  "favourites": "Ulubione",
+
+  "threshold": "Wybierz próg alertu",
+
+  "login_form_header": "Zaloguj sie na swoje konto",
+  "login_form_username": "Nazwa uzytkownika",
+  "login_form_password": "Haslo",
+  "login_form_redirect_register": "Nie masz jeszcze konta? Stworz je teraz",
+  "login_form_invalid": "Niepoprawna nazwa uzytkownika lub haslo!",
+  "login_form_register_succesful_1": "Pomyslnie stworzyles konto!",
+  "login_form_register_succesful_2": "Mozesz sie teraz zalogowac.",
+
+  "register_form_header": "Stworz nowe konto",
+  "register_form_username": "Nazwa uzytkownika",
+  "register_form_email": "Adres E-mail",
+  "register_form_password": "Haslo",
+  "register_form_password_confirm": "Powtorz haslo",
+  "register_form_redirect_login": "Masz juz konto? Zaloguj sie tutaj!",
+
+  "logged_in_header": "Strona chroniona",
+  "logged_in_paragraph": "Mozesz zobaczyc ta strone poniewaz jestes zalogowany.",
+  "logged_in_redirect_login": "Zaloguj sie aby moc odwiedzic ta strone.",
+
+  "verify_email_header": "Przejdz na strone glowna.",
+  "verify_email_succesful": "Zweryfikowano pomyslnie!",
+  "verify_email_already": "Email zostal juz zweryfikowany!"
 }

@@ -30,7 +30,7 @@ export const ListSwitcher = ({}: PropsType) => {
         })}
         onClick={() => replace(`/favorites?currency=${currency}`)}
       >
-        Favorites
+        {t("favourites")}
       </button>
     </div>
   );
