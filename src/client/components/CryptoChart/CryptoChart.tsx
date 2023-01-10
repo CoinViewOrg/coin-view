@@ -78,7 +78,7 @@ export function CryptoChart({ historicalData, loading, className }: PropsType) {
           },
         ],
       },
-    [historicalData]
+    [historicalData, t]
   );
 
   return (
