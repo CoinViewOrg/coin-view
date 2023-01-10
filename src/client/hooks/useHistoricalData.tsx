@@ -58,6 +58,5 @@ export const useHistoricalData = () => {
     getHistoricalData,
     loadingHistorical: loading,
     historicalData: dataMap,
-    currentHistoricalData: current,
   };
 };

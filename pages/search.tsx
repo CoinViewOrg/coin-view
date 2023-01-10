@@ -34,7 +34,6 @@ const Search: NextPage<{
     getHistoricalData,
     historicalData,
     loadingHistorical,
-    currentHistoricalData,
   } = useHistoricalData();
 
   const { replace } = useRouter();
@@ -59,7 +58,6 @@ const Search: NextPage<{
       <ListSwitcher />
       <CryptoList
         cryptoList={data}
-        currentHistoricalData={currentHistoricalData}
         getHistoricalData={getHistoricalData}
         historicalData={historicalData}
         loading={false}

@@ -32,7 +32,6 @@ export const CryptoList = ({
   cryptoList,
   getHistoricalData,
   metaList,
-  currentHistoricalData,
   loadingHistorical,
   historicalData,
   addToFavorites,
@@ -42,6 +41,9 @@ export const CryptoList = ({
 }: PropsType) => {
   const { currency } = React.useContext(AppContext);
   const { t } = useCustomTranslation();
+
+  const [selectedSymbol, setSelectedSymbol] = React.useState<string>();
+
   const sort = React.useCallback(
     (sorType: SortingType) => {
       if (setSorting) {
@@ -49,6 +51,18 @@ export const CryptoList = ({
       }
     },
     [setSorting]
+  );
+
+  const selectRow = React.useCallback(
+    (symbol: string) => {
+      if (symbol === selectedSymbol) {
+        setSelectedSymbol(undefined);
+        return;
+      }
+      getHistoricalData(symbol);
+      setSelectedSymbol(symbol);
+    },
+    [getHistoricalData, selectedSymbol]
   );
 
   return (
@@ -98,7 +112,7 @@ export const CryptoList = ({
         <React.Fragment key={item.id}>
           <div
             className={cx(styles.grid, styles.listItem)}
-            onClick={() => getHistoricalData(item.symbol)}
+            onClick={() => selectRow(item.symbol)}
             data-testid={`crypto_list_item_${item.symbol}`}
           >
             <div
@@ -135,7 +149,7 @@ export const CryptoList = ({
               {formatVolume(item.quote, currency)}{" "}
             </div>
           </div>
-          {currentHistoricalData === item.symbol && (
+          {selectedSymbol === item.symbol && (
             <div className={styles.cryptoDetails}>
               <ThresholdSelect
                 className={styles.thresholdSelect}

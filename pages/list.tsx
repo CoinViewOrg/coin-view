@@ -169,12 +169,8 @@ const useListLogic = ({ initialMeta }: { initialMeta: any }) => {
 
   useAutoRefresh(refreshList);
 
-  const {
-    getHistoricalData,
-    historicalData,
-    loadingHistorical,
-    currentHistoricalData,
-  } = useHistoricalData();
+  const { getHistoricalData, historicalData, loadingHistorical } =
+    useHistoricalData();
 
   return {
     sorting,
@@ -190,7 +186,6 @@ const useListLogic = ({ initialMeta }: { initialMeta: any }) => {
     getHistoricalData,
     historicalData,
     loadingHistorical,
-    currentHistoricalData,
   };
 };
 
@@ -209,7 +204,6 @@ const List: NextPage<{
     getHistoricalData,
     historicalData,
     loadingHistorical,
-    currentHistoricalData,
   } = useListLogic({ initialMeta: props.meta });
 
   const cryptoList = React.useMemo(
@@ -230,7 +224,6 @@ const List: NextPage<{
       {status === "authenticated" && <ListSwitcher />}
       <CryptoList
         cryptoList={cryptoList}
-        currentHistoricalData={currentHistoricalData}
         getHistoricalData={getHistoricalData}
         historicalData={historicalData}
         loading={loading}
