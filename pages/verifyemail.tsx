@@ -10,11 +10,11 @@ import styles from "../styles/Home.module.css";
 
 const VerifyEmail: NextPage<{ message: string }> = (props) => {
   const { t } = useCustomTranslation();
-
+//something is missing from {t(props.message)}
   return (
     <div className={styles.container}>
       <h2>{t(props.message)}</h2>
-      <Link href="/">Go to main page.</Link>
+      <Link href="/">{t("verify_email_header")}</Link>
     </div>
   );
 };

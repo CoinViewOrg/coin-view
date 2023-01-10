@@ -2,5 +2,47 @@
   "search": "Search",
   "find_by_name": "Find by name...",
   "all": "All",
-  "verify_invalid_request_id": "Invalid request id!"
+  "verify_invalid_request_id": "Invalid request id!",
+  
+  "language": "Language",
+  "login": "Login",
+  "register": "Register",
+  "sign_out": "Sign out",
+ 
+  "rank": "Rank",
+  "name": "Name",
+  "price": "Price",
+  "volume24h": "Volume 24h",
+
+  "High_price": "High price",
+  "Low_price": "Low price",
+  "chart_no_hist_data": "No historical data for given cryptocurrency :(",
+
+  "prev_page": "Previous page",
+  "next_page": "Next page",
+
+  "favourites": "Favourites",
+
+  "threshold": "Select alert threshold",
+
+  "login_form_header": "Log in to your account",
+  "login_form_username": "Username",
+  "login_form_password": "Password",
+  "login_form_redirect_register": "Do not have an account? Create one!",
+  "login_form_invalid": "Invalid username or password!",
+  "login_form_register_succesful_1": "You have successfully created a new account!",
+  "login_form_register_succesful_2": "You can log in now.",
+
+  "register_form_header": "Create new account",
+  "register_form_username": "Username",
+  "register_form_email": "E-mail address",
+  "register_form_password": "Password",
+  "register_form_password_confirm": "Confirm password",
+  "register_form_redirect_login": "Already have an account? Log in here!",
+
+  "logged_in_header": "Protected Page",
+  "logged_in_paragraph": "You can view this page because you are signed in.",
+  "logged_in_redirect_login": "Please log in to see this page.",
+
+  "verify_email_header": "Go to main page."
 }

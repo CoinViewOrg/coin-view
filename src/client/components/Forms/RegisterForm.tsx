@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import React from "react";
 import { Button } from "../Button";
 import styles from "./Form.module.css";
+import { useCustomTranslation } from "@coin-view/client";
 
 export const RegisterForm = () => {
+  const { t } = useCustomTranslation();
   const usernameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -59,9 +61,9 @@ export const RegisterForm = () => {
 
   return (
     <form className={styles.container} onSubmit={submitForm}>
-      <h2>Create new account</h2>
+      <h2>{t("register_form_header")}</h2>
       <div className={styles.formItem}>
-        <label htmlFor="username">Username</label>
+        <label htmlFor="username">{t("register_form_username")}</label>
         <input
           id="username"
           type="username"
@@ -72,7 +74,7 @@ export const RegisterForm = () => {
       </div>
 
       <div className={styles.formItem}>
-        <label htmlFor="email">E-mail address</label>
+        <label htmlFor="email">{t("register_form_email")}</label>
         <input
           id="email"
           type="email"
@@ -84,7 +86,7 @@ export const RegisterForm = () => {
       </div>
 
       <div className={styles.formItem}>
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">{t("register_form_password")}</label>
         <input
           id="password"
           type="password"
@@ -96,7 +98,7 @@ export const RegisterForm = () => {
       </div>
 
       <div className={styles.formItem}>
-        <label htmlFor="confirmpassword">Confirm password</label>
+        <label htmlFor="confirmpassword">{t("register_form_password_confirm")}</label>
         <input
           id="confirmpassword"
           type="password"
@@ -109,7 +111,7 @@ export const RegisterForm = () => {
 
       <input className={styles.formSubmit} type="submit" value="Create" />
 
-      <Link href="/login">Already have an account? Log in here!</Link>
+      <Link href="/login">{t("register_form_redirect_login")}</Link>
       {error && (
         <span className={styles.error}>
           {error == 1 && "Please correct your credentials!"}

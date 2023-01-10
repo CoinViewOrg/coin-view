@@ -13,6 +13,7 @@ import { Line } from "react-chartjs-2";
 import styles from "./CryptoChart.module.css";
 import { LoadingSpinner } from "../LoadingSpinner";
 import cx from "classnames";
+import { useCustomTranslation } from "@coin-view/client";
 
 ChartJS.register(
   CategoryScale,
@@ -55,6 +56,7 @@ type PropsType = {
 };
 
 export function CryptoChart({ historicalData, loading, className }: PropsType) {
+  const { t } = useCustomTranslation();
   const data = React.useMemo(
     () =>
       historicalData && {
@@ -63,13 +65,13 @@ export function CryptoChart({ historicalData, loading, className }: PropsType) {
         ),
         datasets: [
           {
-            label: "High Price",
+            label: t("High_price"),
             data: historicalData.map((hour) => hour[2]),
             borderColor: "rgb(255, 99, 132)",
             backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
           {
-            label: "Low Price",
+            label: t("Low_price"),
             data: historicalData.map((hour) => hour[3]),
             borderColor: "rgb(53, 162, 235)",
             backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -88,7 +90,7 @@ export function CryptoChart({ historicalData, loading, className }: PropsType) {
       ) : data ? (
         <Line className={styles.chart} options={options} data={data} />
       ) : (
-        "No historical data for given cryptocurrency :("
+        t("chart_no_hist_data")
       )}
     </div>
   );

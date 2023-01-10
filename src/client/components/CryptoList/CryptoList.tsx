@@ -10,6 +10,7 @@ import { LoadingSpinner } from "../LoadingSpinner";
 import { AppContext } from "@coin-view/context";
 import Image from "next/image";
 import { ThresholdSelect } from "@coin-view/client";
+import { useCustomTranslation } from "@coin-view/client";
 
 type PropsType = {
   loading: boolean;
@@ -40,7 +41,7 @@ export const CryptoList = ({
   setThreshold,
 }: PropsType) => {
   const { currency } = React.useContext(AppContext);
-
+  const { t } = useCustomTranslation();
   const sort = React.useCallback(
     (sorType: SortingType) => {
       if (setSorting) {
@@ -64,21 +65,21 @@ export const CryptoList = ({
           className={cx(styles.gridRank, styles.sorter)}
           onClick={() => sort("market_cap")}
         >
-          Rank
+          {t("rank")}
         </div>
         <div className={styles.gridIcon}>{""}</div>
         <div
           className={cx(styles.gridName, styles.sorter)}
           onClick={() => sort("name")}
         >
-          Name
+          {t("name")}
         </div>
 
         <div
           className={cx(styles.gridPrice, styles.sorter)}
           onClick={() => sort("price")}
         >
-          Price
+          {t("price")}
         </div>
         <div
           className={cx(styles.gridPercentChange, styles.sorter)}
@@ -90,7 +91,7 @@ export const CryptoList = ({
           className={cx(styles.gridVolume, styles.sorter)}
           onClick={() => sort("volume_24h")}
         >
-          Volume 24h
+          {t("volume24h")}
         </div>
       </div>
       {cryptoList.map((item) => (

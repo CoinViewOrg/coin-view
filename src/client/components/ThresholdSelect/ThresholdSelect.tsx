@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./ThresholdSelect.module.css";
 import cx from "classnames";
+import { useCustomTranslation } from "@coin-view/client";
 
 const threshold_OPTIONS = [5, 8, 10];
 
@@ -17,9 +18,10 @@ export const ThresholdSelect = ({
   cryptoThresholds,
   className,
 }: PropsType) => {
+  const { t } = useCustomTranslation();
   return (
     <div className={cx(styles.container, className)}>
-      <p className={styles.thresholdDescription}>Select alert threshold</p>
+      <p className={styles.thresholdDescription}>{t("threshold")}</p>
       <div className={styles.thresholdItems}>
         {threshold_OPTIONS.map((option) => (
           <button

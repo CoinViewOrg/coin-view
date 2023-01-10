@@ -1,4 +1,5 @@
 import { Button } from "../Button";
+import { useCustomTranslation } from "@coin-view/client";
 
 type PropsType = {
   page: number;
@@ -7,10 +8,11 @@ type PropsType = {
 };
 
 export const ListNavigation = ({ nextPage, page, prevPage }: PropsType) => {
+  const { t } = useCustomTranslation();
   return (
     <div>
-      {page !== 0 && <Button onClick={prevPage}>Previous page</Button>}
-      <Button onClick={nextPage}>Next page</Button>
+      {page !== 0 && <Button onClick={prevPage}>{t("prev_page")}</Button>}
+      <Button onClick={nextPage}>{t("next_page")}</Button>
     </div>
   );
 };

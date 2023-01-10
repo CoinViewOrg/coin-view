@@ -1,14 +1,14 @@
 import Link from "next/link";
 import React from "react";
 import styles from "./Form.module.css";
-
+import { useCustomTranslation } from "@coin-view/client";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export const LoginForm = () => {
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const usernameRef = React.useRef<HTMLInputElement>(null);
-
+  const { t } = useCustomTranslation();
   const { query } = useRouter();
 
   const { error, registered } = query;
@@ -40,9 +40,9 @@ export const LoginForm = () => {
 
   return (
     <form className={styles.container} onSubmit={submitForm}>
-      <h2>Log in to your account</h2>
+      <h2>{t("login_form_header")}</h2>
       <div className={styles.formItem}>
-        <label htmlFor="username">Username</label>
+        <label htmlFor="username">{t("login_form_username")}</label>
         <input
           id="username"
           type="username"
@@ -52,7 +52,7 @@ export const LoginForm = () => {
         />
       </div>
       <div className={styles.formItem}>
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">{t("login_form_password")}</label>
         <input
           id="password"
           type="password"
@@ -64,14 +64,13 @@ export const LoginForm = () => {
 
       <input className={styles.formSubmit} type="submit" value="Login" />
 
-      <Link href="/register">Do not have an account? Create one!</Link>
+      <Link href="/register">{t("login_form_redirect_register")}</Link>
       {error && (
-        <span className={styles.error}>Invalid username or password!</span>
+        <span className={styles.error}>{t("login_form_invalid")}</span>
       )}
       {registered && (
         <span className={styles.success}>
-          You have successfully created a new account! <br></br> You can log in
-          now.
+          {t("login_form_register_succesful_1")} <br></br> {t("login_form_register_succesful_2")}
         </span>
       )}
     </form>
