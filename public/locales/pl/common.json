@@ -30,7 +30,7 @@
   "login_form_password": "Haslo",
   "login_form_redirect_register": "Nie masz jeszcze konta? Stworz je teraz",
   "login_form_invalid": "Niepoprawna nazwa uzytkownika lub haslo!",
-  "login_form_register_succesful_1": "Pomyslnie stworzyles konto Epic!",
+  "login_form_register_succesful_1": "Pomyslnie stworzyles konto!",
   "login_form_register_succesful_2": "Mozesz sie teraz zalogowac.",
 
   "register_form_header": "Stworz nowe konto",
@@ -38,7 +38,7 @@
   "register_form_email": "Adres E-mail",
   "register_form_password": "Haslo",
   "register_form_password_confirm": "Powtorz haslo",
-  "register_form_redirect_login": "Masz juz konto Epic? Zaloguj sie tutaj!",
+  "register_form_redirect_login": "Masz juz konto? Zaloguj sie tutaj!",
 
   "logged_in_header": "Strona chroniona",
   "logged_in_paragraph": "Mozesz zobaczyc ta strone poniewaz jestes zalogowany.",
