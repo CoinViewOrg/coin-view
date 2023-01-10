@@ -44,5 +44,7 @@
   "logged_in_paragraph": "Mozesz zobaczyc ta strone poniewaz jestes zalogowany.",
   "logged_in_redirect_login": "Zaloguj sie aby moc odwiedzic ta strone.",
 
-  "verify_email_header": "Przejdz na strone glowna."
+  "verify_email_header": "Przejdz na strone glowna.",
+  "verify_email_succesful": "Zweryfikowano pomyslnie!",
+  "verify_email_already": "Email zostal juz zweryfikowany!"
 }

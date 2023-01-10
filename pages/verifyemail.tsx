@@ -37,9 +37,9 @@ export async function getServerSideProps({
   let message = "verify_invalid_request_id";
 
   if (response.changedRows > 0) {
-    message = "Successfully verified!";
+    message = "verify_email_succesful";
   } else if (response.affectedRows > 0) {
-    message = "Email already verified!";
+    message = "verify_email_already";
   }
 
   const session = await getSession({ req });
