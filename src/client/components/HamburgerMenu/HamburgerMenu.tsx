@@ -17,15 +17,14 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = React.useState(false);
-  const { changeLanguage, language } = useCustomTranslation();
+  const { language } = useCustomTranslation();
   const secondLanguage = language === "pl" ? "en" : "pl";
 
   const toggleLanguage = React.useCallback(() => {
-    //change language without calling server side rendering
-    changeLanguage(secondLanguage, () => {
-      replace(pathname, undefined, { locale: secondLanguage, shallow: true });
+    replace(pathname, undefined, {
+      locale: secondLanguage,
     });
-  }, [changeLanguage, secondLanguage, pathname, replace]);
+  }, [secondLanguage, pathname, replace]);
 
   return (
     <div className={styles.menu}>

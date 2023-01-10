@@ -8,10 +8,14 @@ import { useRouter } from "next/router";
 export const LoginForm = () => {
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const usernameRef = React.useRef<HTMLInputElement>(null);
-  const { t } = useCustomTranslation();
-  const { query } = useRouter();
 
-  const { error, registered } = query;
+  const { t } = useCustomTranslation();
+
+  const { query, push } = useRouter();
+
+  const [error, setError] = React.useState(false);
+
+  const { registered } = query;
 
   const submitForm = React.useCallback(
     async (evt: React.FormEvent<HTMLFormElement>) => {
@@ -28,14 +32,22 @@ export const LoginForm = () => {
         return;
       }
 
-      signIn("credentials", {
+      const response = await signIn("credentials", {
         password,
         username,
-        redirect: true,
+        redirect: false,
         callbackUrl: "/list",
       });
+
+      if (response?.error) {
+        setError(true);
+      }
+
+      if (response?.url) {
+        push(response.url);
+      }
     },
-    [passwordRef]
+    [passwordRef, push]
   );
 
   return (
@@ -65,12 +77,11 @@ export const LoginForm = () => {
       <input className={styles.formSubmit} type="submit" value="Login" />
 
       <Link href="/register">{t("login_form_redirect_register")}</Link>
-      {error && (
-        <span className={styles.error}>{t("login_form_invalid")}</span>
-      )}
+      {error && <span className={styles.error}>{t("login_form_invalid")}</span>}
       {registered && (
         <span className={styles.success}>
-          {t("login_form_register_succesful_1")} <br></br> {t("login_form_register_succesful_2")}
+          {t("login_form_register_succesful_1")} <br></br>{" "}
+          {t("login_form_register_succesful_2")}
         </span>
       )}
     </form>
