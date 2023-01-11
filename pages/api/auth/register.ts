@@ -42,12 +42,14 @@ export default async function handler(
 
   await querySQL(newUserSql);
 
+  const href = `https://coin-view.krzotki.com/verifyemail?requestid=${requestId}`;
+
   const emailHTML = `
     <html>
       <head></head>
       <body>
         <h1>Verify your email adress here:</h1>
-        <p>https://coin-view.krzotki.com/verifyemail?requestid=${requestId}</p>
+        <p><a href='${href}'>${href}</a></p>
       </body>
     </html>
   `;

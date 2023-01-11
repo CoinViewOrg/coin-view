@@ -6,7 +6,7 @@ import styles from "./Form.module.css";
 import { useCustomTranslation } from "@coin-view/client";
 
 export const RegisterForm = () => {
-  const { t } = useCustomTranslation();
+  const { t, language } = useCustomTranslation();
   const usernameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -53,10 +53,10 @@ export const RegisterForm = () => {
       if (error) {
         setError(error);
       } else {
-        push(`/login?registered=1`);
+        push(`/login?registered=1`, undefined, { locale: language });
       }
     },
-    [passwordRef, emailRef, push]
+    [passwordRef, emailRef, push, language]
   );
 
   return (
@@ -98,7 +98,9 @@ export const RegisterForm = () => {
       </div>
 
       <div className={styles.formItem}>
-        <label htmlFor="confirmpassword">{t("register_form_password_confirm")}</label>
+        <label htmlFor="confirmpassword">
+          {t("register_form_password_confirm")}
+        </label>
         <input
           id="confirmpassword"
           type="password"

@@ -121,8 +121,9 @@ def lambda_handler(event, context):
             print(userid, cryptoid, crypto_change, crypto_name)
             if (abs(crypto_change) >= threshold):
                 color_class = 'green' if crypto_change > 0 else 'red'
-                item = ("%s : <b class='%s'>%f%%</b> - current price: <b>%f$</b>") % (
-                    crypto_name, color_class, crypto_change, crypto_price)
+                arrow = '&#8599;' if crypto_change > 0 else '&#8600;'
+                item = ("%s : <b class='%s'>%s %f%%</b> - current price: <b>%f$</b>") % (
+                    crypto_name, color_class, arrow, crypto_change, crypto_price)
 
                 if (userid in alerts_to_send_per_user):
                     alerts_to_send_per_user[userid].append(item)
