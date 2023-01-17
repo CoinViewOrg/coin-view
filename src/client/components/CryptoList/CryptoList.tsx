@@ -69,18 +69,21 @@ export const CryptoList = ({
     [getHistoricalData, selectedSymbol]
   );
 
+  const market = "COINBASE";
+
   const listWithLinksToMarkets = React.useMemo(
     () =>
       cryptoList.map((item) => ({
         ...item,
-        marketUrl: getMarketUrlByType("BINANCE", {
+        marketUrl: getMarketUrlByType(market, {
           cryptoSlug: item.slug,
           cryptoSymbol: item.symbol,
           currency,
           locale: language,
         }),
+        marketImageSrc: `/market_${market.toLowerCase()}.png`,
       })),
-    [cryptoList, language, currency]
+    [cryptoList, language, currency, market]
   );
 
   console.log({ listWithLinksToMarkets });

@@ -125,6 +125,7 @@ export async function getServerSideProps({
     "name",
     "quote",
     "cmc_rank",
+    "slug",
     "circulating_supply",
     "symbol",
   ];

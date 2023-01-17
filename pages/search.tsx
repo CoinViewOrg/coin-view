@@ -30,11 +30,8 @@ const Search: NextPage<{
   const { query } = useRouter();
   const phrase = query.phrase as string;
 
-  const {
-    getHistoricalData,
-    historicalData,
-    loadingHistorical,
-  } = useHistoricalData();
+  const { getHistoricalData, historicalData, loadingHistorical } =
+    useHistoricalData();
 
   const { replace } = useRouter();
 
@@ -93,6 +90,7 @@ export async function getServerSideProps({
     "name",
     "quote",
     "cmc_rank",
+    "slug",
     "circulating_supply",
     "symbol",
   ];
