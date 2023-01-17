@@ -9,7 +9,7 @@ type BaseProps = {
 
 const MARKET_URLS = {
   BINANCE: ({ locale, cryptoSymbol, currency }: BaseProps) =>
-    `https://www.binance.com/${locale}/trade/${cryptoSymbol.toUpperCase()}_BUSD}`,
+    `https://www.binance.com/${locale}/trade/${cryptoSymbol.toUpperCase()}_BUSD`,
 
   COINBASE: ({ currency, cryptoSymbol }: BaseProps) =>
     `https://exchange.coinbase.com/trade/${cryptoSymbol.toUpperCase()}-${currency.toUpperCase()}`,
