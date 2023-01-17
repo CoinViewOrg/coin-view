@@ -2,7 +2,11 @@ import React from "react";
 import styles from "./CryptoList.module.css";
 import cx from "classnames";
 import { CoinListItem, CurrencyType, SortingType } from "@coin-view/types";
-import { formatPrice, formatVolume } from "@coin-view/utils";
+import {
+  formatPrice,
+  formatVolume,
+  getMarketUrlByType,
+} from "@coin-view/utils";
 import { PercentChange } from "../PercentChange";
 import { CryptoChart } from "../CryptoChart";
 import { HistoricalDataType } from "../../hooks";
@@ -40,7 +44,7 @@ export const CryptoList = ({
   setThreshold,
 }: PropsType) => {
   const { currency } = React.useContext(AppContext);
-  const { t } = useCustomTranslation();
+  const { t, language } = useCustomTranslation();
 
   const [selectedSymbol, setSelectedSymbol] = React.useState<string>();
 
@@ -64,6 +68,22 @@ export const CryptoList = ({
     },
     [getHistoricalData, selectedSymbol]
   );
+
+  const listWithLinksToMarkets = React.useMemo(
+    () =>
+      cryptoList.map((item) => ({
+        ...item,
+        marketUrl: getMarketUrlByType("BINANCE", {
+          cryptoSlug: item.slug,
+          cryptoSymbol: item.symbol,
+          currency,
+          locale: language,
+        }),
+      })),
+    [cryptoList, language, currency]
+  );
+
+  console.log({ listWithLinksToMarkets });
 
   return (
     <div
@@ -108,7 +128,7 @@ export const CryptoList = ({
           {t("volume24h")}
         </div>
       </div>
-      {cryptoList.map((item) => (
+      {listWithLinksToMarkets.map((item) => (
         <React.Fragment key={item.id}>
           <div
             className={cx(styles.grid, styles.listItem)}
