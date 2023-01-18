@@ -45,20 +45,28 @@ export const NotificationsMenu = () => {
         onClick={handleNotificationsClick}
       />
       {menuOpen && (
+        <>
         <div className={styles.menuContent}>
-          {notifications?.map((notification) => 
-            <div key={notification.NotificationId.toString()} className={cx(styles.menuItem)}>
-              <Image
-                className={cx("svg-adaptive", styles.menuIcon)}
-                src="/alert.svg"
-                width={25}
-                height={25}
-                alt="alert"
-              />
-              <p dangerouslySetInnerHTML={{__html: createNotificationHeaderText(notification.Type) as string}}></p>
-            </div>
+          {notifications.length > 0 ? (
+            <>  
+            {notifications?.map((notification) => 
+              <div key={notification.NotificationId.toString()} className={cx(styles.menuItem)}>
+                <Image
+                  className={cx("svg-adaptive", styles.menuIcon)}
+                  src="/alert.svg"
+                  width={25}
+                  height={25}
+                  alt="alert"
+                />
+                <p dangerouslySetInnerHTML={{__html: createNotificationHeaderText(notification.Type) as string}}></p>
+              </div>
+            )}
+            </>
+          ) : (
+            <p>Brak nowych powiadomień</p> 
           )}
         </div>
+        </>
       )}
     </div>
   );
