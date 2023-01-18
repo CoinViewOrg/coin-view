@@ -28,6 +28,9 @@ export const MARKET_NAMES = Object.keys(MARKET_URLS) as MarketType[];
 
 export type MarketType = keyof typeof MARKET_URLS;
 
+export const getMarketId = (market: MarketType) =>
+  Object.keys(MARKET_URLS).findIndex((val) => val === market) + 1;
+
 export const getMarketUrlByType = (market: MarketType, props: BaseProps) =>
   MARKET_URLS[market](props);
 

@@ -16,6 +16,7 @@ import { CoinListItem } from "@coin-view/types";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { appWithTranslation } from "next-i18next";
+import { MarketType } from "@coin-view/markets";
 
 const GTM_ID = "G-R8PPSMRFS0";
 
@@ -26,8 +27,9 @@ function MyApp({
   data: CoinListItem[];
   meta: any;
   session: Session;
-  favorites?: number[];
-  thresholds?: Record<number, number>;
+  favorites?: number[] | null;
+  thresholds?: Record<number, number> | null;
+  favoriteMarketName: MarketType | null;
 }>) {
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
   const { push } = useRouter();
@@ -63,6 +65,7 @@ function MyApp({
             currency,
             favorites: pageProps.favorites || [],
             thresholds: pageProps.thresholds || {},
+            favoriteMarketName: pageProps.favoriteMarketName,
           }}
         >
           <div className={styles.container}>

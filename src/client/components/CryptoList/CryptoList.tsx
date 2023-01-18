@@ -2,11 +2,7 @@ import React from "react";
 import styles from "./CryptoList.module.css";
 import cx from "classnames";
 import { CoinListItem, CurrencyType, SortingType } from "@coin-view/types";
-import {
-  formatPrice,
-  formatVolume,
-  getMarketUrlByType,
-} from "@coin-view/utils";
+import { formatPrice, formatVolume } from "@coin-view/utils";
 import { PercentChange } from "../PercentChange";
 import { CryptoChart } from "../CryptoChart";
 import { HistoricalDataType } from "../../hooks";
@@ -15,6 +11,7 @@ import { AppContext } from "@coin-view/context";
 import Image from "next/image";
 import { ThresholdSelect } from "@coin-view/client";
 import { useCustomTranslation } from "@coin-view/client";
+import { getMarketUrlByType } from "@coin-view/markets";
 
 type PropsType = {
   loading: boolean;
@@ -43,7 +40,7 @@ export const CryptoList = ({
   thresholds,
   setThreshold,
 }: PropsType) => {
-  const { currency } = React.useContext(AppContext);
+  const { currency, favoriteMarketName } = React.useContext(AppContext);
   const { t, language } = useCustomTranslation();
 
   const [selectedSymbol, setSelectedSymbol] = React.useState<string>();
@@ -69,7 +66,10 @@ export const CryptoList = ({
     [getHistoricalData, selectedSymbol]
   );
 
-  const market = "COINBASE";
+  const market = React.useMemo(
+    () => favoriteMarketName || "COINBASE",
+    [favoriteMarketName]
+  );
 
   const listWithLinksToMarkets = React.useMemo(
     () =>
