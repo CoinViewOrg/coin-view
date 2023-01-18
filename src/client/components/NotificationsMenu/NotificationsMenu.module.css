@@ -1,0 +1,90 @@
+.menu {
+    position: relative;
+    margin-right: 12px;
+  }
+  
+  .bell {
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .menuContent {
+    position: absolute;
+    top: 36px;
+    width: 350px;
+    left: -310px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 1em;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: solid 1px #858585;
+  }
+  
+  .menuContent > .menuItem {
+    margin-bottom: 1em;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    padding: 0.5em;
+    border-radius: 10px;
+    transition: 0.2s all;
+    user-select: none;
+  }
+  
+  .menuItem:last-child {
+    margin-bottom: 0;
+  }
+  
+  .menuItem:hover {
+    background-color: #c5c6c7;
+  }
+  
+  .menuItem > .menuIcon {
+    margin-right: 1em;
+  }
+
+  /* .menuItem > .menuButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+  } */
+
+  .menuItem > .menuButton:hover {
+    cursor: pointer;
+    background-color: #e2e3e4;
+  }
+  
+  .active {
+    text-decoration: underline;
+  }
+  
+  .language span {
+    margin-right: 0.5em;
+  }
+  
+  .language span.active {
+    color: rgb(53, 107, 255);
+  } 
+  
+  @media (prefers-color-scheme: dark) {
+    .menuContent {
+      background-color: #282828;
+      color: #c5c5c5;
+    }
+  
+    .menuItem:hover {
+      background-color: #3a3a3a;
+    }
+  }
+  

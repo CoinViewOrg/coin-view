@@ -6,6 +6,7 @@ import {
   CurrencyToggler,
   HamburgerMenu,
   useCurrencyToggle,
+  NotificationsMenu
 } from "@coin-view/client";
 import styles from "../styles/App.module.css";
 import { useRouter } from "next/router";
@@ -67,6 +68,7 @@ function MyApp({
         >
           <div className={styles.container}>
             <header className={styles.header}>
+              <NotificationsMenu/>
               <HamburgerMenu toggleCurrency={toggleCurrency} />
             </header>
             <main className={styles.main}>
