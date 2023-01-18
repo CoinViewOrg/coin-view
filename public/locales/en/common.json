@@ -3,12 +3,12 @@
   "find_by_name": "Find by name...",
   "all": "All",
   "verify_invalid_request_id": "Invalid request id!",
-  
+
   "language": "Language",
   "login": "Login",
   "register": "Register",
   "sign_out": "Sign out",
- 
+
   "rank": "Rank",
   "name": "Name",
   "price": "Price",
@@ -40,11 +40,12 @@
   "register_form_password_confirm": "Confirm password",
   "register_form_redirect_login": "Already have an account? Log in here!",
 
-  "logged_in_header": "Protected Page",
-  "logged_in_paragraph": "You can view this page because you are signed in.",
+  "logged_in_header": "Hello",
+  "logged_in_paragraph": "You can change your settings here.",
   "logged_in_redirect_login": "Please log in to see this page.",
 
   "verify_email_header": "Go to main page.",
   "verify_email_succesful": "Successfully verified!",
-  "verify_email_already": "Email already verified!"
+  "verify_email_already": "Email already verified!",
+  "favorite_market": "Favorite market"
 }

@@ -24,7 +24,12 @@ const MARKET_URLS = {
     `https://www.bitstamp.net/markets/${cryptoSymbol.toLowerCase()}/usd/`,
 };
 
-type MarketType = keyof typeof MARKET_URLS;
+export const MARKET_NAMES = Object.keys(MARKET_URLS) as MarketType[];
+
+export type MarketType = keyof typeof MARKET_URLS;
 
 export const getMarketUrlByType = (market: MarketType, props: BaseProps) =>
   MARKET_URLS[market](props);
+
+export const getMarketImageSrc = (market: MarketType) =>
+  `/market_${market.toLowerCase()}.png`;
