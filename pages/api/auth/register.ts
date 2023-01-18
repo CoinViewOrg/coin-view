@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { querySQL } from "src";
+import { encryptWithAES, querySQL } from "@coin-view/api";
 import ses from "node-ses";
 import { v4 as uuidv4 } from "uuid";
 
@@ -38,7 +38,7 @@ export default async function handler(
   const requestId = uuidv4();
 
   const newUserSql = `INSERT INTO UsrAccount(Ua_login, Ua_email, Ua_password, VerificationId, EmailVerified) VALUES('${username}',
-    '${email}', '${password}', '${requestId}', 0)`;
+    '${email}', '${encryptWithAES(password)}', '${requestId}', 0)`;
 
   await querySQL(newUserSql);
 
