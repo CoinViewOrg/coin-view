@@ -2,19 +2,17 @@ import React from "react";
 import styles from "./CryptoList.module.css";
 import cx from "classnames";
 import { CoinListItem, CurrencyType, SortingType } from "@coin-view/types";
-import {
-  formatPrice,
-  formatVolume,
-  getMarketUrlByType,
-} from "@coin-view/utils";
+import { formatPrice, formatVolume } from "@coin-view/utils";
 import { PercentChange } from "../PercentChange";
 import { CryptoChart } from "../CryptoChart";
 import { HistoricalDataType } from "../../hooks";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { AppContext } from "@coin-view/context";
 import Image from "next/image";
-import { ThresholdSelect } from "@coin-view/client";
+import { Button, MarketButton, ThresholdSelect } from "@coin-view/client";
 import { useCustomTranslation } from "@coin-view/client";
+import { getMarketImageSrc, getMarketUrlByType } from "@coin-view/markets";
+import { useRouter } from "next/router";
 
 type PropsType = {
   loading: boolean;
@@ -43,9 +41,8 @@ export const CryptoList = ({
   thresholds,
   setThreshold,
 }: PropsType) => {
-  const { currency } = React.useContext(AppContext);
+  const { currency, favoriteMarketName } = React.useContext(AppContext);
   const { t, language } = useCustomTranslation();
-
   const [selectedSymbol, setSelectedSymbol] = React.useState<string>();
 
   const sort = React.useCallback(
@@ -69,7 +66,15 @@ export const CryptoList = ({
     [getHistoricalData, selectedSymbol]
   );
 
-  const market = "COINBASE";
+  const market = React.useMemo(
+    () => favoriteMarketName || "COINBASE",
+    [favoriteMarketName]
+  );
+
+  const marketImageSrc = React.useMemo(
+    () => getMarketImageSrc(market),
+    [market]
+  );
 
   const listWithLinksToMarkets = React.useMemo(
     () =>
@@ -81,12 +86,14 @@ export const CryptoList = ({
           currency,
           locale: language,
         }),
-        marketImageSrc: `/market_${market.toLowerCase()}.png`,
       })),
     [cryptoList, language, currency, market]
   );
 
-  console.log({ listWithLinksToMarkets });
+  const openInNewTab = React.useCallback(
+    (href: string) => window.open(href, "_blank"),
+    []
+  );
 
   return (
     <div
@@ -184,6 +191,13 @@ export const CryptoList = ({
                 className={styles.chart}
                 loading={loadingHistorical}
                 historicalData={historicalData[currency][item.symbol]}
+              />
+
+              <MarketButton
+                className={styles.marketButton}
+                caption="Buy on"
+                marketName={market}
+                onClick={() => openInNewTab(item.marketUrl)}
               />
             </div>
           )}

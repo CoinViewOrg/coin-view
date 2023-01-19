@@ -21,6 +21,7 @@
       "@coin-view/client": ["src/client"],
       "@coin-view/utils": ["src/utils"],
       "@coin-view/context": ["src/context"],
+      "@coin-view/markets": ["src/markets"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
