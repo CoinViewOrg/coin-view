@@ -25,11 +25,14 @@ export default async function handler(
   let response;
 
   if (param === "count") {
-    const countNotifications = `SELECT COUNT(*) as count FROM UserNotifications where Ua_Id = '${userid}'`;
+    const countNotifications = `SELECT COUNT(*) as count FROM UserNotifications where Ua_Id = '${userid}' and Seen = 0`;
     response = (await querySQL(countNotifications)) as Array<any>;
   } else if (param === "fetch") {
-    const findNotification = `SELECT * FROM UserNotifications where Ua_Id = '${userid}'`;
+    const findNotification = `SELECT * FROM UserNotifications where Ua_Id = '${userid}' and DATEDIFF(LOCALTIME(), Date) <= 3 ORDER BY Date DESC`;
+    const updateNotifications = `UPDATE UserNotifications SET Seen = 1 where Ua_Id = '${userid}'`;
+
     response = (await querySQL(findNotification)) as Array<any>;
+    await querySQL(updateNotifications);
   }
 
   res.status(200).json({ error: 0, notifications: response });

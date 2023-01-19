@@ -87,6 +87,7 @@ export const NotificationsMenu = ({
                           key={notification.NotificationId.toString()}
                           header={notificationHeaders(notification.Type)}
                           content={notification.Content}
+                          seen={notification.Seen}
                         />
                       ))}
                     </>

@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
-  padding: 0.5em;
+  padding: 0.5em 1em 0.5em 0.5em;
   border-radius: 10px;
   transition: 0.2s all;
   user-select: none;
@@ -45,6 +45,21 @@
 .contentWrapper.notificationActive {
   max-height: 500px;
   transition: all 1.5s linear;
+}
+
+.notificationBadge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: rgb(228, 66, 66);
+  color: white;
+  font-size: 0.9rem;
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: 50%;
+  z-index: 90;
+  right: 21px;
 }
 
 @media (prefers-color-scheme: dark) {

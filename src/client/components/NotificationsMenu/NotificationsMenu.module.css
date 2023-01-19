@@ -11,9 +11,9 @@
 .menuContent {
   position: absolute;
   top: 36px;
-  width: 350px;
+  width: 360px;
   min-height: 130px;
-  left: -310px;
+  left: -315px;
   background-color: white;
   border-radius: 10px;
   padding: 1em;
