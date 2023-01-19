@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext } from "react";
 import { HamburgerIcon } from "./HamburgerIcon";
 import styles from "./HamburgerMenu.module.css";
 import cx from "classnames";
@@ -7,16 +7,21 @@ import { CurrencyToggler } from "../CurrencyToggler";
 import Image from "next/future/image";
 import { signOut, useSession } from "next-auth/react";
 import { useCustomTranslation } from "@coin-view/client";
+import { AppContext } from "@coin-view/context";
 
 type PropsType = {
   toggleCurrency: () => void;
+  onOpenCallback: () => void;
 };
 
-export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
+export const HamburgerMenu = ({
+  toggleCurrency,
+  onOpenCallback,
+}: PropsType) => {
   const { push, pathname, replace } = useRouter();
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
-  const [menuOpen, setMenuOpen] = React.useState(false);
+
   const { language } = useCustomTranslation();
   const secondLanguage = language === "pl" ? "en" : "pl";
 
@@ -26,13 +31,15 @@ export const HamburgerMenu = ({ toggleCurrency }: PropsType) => {
     });
   }, [secondLanguage, pathname, replace]);
 
+  const { hamburgerMenuOpen: menuOpen } = React.useContext(AppContext);
+
   return (
     <div className={styles.menu}>
       <HamburgerIcon
         width={32}
         height={32}
         className={cx("svg-adaptive", styles.hamburger)}
-        onClick={() => setMenuOpen((open) => !open)}
+        onClick={onOpenCallback}
       />
       {menuOpen && (
         <div className={styles.menuContent}>

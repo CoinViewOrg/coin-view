@@ -14,7 +14,7 @@ export const NotificationsMenuItem = ({
 
   const handleClick = React.useCallback(() => {
     setNotificationActive((notificationActive) => !notificationActive);
-  }, [notificationActive]);
+  }, []);
 
   return (
     <div className={cx(styles.menuItem)}>

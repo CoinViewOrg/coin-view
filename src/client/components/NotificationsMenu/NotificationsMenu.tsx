@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React from "react";
 import { NotificationsIcon } from "./NotificationsIcon";
 import styles from "./NotificationsMenu.module.css";
@@ -7,15 +6,20 @@ import { useSession } from "next-auth/react";
 import { LoadingSpinner, useCustomTranslation } from "@coin-view/client";
 import { NotificationsMenuItem } from "@coin-view/client";
 import { NotificationsBadge } from "./NotificationsBadge";
+import { AppContext } from "@coin-view/context";
 
-export const NotificationsMenu = () => {
+export const NotificationsMenu = ({
+  onOpenCallback,
+}: {
+  onOpenCallback: () => void;
+}) => {
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
-  const [menuOpen, setMenuOpen] = React.useState(false);
   const [notifications, setNotifications] = React.useState<any[]>([]);
   const [notificationsCount, setNotificationsCount] = React.useState<number>(0);
   const [loading, setLoading] = React.useState(false);
 
+  const { notificationsMenuOpen: menuOpen } = React.useContext(AppContext);
 
   React.useEffect(() => {
     const response = fetch("api/notifications?param=count")
@@ -28,7 +32,7 @@ export const NotificationsMenu = () => {
   }, []);
 
   const handleNotificationsClick = React.useCallback(async () => {
-    setMenuOpen((open) => !open);
+    onOpenCallback();
     if (!menuOpen && notifications.length === 0) {
       setLoading(true);
       const response = await fetch("api/notifications?param=fetch");
@@ -47,7 +51,7 @@ export const NotificationsMenu = () => {
 
       return type;
     },
-    [notifications]
+    [t]
   );
 
   if (status !== "authenticated") {
