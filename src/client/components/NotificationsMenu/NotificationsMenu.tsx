@@ -32,7 +32,7 @@ export const NotificationsMenu = () => {
       return t("price_alert");
     }
 
-    return t("notification");
+    return type;
   }
 
   return (
