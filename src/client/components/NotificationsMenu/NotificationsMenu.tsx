@@ -23,7 +23,7 @@ export const NotificationsMenu = ({
 
   React.useEffect(() => {
     if (status === "authenticated") {
-      const response = fetch("api/notifications?param=count")
+      const response = fetch("/api/notifications?param=count")
         .then((response) => response.json())
         .then((json) => {
           console.log(json);
@@ -37,7 +37,7 @@ export const NotificationsMenu = ({
     onOpenCallback();
     if (!menuOpen && notifications.length === 0) {
       setLoading(true);
-      const response = await fetch("api/notifications?param=fetch");
+      const response = await fetch("/api/notifications?param=fetch");
       const { error, notifications } = await response.json();
       setLoading(false);
       setNotifications(notifications);
