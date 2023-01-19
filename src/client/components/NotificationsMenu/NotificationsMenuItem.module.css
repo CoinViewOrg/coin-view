@@ -47,23 +47,6 @@ background-color: #c5c6c7;
     transition: all 1.5s linear;
 }
 
-/* .menuItem > .menuButton {
-display: flex;
-justify-content: center;
-align-items: center;
-margin-left: auto;
-background: none;
-border: none;
-border-radius: 50%;
-width: 25px;
-height: 25px;
-} */
-
-/* .menuItem > .menuButton:hover {
-cursor: pointer;
-background-color: #e2e3e4;
-} */
-
 @media (prefers-color-scheme: dark) {
 .menuContent {
     background-color: #282828;

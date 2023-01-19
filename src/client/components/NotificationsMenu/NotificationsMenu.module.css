@@ -24,28 +24,11 @@
     border: solid 1px #858585;
   }
 
-  /* .menuItem > .menuButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    background: none;
-    border: none;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-  } */
-
   .spinner {
     position: absolute;
     left: 50%;
     top: 50%;
   }
-
-  /* .menuItem > .menuButton:hover {
-    cursor: pointer;
-    background-color: #e2e3e4;
-  } */
   
   @media (prefers-color-scheme: dark) {
     .menuContent {
