@@ -46,5 +46,7 @@
 
   "verify_email_header": "Go to main page.",
   "verify_email_succesful": "Successfully verified!",
-  "verify_email_already": "Email already verified!"
+  "verify_email_already": "Email already verified!",
+
+  "price_alert": "There's been a sudden change in price"
 }

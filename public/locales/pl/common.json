@@ -46,5 +46,7 @@
 
   "verify_email_header": "Przejdz na strone glowna.",
   "verify_email_succesful": "Zweryfikowano pomyslnie!",
-  "verify_email_already": "Email zostal juz zweryfikowany!"
+  "verify_email_already": "Email zostal juz zweryfikowany!",
+
+  "price_alert": "Nastąpiła nagła zmiana ceny"
 }

@@ -12,10 +12,9 @@ import { NotificationsMenuItem } from "@coin-view/client";
 
 export const NotificationsMenu = () => {
   const { push, pathname, replace } = useRouter();
-  const { t } = useCustomTranslation();
+  const { t, language } = useCustomTranslation();
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = React.useState(false);
-  const { language } = useCustomTranslation();
   const [notifications, setNotifications] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(false);
 
@@ -39,8 +38,7 @@ export const NotificationsMenu = () => {
   function createNotificationHeaderText(type: string) {
     if (type === "PRICE_ALERT")
     {
-      // {t("")}
-      return "Nastąpiła nagła zmiana ceny";
+      return t("price_alert");
     }
   }
 
