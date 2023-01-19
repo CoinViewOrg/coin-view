@@ -6,6 +6,7 @@ import cx from "classnames";
 import Image from "next/future/image";
 import { signOut, useSession } from "next-auth/react";
 import { LoadingSpinner, useCustomTranslation } from "@coin-view/client";
+import { NotificationsMenuItem } from "@coin-view/client";
 
 
 
@@ -68,16 +69,11 @@ export const NotificationsMenu = () => {
                 {notifications?.length > 0 ? (
                   <>  
                   {notifications?.map((notification) => 
-                    <div key={notification.NotificationId.toString()} className={cx(styles.menuItem)}>
-                      <Image
-                        className={cx("svg-adaptive", styles.menuIcon)}
-                        src="/alert.svg"
-                        width={25}
-                        height={25}
-                        alt="alert"
-                      />
-                      <p dangerouslySetInnerHTML={{__html: createNotificationHeaderText(notification.Type) as string}}></p>
-                    </div>
+                    <NotificationsMenuItem 
+                    key = {notification.NotificationId.toString()} 
+                    header = {createNotificationHeaderText(notification.Type) as string}
+                    content = {notification.Content} 
+                    />
                   )}
                   </>
                 ) : (
