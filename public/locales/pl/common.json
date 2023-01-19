@@ -40,8 +40,8 @@
   "register_form_password_confirm": "Powtorz haslo",
   "register_form_redirect_login": "Masz juz konto? Zaloguj sie tutaj!",
 
-  "logged_in_header": "Strona chroniona",
-  "logged_in_paragraph": "Mozesz zobaczyc ta strone poniewaz jestes zalogowany.",
+  "logged_in_header": "Witaj",
+  "logged_in_paragraph": "Tutaj mozesz zmienic swoje ustawienia",
   "logged_in_redirect_login": "Zaloguj sie aby moc odwiedzic ta strone.",
 
   "verify_email_header": "Przejdz na strone glowna.",
@@ -49,5 +49,6 @@
   "verify_email_already": "Email zostal juz zweryfikowany!",
 
   "price_alert": "Nastąpiła nagła zmiana ceny",
-  "no_notification": "Brak nowy powiadomień"
+  "no_notification": "Brak nowy powiadomień",
+  "favorite_market": "Ulubiona giełda"
 }

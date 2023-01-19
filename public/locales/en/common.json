@@ -40,8 +40,8 @@
   "register_form_password_confirm": "Confirm password",
   "register_form_redirect_login": "Already have an account? Log in here!",
 
-  "logged_in_header": "Protected Page",
-  "logged_in_paragraph": "You can view this page because you are signed in.",
+  "logged_in_header": "Hello",
+  "logged_in_paragraph": "You can change your settings here.",
   "logged_in_redirect_login": "Please log in to see this page.",
 
   "verify_email_header": "Go to main page.",
@@ -49,5 +49,6 @@
   "verify_email_already": "Email already verified!",
 
   "price_alert": "There's been a sudden change in price",
-  "no_notification": "There are no new notifications"
+  "no_notification": "There are no new notifications",
+  "favorite_market": "Favorite market"
 }

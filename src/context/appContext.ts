@@ -1,3 +1,4 @@
+import { MarketType } from "@coin-view/markets";
 import { CurrencyType } from "@coin-view/types";
 import React from "react";
 
@@ -9,6 +10,7 @@ type AppContextType = {
   thresholds: Record<number, number>;
   notificationsMenuOpen: boolean;
   hamburgerMenuOpen: boolean;
+  favoriteMarketName: MarketType | null;
 };
 
 export const AppContext = React.createContext<AppContextType>({
@@ -17,4 +19,5 @@ export const AppContext = React.createContext<AppContextType>({
   thresholds: {},
   notificationsMenuOpen: false,
   hamburgerMenuOpen: false,
+  favoriteMarketName: null,
 });

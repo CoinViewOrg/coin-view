@@ -114,10 +114,10 @@
 .cryptoDetails {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   justify-items: center;
   align-items: start;
-  grid-template-areas: "thresholdSelect chart chart .";
+  grid-template-areas: "thresholdSelect chart chart chart marketButton";
   position: relative;
 }
 
@@ -128,13 +128,18 @@
   align-items: center;
 }
 
+.marketButton {
+  grid-area: marketButton;
+}
+
 .chart {
   grid-area: chart;
 }
 
+
 @media (max-width: 768px) {
   .cryptoDetails {
-    grid-template-columns: 100%;
-    grid-template-areas: "thresholdSelect" "chart";
+    grid-template-columns: 1fr 1fr 2fr 3fr 4fr 5fr;
+    grid-template-areas: "thresholdSelect  thresholdSelect thresholdSelect thresholdSelect thresholdSelect marketButton" "chart chart chart chart chart chart";
   }
 }
