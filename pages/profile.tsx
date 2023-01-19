@@ -4,7 +4,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import React, { useContext } from "react";
 import styles from "../styles/Profile.module.css";
-import { useCustomTranslation } from "@coin-view/client";
+import { MarketButton, useCustomTranslation } from "@coin-view/client";
 import {
   getMarketImageSrc,
   MarketType,
@@ -55,20 +55,12 @@ const Profile: NextPage = (props) => {
               <p>{t("favorite_market")}</p>
               <div className={styles.marketOptions}>
                 {MARKET_NAMES.map((marketName) => (
-                  <div
+                  <MarketButton
                     key={marketName}
-                    className={cx(styles.marketOption, {
-                      [styles.selected]: selectedMarket === marketName,
-                    })}
-                    onClick={() => setNewMarket(marketName)}
-                  >
-                    <Image
-                      width={48}
-                      height={48}
-                      src={getMarketImageSrc(marketName)}
-                    />{" "}
-                    <span>{marketName.toLowerCase()}</span>
-                  </div>
+                    marketName={marketName}
+                    onClick={setNewMarket}
+                    selected={selectedMarket === marketName}
+                  />
                 ))}
               </div>
             </div>

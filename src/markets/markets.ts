@@ -12,7 +12,7 @@ const MARKET_URLS = {
     `https://www.binance.com/${locale}/trade/${cryptoSymbol.toUpperCase()}_BUSD`,
 
   COINBASE: ({ currency, cryptoSymbol }: BaseProps) =>
-    `https://exchange.coinbase.com/trade/${cryptoSymbol.toUpperCase()}-${currency.toUpperCase()}`,
+    `https://exchange.coinbase.com/trade/${cryptoSymbol.toUpperCase()}-USD`,
 
   KRAKEN: ({ currency, cryptoSlug }: BaseProps) =>
     `https://www.kraken.com/prices/${cryptoSlug.toLowerCase()}?quote=${currency.toLowerCase()}`,
