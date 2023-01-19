@@ -22,13 +22,15 @@ export const NotificationsMenu = ({
   const { notificationsMenuOpen: menuOpen } = React.useContext(AppContext);
 
   React.useEffect(() => {
-    const response = fetch("api/notifications?param=count")
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        const { error, notifications } = json;
-        setNotificationsCount(notifications[0].count);
-      });
+    if (status === "authenticated") {
+      const response = fetch("api/notifications?param=count")
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+          const { error, notifications } = json;
+          setNotificationsCount(notifications[0].count);
+        });
+    }
   }, []);
 
   const handleNotificationsClick = React.useCallback(async () => {
