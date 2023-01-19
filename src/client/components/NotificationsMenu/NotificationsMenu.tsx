@@ -68,7 +68,7 @@ export const NotificationsMenu = () => {
                         ))}
                       </>
                     ) : (
-                      <p>Brak nowych powiadomień</p>
+                      <p>{t("no_notification")}</p>
                     )}
                   </>
                 )}

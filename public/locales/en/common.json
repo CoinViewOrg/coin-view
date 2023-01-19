@@ -49,5 +49,6 @@
   "verify_email_already": "Email already verified!",
 
   "price_alert": "There's been a sudden change in price",
-  "notification": "Notification"
+  "notification": "Notification",
+  "no_notification": "There are no new notifications"
 }

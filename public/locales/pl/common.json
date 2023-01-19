@@ -49,5 +49,6 @@
   "verify_email_already": "Email zostal juz zweryfikowany!",
 
   "price_alert": "Nastąpiła nagła zmiana ceny",
-  "notification": "Powiadomienie"
+  "notification": "Powiadomienie",
+  "no_notification": "Brak nowy powiadomień"
 }
