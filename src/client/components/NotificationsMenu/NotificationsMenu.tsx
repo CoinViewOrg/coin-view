@@ -3,16 +3,14 @@ import React from "react";
 import { NotificationsIcon } from "./NotificationsIcon";
 import styles from "./NotificationsMenu.module.css";
 import cx from "classnames";
-import Image from "next/future/image";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { LoadingSpinner, useCustomTranslation } from "@coin-view/client";
 import { NotificationsMenuItem } from "@coin-view/client";
 
 
 
 export const NotificationsMenu = () => {
-  const { push, pathname, replace } = useRouter();
-  const { t, language } = useCustomTranslation();
+  const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [notifications, setNotifications] = React.useState<any[]>([]);
@@ -27,7 +25,6 @@ export const NotificationsMenu = () => {
       const {error, notifications} = await response.json();
       setLoading(false);
       setNotifications(notifications);
-      console.log(notifications);
     }
     else
     {
