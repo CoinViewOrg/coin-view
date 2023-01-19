@@ -5,7 +5,7 @@ import styles from "./NotificationsMenu.module.css";
 import cx from "classnames";
 import Image from "next/future/image";
 import { signOut, useSession } from "next-auth/react";
-import { useCustomTranslation } from "@coin-view/client";
+import { LoadingSpinner, useCustomTranslation } from "@coin-view/client";
 
 
 
@@ -16,15 +16,22 @@ export const NotificationsMenu = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const { language } = useCustomTranslation();
   const [notifications, setNotifications] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(false);
 
   const handleNotificationsClick = async () => {
     setMenuOpen((open) => !open);
     if(!menuOpen)
     {
+      setLoading(true);
       const response = await fetch("api/notifications");
       const {error, notifications} = await response.json();
+      setLoading(false);
       setNotifications(notifications);
       console.log(notifications);
+    }
+    else
+    {
+      setNotifications([]);
     }
   }
 
@@ -47,23 +54,32 @@ export const NotificationsMenu = () => {
       {menuOpen && (
         <>
         <div className={styles.menuContent}>
-          {notifications.length > 0 ? (
-            <>  
-            {notifications?.map((notification) => 
-              <div key={notification.NotificationId.toString()} className={cx(styles.menuItem)}>
-                <Image
-                  className={cx("svg-adaptive", styles.menuIcon)}
-                  src="/alert.svg"
-                  width={25}
-                  height={25}
-                  alt="alert"
-                />
-                <p dangerouslySetInnerHTML={{__html: createNotificationHeaderText(notification.Type) as string}}></p>
-              </div>
-            )}
+          {loading && (
+            <div className={styles.spinner}>
+              <LoadingSpinner/>
+            </div>
+          )}
+          {!loading && (
+            <>
+              {notifications.length > 0 ? (
+                <>  
+                {notifications?.map((notification) => 
+                  <div key={notification.NotificationId.toString()} className={cx(styles.menuItem)}>
+                    <Image
+                      className={cx("svg-adaptive", styles.menuIcon)}
+                      src="/alert.svg"
+                      width={25}
+                      height={25}
+                      alt="alert"
+                    />
+                    <p dangerouslySetInnerHTML={{__html: createNotificationHeaderText(notification.Type) as string}}></p>
+                  </div>
+                )}
+                </>
+              ) : (
+                <p>Brak nowych powiadomień</p> 
+              )}
             </>
-          ) : (
-            <p>Brak nowych powiadomień</p> 
           )}
         </div>
         </>

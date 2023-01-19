@@ -12,6 +12,7 @@
     position: absolute;
     top: 36px;
     width: 350px;
+    min-height: 130px;
     left: -310px;
     background-color: white;
     border-radius: 10px;
@@ -59,6 +60,12 @@
     width: 25px;
     height: 25px;
   } */
+
+  .spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+  }
 
   .menuItem > .menuButton:hover {
     cursor: pointer;
