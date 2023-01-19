@@ -27,10 +27,12 @@ export const NotificationsMenu = () => {
     }
   };
 
-  function createNotificationHeaderText(type: string) {
+  function createNotificationHeaderText(type: string): string {
     if (type === "PRICE_ALERT") {
       return t("price_alert");
     }
+
+    return t("notification");
   }
 
   return (
@@ -58,11 +60,9 @@ export const NotificationsMenu = () => {
                         {notifications?.map((notification) => (
                           <NotificationsMenuItem
                             key={notification.NotificationId.toString()}
-                            header={
-                              createNotificationHeaderText(
-                                notification.Type
-                              ) as string
-                            }
+                            header={createNotificationHeaderText(
+                              notification.Type
+                            )}
                             content={notification.Content}
                           />
                         ))}

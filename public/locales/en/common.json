@@ -3,12 +3,12 @@
   "find_by_name": "Find by name...",
   "all": "All",
   "verify_invalid_request_id": "Invalid request id!",
-  
+
   "language": "Language",
   "login": "Login",
   "register": "Register",
   "sign_out": "Sign out",
- 
+
   "rank": "Rank",
   "name": "Name",
   "price": "Price",
@@ -48,5 +48,6 @@
   "verify_email_succesful": "Successfully verified!",
   "verify_email_already": "Email already verified!",
 
-  "price_alert": "There's been a sudden change in price"
+  "price_alert": "There's been a sudden change in price",
+  "notification": "Notification"
 }

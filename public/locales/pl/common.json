@@ -3,7 +3,7 @@
   "find_by_name": "Szukaj po nazwie...",
   "all": "Wszystkie",
   "verify_invalid_request_id": "Nieprawidłowe żądanie!",
-  
+
   "language": "Jezyk",
   "login": "Zaloguj sie",
   "register": "Zarejestruj sie",
@@ -13,7 +13,7 @@
   "name": "Nazwa",
   "price": "Cena",
   "volume24h": "Wolumen 24h",
-  
+
   "High_price": "Wysoka cena",
   "Low_price": "Niska cena",
   "chart_no_hist_data": "Brak danych historycznych dla tej kryptowaluty :(",
@@ -48,5 +48,6 @@
   "verify_email_succesful": "Zweryfikowano pomyslnie!",
   "verify_email_already": "Email zostal juz zweryfikowany!",
 
-  "price_alert": "Nastąpiła nagła zmiana ceny"
+  "price_alert": "Nastąpiła nagła zmiana ceny",
+  "notification": "Powiadomienie"
 }
