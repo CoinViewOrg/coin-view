@@ -7,8 +7,6 @@ import { useSession } from "next-auth/react";
 import { LoadingSpinner, useCustomTranslation } from "@coin-view/client";
 import { NotificationsMenuItem } from "@coin-view/client";
 
-
-
 export const NotificationsMenu = () => {
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
@@ -18,67 +16,65 @@ export const NotificationsMenu = () => {
 
   const handleNotificationsClick = async () => {
     setMenuOpen((open) => !open);
-    if(!menuOpen)
-    {
+    if (!menuOpen) {
       setLoading(true);
       const response = await fetch("api/notifications");
-      const {error, notifications} = await response.json();
+      const { error, notifications } = await response.json();
       setLoading(false);
       setNotifications(notifications);
-    }
-    else
-    {
+    } else {
       setNotifications([]);
     }
-  }
+  };
 
   function createNotificationHeaderText(type: string) {
-    if (type === "PRICE_ALERT")
-    {
+    if (type === "PRICE_ALERT") {
       return t("price_alert");
     }
   }
 
   return (
     <div className={styles.menu}>
-      {status !== "authenticated" ? (
-        null
-      ) : (
+      {status !== "authenticated" ? null : (
         <>
-        <NotificationsIcon
-          width={32}
-          height={32}
-          className={cx("svg-adaptive", styles.bell)}
-          onClick={handleNotificationsClick}
-        />
-        {menuOpen && (
-          <>
-          <div className={styles.menuContent}>
-            {loading && (
-              <div className={styles.spinner}>
-                <LoadingSpinner/>
-              </div>
-            )}
-            {!loading && (
-              <>
-                {notifications?.length > 0 ? (
-                  <>  
-                  {notifications?.map((notification) => 
-                    <NotificationsMenuItem 
-                    key = {notification.NotificationId.toString()} 
-                    header = {createNotificationHeaderText(notification.Type) as string}
-                    content = {notification.Content} 
-                    />
-                  )}
-                  </>
-                ) : (
-                  <p>Brak nowych powiadomień</p> 
+          <NotificationsIcon
+            width={32}
+            height={32}
+            className={cx("svg-adaptive", styles.bell)}
+            onClick={handleNotificationsClick}
+          />
+          {menuOpen && (
+            <>
+              <div className={styles.menuContent}>
+                {loading && (
+                  <div className={styles.spinner}>
+                    <LoadingSpinner />
+                  </div>
                 )}
-              </>
-            )}
-          </div>
-          </>
-        )}
+                {!loading && (
+                  <>
+                    {notifications?.length > 0 ? (
+                      <>
+                        {notifications?.map((notification) => (
+                          <NotificationsMenuItem
+                            key={notification.NotificationId.toString()}
+                            header={
+                              createNotificationHeaderText(
+                                notification.Type
+                              ) as string
+                            }
+                            content={notification.Content}
+                          />
+                        ))}
+                      </>
+                    ) : (
+                      <p>Brak nowych powiadomień</p>
+                    )}
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

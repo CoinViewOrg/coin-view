@@ -1,60 +1,59 @@
 .menuItem {
-margin-bottom: 1em;
-display: flex;
-flex-direction: column;
-width: 100%;
-align-items: center;
-justify-content: flex-start;
-cursor: pointer;
-padding: 0.5em;
-border-radius: 10px;
-transition: 0.2s all;
-user-select: none;
+  margin-bottom: 1em;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  padding: 0.5em;
+  border-radius: 10px;
+  transition: 0.2s all;
+  user-select: none;
 }
 
 .menuItem:last-child {
-margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .menuItem:hover {
-background-color: #c5c6c7;
+  background-color: #c5c6c7;
 }
 
 .menuItem > .wrapper {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: flex-start;
-    cursor: pointer;
-    transition: 0.2s all;
-    user-select: none;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  transition: 0.2s all;
+  user-select: none;
 }
 
 .menuItem > .wrapper > .menuIcon {
-    margin-right: 1em;
+  margin-right: 1em;
 }
 
 .menuItem > .contentWrapper {
-    background-color: #1b1b1b;
-    border-radius: 10px;
-    transition: all 0.7s linear;
-    max-height: 0;
-    overflow: hidden;
+  background-color: #1b1b1b;
+  border-radius: 10px;
+  transition: all 0.7s linear;
+  max-height: 0;
+  overflow: hidden;
 }
 
 .contentWrapper.notificationActive {
-    max-height: 500px;
-    transition: all 1.5s linear;
+  max-height: 500px;
+  transition: all 1.5s linear;
 }
 
 @media (prefers-color-scheme: dark) {
-.menuContent {
+  .menuContent {
     background-color: #282828;
     color: #c5c5c5;
-}
+  }
 
-.menuItem:hover {
+  .menuItem:hover {
     background-color: #3a3a3a;
+  }
 }
-}
-  
