@@ -140,7 +140,7 @@ export async function getServerSideProps({
       session: JSON.parse(JSON.stringify(session)),
       favorites,
       thresholds,
-      favoriteMarketName: favoriteMarket.MarketName,
+      favoriteMarketName: favoriteMarket,
       ...(await serverSideTranslations(locale, ["common"])),
     },
   };

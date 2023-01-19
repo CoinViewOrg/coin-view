@@ -320,7 +320,7 @@ export async function getServerSideProps({
       session: dehydrate(session),
       favorites: favorites,
       thresholds: thresholds,
-      favoriteMarketName: favoriteMarket.MarketName,
+      favoriteMarketName: favoriteMarket,
       ...(await serverSideTranslations(locale, ["common"])),
     },
   };

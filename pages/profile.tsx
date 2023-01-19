@@ -97,7 +97,7 @@ export async function getServerSideProps({
   return {
     props: {
       session: JSON.parse(JSON.stringify(session)),
-      favoriteMarketName: favoriteMarket.MarketName,
+      favoriteMarketName: favoriteMarket,
       ...(await serverSideTranslations(locale, ["common"])),
     },
   };
