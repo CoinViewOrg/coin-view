@@ -14,69 +14,70 @@ export const NotificationsMenu = () => {
   const [notifications, setNotifications] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(false);
 
-  const handleNotificationsClick = async () => {
+  const handleNotificationsClick = React.useCallback(async () => {
     setMenuOpen((open) => !open);
-    if (!menuOpen) {
+    if (!menuOpen && notifications.length === 0) {
       setLoading(true);
       const response = await fetch("api/notifications");
       const { error, notifications } = await response.json();
       setLoading(false);
       setNotifications(notifications);
-    } else {
-      setNotifications([]);
     }
-  };
+  }, [menuOpen, notifications]);
 
-  function createNotificationHeaderText(type: string): string {
-    if (type === "PRICE_ALERT") {
-      return t("price_alert");
-    }
+  const notificationHeaders = React.useCallback(
+    (type: string): string => {
+      if (type === "PRICE_ALERT") {
+        return t("price_alert");
+      }
 
-    return type;
+      return type;
+    },
+    [notifications]
+  );
+
+  if (status !== "authenticated") {
+    return null;
   }
 
   return (
     <div className={styles.menu}>
-      {status !== "authenticated" ? null : (
-        <>
-          <NotificationsIcon
-            width={32}
-            height={32}
-            className={cx("svg-adaptive", styles.bell)}
-            onClick={handleNotificationsClick}
-          />
-          {menuOpen && (
-            <>
-              <div className={styles.menuContent}>
-                {loading && (
-                  <div className={styles.spinner}>
-                    <LoadingSpinner />
-                  </div>
-                )}
-                {!loading && (
-                  <>
-                    {notifications?.length > 0 ? (
-                      <>
-                        {notifications?.map((notification) => (
-                          <NotificationsMenuItem
-                            key={notification.NotificationId.toString()}
-                            header={createNotificationHeaderText(
-                              notification.Type
-                            )}
-                            content={notification.Content}
-                          />
-                        ))}
-                      </>
-                    ) : (
-                      <p>{t("no_notification")}</p>
-                    )}
-                  </>
-                )}
-              </div>
-            </>
-          )}
-        </>
-      )}
+      <>
+        <NotificationsIcon
+          width={32}
+          height={32}
+          className={cx("svg-adaptive", styles.bell)}
+          onClick={handleNotificationsClick}
+        />
+        {menuOpen && (
+          <>
+            <div className={styles.menuContent}>
+              {loading && (
+                <div className={styles.spinner}>
+                  <LoadingSpinner />
+                </div>
+              )}
+              {!loading && (
+                <>
+                  {notifications?.length > 0 ? (
+                    <>
+                      {notifications?.map((notification) => (
+                        <NotificationsMenuItem
+                          key={notification.NotificationId.toString()}
+                          header={notificationHeaders(notification.Type)}
+                          content={notification.Content}
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    <p>{t("no_notification")}</p>
+                  )}
+                </>
+              )}
+            </div>
+          </>
+        )}
+      </>
     </div>
   );
 };

@@ -12,9 +12,9 @@ export const NotificationsMenuItem = ({
 }) => {
   const [notificationActive, setNotificationActive] = React.useState(false);
 
-  const handleClick = () => {
+  const handleClick = React.useCallback(() => {
     setNotificationActive((notificationActive) => !notificationActive);
-  };
+  }, [notificationActive]);
 
   return (
     <div className={cx(styles.menuItem)}>
@@ -26,7 +26,7 @@ export const NotificationsMenuItem = ({
           height={25}
           alt="alert"
         />
-        <p dangerouslySetInnerHTML={{ __html: header }}></p>
+        <p>{header}</p>
       </div>
       <div
         className={cx(styles.contentWrapper, {
