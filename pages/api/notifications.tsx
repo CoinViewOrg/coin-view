@@ -12,7 +12,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-
+  const param = req.query.param as string;
   const session = await getSession({ req });
 
   // @ts-ignore
@@ -24,8 +24,13 @@ export default async function handler(
 
   let response;
 
-  const findNotification = `SELECT * FROM UserNotifications where Ua_Id = '${userid}'`;
-  response = (await querySQL(findNotification)) as Array<any>;
+  if (param === "count") {
+    const countNotifications = `SELECT COUNT(*) as count FROM UserNotifications where Ua_Id = '${userid}'`;
+    response = (await querySQL(countNotifications)) as Array<any>;
+  } else if (param === "fetch") {
+    const findNotification = `SELECT * FROM UserNotifications where Ua_Id = '${userid}'`;
+    response = (await querySQL(findNotification)) as Array<any>;
+  }
 
   res.status(200).json({ error: 0, notifications: response });
 }
