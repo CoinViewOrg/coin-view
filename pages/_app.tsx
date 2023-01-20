@@ -38,15 +38,15 @@ function MyApp({
   const [hamburgerMenuOpen, setHamburgerMenuOpen] = React.useState(false);
   const { push } = useRouter();
 
-  const openHamburger = () => {
+  const openHamburger = React.useCallback(() => {
     setHamburgerMenuOpen((open) => !open);
     setNotificationsMenuOpen(false);
-  };
+  }, []);
 
-  const openNotifications = () => {
+  const openNotifications = React.useCallback(() => {
     setNotificationsMenuOpen((open) => !open);
     setHamburgerMenuOpen(false);
-  };
+  }, []);
 
   return (
     <>
