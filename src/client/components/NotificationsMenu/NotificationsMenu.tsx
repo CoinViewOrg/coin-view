@@ -31,7 +31,7 @@ export const NotificationsMenu = ({
           setNotificationsCount(notifications[0].count);
         });
     }
-  }, []);
+  }, [status]);
 
   const handleNotificationsClick = React.useCallback(async () => {
     onOpenCallback();
@@ -43,7 +43,7 @@ export const NotificationsMenu = ({
       setNotifications(notifications);
       setNotificationsCount(0);
     }
-  }, [menuOpen, notifications]);
+  }, [menuOpen, notifications, onOpenCallback]);
 
   const notificationHeaders = React.useCallback(
     (type: string): string => {
