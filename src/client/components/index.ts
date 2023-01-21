@@ -7,6 +7,7 @@ export * from "./CryptoChart";
 export * from "./SearchBar";
 export * from "./CryptoList";
 export * from "./HamburgerMenu";
+export * from "./NotificationsMenu";
 export * from "./Forms";
 export * from "./ListSwitcher";
 export * from "./ThresholdSelect";

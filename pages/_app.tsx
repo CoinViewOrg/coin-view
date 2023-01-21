@@ -6,6 +6,7 @@ import {
   CurrencyToggler,
   HamburgerMenu,
   useCurrencyToggle,
+  NotificationsMenu,
 } from "@coin-view/client";
 import styles from "../styles/App.module.css";
 import { useRouter } from "next/router";
@@ -32,7 +33,20 @@ function MyApp({
   favoriteMarketName: MarketType | null;
 }>) {
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
+  const [notificationsMenuOpen, setNotificationsMenuOpen] =
+    React.useState(false);
+  const [hamburgerMenuOpen, setHamburgerMenuOpen] = React.useState(false);
   const { push } = useRouter();
+
+  const openHamburger = React.useCallback(() => {
+    setHamburgerMenuOpen((open) => !open);
+    setNotificationsMenuOpen(false);
+  }, []);
+
+  const openNotifications = React.useCallback(() => {
+    setNotificationsMenuOpen((open) => !open);
+    setHamburgerMenuOpen(false);
+  }, []);
 
   return (
     <>
@@ -65,12 +79,18 @@ function MyApp({
             currency,
             favorites: pageProps.favorites || [],
             thresholds: pageProps.thresholds || {},
+            notificationsMenuOpen,
+            hamburgerMenuOpen,
             favoriteMarketName: pageProps.favoriteMarketName,
           }}
         >
           <div className={styles.container}>
             <header className={styles.header}>
-              <HamburgerMenu toggleCurrency={toggleCurrency} />
+              <NotificationsMenu onOpenCallback={openNotifications} />
+              <HamburgerMenu
+                onOpenCallback={openHamburger}
+                toggleCurrency={toggleCurrency}
+              />
             </header>
             <main className={styles.main}>
               <div className={styles.mainLogo} onClick={() => push("/list")}>

@@ -34,7 +34,7 @@ def add_notification(cur, user_id, type, text):
     ts = time.time()
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     content = conn.escape_string(text)
-    qry = "insert into UserNotifications (Ua_Id, Content, Date, Type) values (%d, '%s', '%s', '%s')" % (user_id, content, timestamp, type)
+    qry = "insert into UserNotifications (Ua_Id, Content, Date, Type, Seen) values (%d, '%s', '%s', '%s', 0)" % (user_id, content, timestamp, type)
     cur.execute(qry)
 
 def send_email(recipient, text):
@@ -47,12 +47,6 @@ def send_email(recipient, text):
     BODY_HTML = """<html>
     <head>
         <style>
-            .green {
-                color: green;
-            }
-            .red {
-                color: red;
-            }
         </style>
     </head>
     <body>
@@ -131,7 +125,7 @@ def lambda_handler(event, context):
             if (abs(crypto_change) >= threshold):
                 color_class = 'green' if crypto_change > 0 else 'red'
                 arrow = '&#8599;' if crypto_change > 0 else '&#8600;'
-                item = ("%s : <b class='%s'>%s %f%%</b> - current price: <b>%f$</b>") % (
+                item = ("%s : <b style='color: %s;'>%s %f%%</b> - current price: <b>%f$</b>") % (
                     crypto_name, color_class, arrow, crypto_change, crypto_price)
 
                 if (userid in alerts_to_send_per_user):

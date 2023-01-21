@@ -1,0 +1,14 @@
+.badgeWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: rgb(228, 66, 66);
+  color: white;
+  font-size: 0.9rem;
+  min-width: 19px;
+  min-height: 19px;
+  border-radius: 50%;
+  z-index: 90;
+  left: 15px;
+}
