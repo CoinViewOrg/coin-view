@@ -43,7 +43,7 @@
   }
 }
 
-@media (max-width: 375px) {
+@media (max-width: 500px) {
   .menuContent {
     width: 100vw;
     right: -68px;
