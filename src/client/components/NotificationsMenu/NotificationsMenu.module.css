@@ -13,7 +13,8 @@
   top: 36px;
   width: 360px;
   min-height: 130px;
-  left: -315px;
+  max-height: 90vh;
+  right: 0;
   background-color: white;
   border-radius: 10px;
   padding: 1em;
@@ -22,6 +23,7 @@
   flex-direction: column;
   align-items: center;
   border: solid 1px #858585;
+  overflow-y: auto;
 }
 
 .spinner {
@@ -38,5 +40,12 @@
 
   .menuItem:hover {
     background-color: #3a3a3a;
+  }
+}
+
+@media (max-width: 375px) {
+  .menuContent {
+    width: 100vw;
+    right: -68px;
   }
 }
