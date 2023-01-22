@@ -37,10 +37,6 @@
     background-color: #282828;
     color: #c5c5c5;
   }
-
-  .menuItem:hover {
-    background-color: #3a3a3a;
-  }
 }
 
 @media (max-width: 500px) {
