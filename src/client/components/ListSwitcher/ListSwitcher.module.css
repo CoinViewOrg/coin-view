@@ -14,8 +14,8 @@
   box-sizing: border-box;
   border: none;
   outline: 1px solid;
-  background-color: transparent;
-  font-family: "LilitaOne-Regular";
+  font-family: "Montserrat";
+  text-transform: uppercase;
 }
 
 .button.active {

@@ -15,16 +15,13 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+[data-theme="dark"] {
   body {
-    color: white;
-    background: black;
+    background-color: #0e0c0b;
+    color: #c5c5c5;
   }
 
-  .svg-adaptive {
+  & .svg-adaptive {
     filter: invert(0.9);
   }
 }
