@@ -7,14 +7,11 @@
   padding: 2em;
   border-radius: 10px;
   border: solid 1px #858585;
+
+  background-color: var(--background-color-2);
+  color: var(--font-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  .container {
-    background-color: #282828;
-    color: #c5c5c5;
-  }
-}
 
 .container h2 {
   margin-bottom: 2em;
