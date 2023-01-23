@@ -43,12 +43,15 @@ export const HamburgerMenu = ({
 
   return (
     <div className={styles.menu}>
-      <HamburgerIcon
+      <Image
+        src={"/menu.svg"}
         width={32}
         height={32}
         className={cx("svg-adaptive", styles.hamburger)}
         onClick={onOpenCallback}
+        alt={"menu"}
       />
+
       {menuOpen && (
         <div className={styles.menuContent}>
           <CurrencyToggler

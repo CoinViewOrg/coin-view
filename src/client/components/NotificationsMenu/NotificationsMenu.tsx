@@ -7,6 +7,7 @@ import { LoadingSpinner, useCustomTranslation } from "@coin-view/client";
 import { NotificationsMenuItem } from "@coin-view/client";
 import { NotificationsBadge } from "./NotificationsBadge";
 import { AppContext } from "@coin-view/context";
+import Image from "next/image";
 
 export const NotificationsMenu = ({
   onOpenCallback,
@@ -66,40 +67,37 @@ export const NotificationsMenu = ({
         {notificationsCount > 0 && (
           <NotificationsBadge count={notificationsCount} />
         )}
-        <NotificationsIcon
+        <Image
+          src={"/bell.svg"}
           width={32}
           height={32}
           className={cx("svg-adaptive", styles.bell)}
           onClick={handleNotificationsClick}
         />
+
         {menuOpen && (
-          <>
-            <div className={styles.menuContent}>
-              {loading && (
-                <div className={styles.spinner}>
-                  <LoadingSpinner />
-                </div>
-              )}
-              {!loading && (
+          <div className={styles.menuContent}>
+            {loading && (
+              <div className={styles.spinner}>
+                <LoadingSpinner />
+              </div>
+            )}
+            {!loading &&
+              (notifications?.length > 0 ? (
                 <>
-                  {notifications?.length > 0 ? (
-                    <>
-                      {notifications?.map((notification) => (
-                        <NotificationsMenuItem
-                          key={notification.NotificationId.toString()}
-                          header={notificationHeaders(notification.Type)}
-                          content={notification.Content}
-                          seen={notification.Seen}
-                        />
-                      ))}
-                    </>
-                  ) : (
-                    <p>{t("no_notification")}</p>
-                  )}
+                  {notifications?.map((notification) => (
+                    <NotificationsMenuItem
+                      key={notification.NotificationId.toString()}
+                      header={notificationHeaders(notification.Type)}
+                      content={notification.Content}
+                      seen={notification.Seen}
+                    />
+                  ))}
                 </>
-              )}
-            </div>
-          </>
+              ) : (
+                <p>{t("no_notification")}</p>
+              ))}
+          </div>
         )}
       </>
     </div>
