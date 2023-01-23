@@ -12,11 +12,13 @@ import { AppContext } from "@coin-view/context";
 type PropsType = {
   toggleCurrency: () => void;
   onOpenCallback: () => void;
+  toggleDarkMode: () => void;
 };
 
 export const HamburgerMenu = ({
   toggleCurrency,
   onOpenCallback,
+  toggleDarkMode,
 }: PropsType) => {
   const { push, pathname, replace } = useRouter();
   const { t } = useCustomTranslation();
@@ -31,7 +33,13 @@ export const HamburgerMenu = ({
     });
   }, [secondLanguage, pathname, replace]);
 
-  const { hamburgerMenuOpen: menuOpen } = React.useContext(AppContext);
+  const { hamburgerMenuOpen: menuOpen, colorTheme } =
+    React.useContext(AppContext);
+
+  const moonIconMode = React.useMemo(
+    () => (colorTheme === "dark" ? "filled" : "empty"),
+    [colorTheme]
+  );
 
   return (
     <div className={styles.menu}>
@@ -74,6 +82,16 @@ export const HamburgerMenu = ({
             >
               PL
             </span>
+          </div>
+          <div className={cx(styles.menuItem)} onClick={toggleDarkMode}>
+            <Image
+              className={cx("svg-adaptive", styles.menuIcon)}
+              src={`/moon-${moonIconMode}.svg`}
+              width={30}
+              height={30}
+              alt="Dark mode"
+            />
+            <span>{t("dark_mode")}</span>
           </div>
           {status !== "authenticated" ? (
             <>

@@ -48,7 +48,17 @@ function MyApp({
     setHamburgerMenuOpen(false);
   }, []);
 
-  const [colorTheme, setColorTheme] = React.useState<ColorTheme>("light");
+  /**
+   * @todo
+   * move state, toggler and useEffect to a separate hook
+   */
+  const [colorTheme, setColorTheme] = React.useState<ColorTheme>("dark");
+
+  const toggleDarkMode = React.useCallback(
+    () => setColorTheme((theme) => (theme === "dark" ? "light" : "dark")),
+    []
+  );
+
   React.useEffect(() => {
     document.documentElement.setAttribute("data-theme", colorTheme);
   }, [colorTheme]);
@@ -71,6 +81,10 @@ function MyApp({
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Montserrat"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
         />
       </Head>
 
@@ -101,6 +115,7 @@ function MyApp({
               <HamburgerMenu
                 onOpenCallback={openHamburger}
                 toggleCurrency={toggleCurrency}
+                toggleDarkMode={toggleDarkMode}
               />
             </header>
             <main className={styles.main}>
