@@ -15,7 +15,6 @@
   min-height: 130px;
   max-height: 90vh;
   right: 0;
-  background-color: white;
   border-radius: 10px;
   padding: 1em;
   z-index: 1;
@@ -24,6 +23,9 @@
   align-items: center;
   border: solid 1px #858585;
   overflow-y: auto;
+
+  background-color: var(--background-color);
+  color: var(--font-color);
 }
 
 .spinner {
@@ -32,12 +34,6 @@
   top: 50%;
 }
 
-@media (prefers-color-scheme: dark) {
-  .menuContent {
-    background-color: #282828;
-    color: #c5c5c5;
-  }
-}
 
 @media (max-width: 500px) {
   .menuContent {

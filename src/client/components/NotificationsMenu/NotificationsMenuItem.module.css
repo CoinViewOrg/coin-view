@@ -10,6 +10,7 @@
   border-radius: 10px;
   transition: 0.2s all;
   user-select: none;
+  background-color: var(--background-color-2);
 }
 
 .menuItem:last-child {
@@ -17,8 +18,14 @@
 }
 
 .menuItem:hover {
-  background-color: #c5c6c7;
+  background-color: var(--background-color-3);
 }
+
+
+.menuItem > .contentWrapper {
+  background-color: var(--background-color-4);
+}
+
 
 .menuItem > .wrapper {
   display: flex;
@@ -35,7 +42,6 @@
 }
 
 .menuItem > .contentWrapper {
-  background-color: rgb(236, 236, 236);
   border-radius: 10px;
   transition: all 0.7s linear;
   max-height: 0;
@@ -65,15 +71,4 @@
   border-radius: 50%;
   z-index: 90;
   right: 21px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .menuItem > .contentWrapper {
-    background-color: #1b1b1b;
-    color: #c5c5c5;
-  }
-
-  .menuItem:hover {
-    background-color: #3a3a3a;
-  }
 }

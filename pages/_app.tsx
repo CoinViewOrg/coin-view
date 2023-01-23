@@ -1,4 +1,4 @@
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
@@ -11,7 +11,7 @@ import {
 import styles from "../styles/App.module.css";
 import { useRouter } from "next/router";
 import React from "react";
-import { AppContext, defaultCurrency } from "@coin-view/context";
+import { AppContext, ColorTheme, defaultCurrency } from "@coin-view/context";
 import Image from "next/future/image";
 import { CoinListItem } from "@coin-view/types";
 import { SessionProvider } from "next-auth/react";
@@ -48,6 +48,21 @@ function MyApp({
     setHamburgerMenuOpen(false);
   }, []);
 
+  /**
+   * @todo
+   * move state, toggler and useEffect to a separate hook
+   */
+  const [colorTheme, setColorTheme] = React.useState<ColorTheme>("dark");
+
+  const toggleDarkMode = React.useCallback(
+    () => setColorTheme((theme) => (theme === "dark" ? "light" : "dark")),
+    []
+  );
+
+  React.useEffect(() => {
+    document.documentElement.setAttribute("data-theme", colorTheme);
+  }, [colorTheme]);
+
   return (
     <>
       <Head>
@@ -62,6 +77,15 @@ function MyApp({
         />
         <meta name="author" content="Karol Rzotki" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="https://use.typekit.net/rta5gsp.css" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Montserrat"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
       </Head>
 
       <Script id="google-tag-manager" strategy="afterInteractive">
@@ -82,6 +106,7 @@ function MyApp({
             notificationsMenuOpen,
             hamburgerMenuOpen,
             favoriteMarketName: pageProps.favoriteMarketName,
+            colorTheme,
           }}
         >
           <div className={styles.container}>
@@ -90,13 +115,14 @@ function MyApp({
               <HamburgerMenu
                 onOpenCallback={openHamburger}
                 toggleCurrency={toggleCurrency}
+                toggleDarkMode={toggleDarkMode}
               />
             </header>
             <main className={styles.main}>
               <div className={styles.mainLogo} onClick={() => push("/list")}>
                 <div className={styles.logoContainer}>
                   <Image
-                    src="/logo-square.svg"
+                    src={`/logo-${colorTheme}.png`}
                     alt="logo"
                     fill
                     sizes="15 vmin"

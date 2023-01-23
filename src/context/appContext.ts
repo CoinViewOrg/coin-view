@@ -4,6 +4,8 @@ import React from "react";
 
 export const defaultCurrency = "PLN";
 
+export type ColorTheme = "dark" | "light";
+
 type AppContextType = {
   currency: CurrencyType;
   favorites: number[];
@@ -11,6 +13,7 @@ type AppContextType = {
   notificationsMenuOpen: boolean;
   hamburgerMenuOpen: boolean;
   favoriteMarketName: MarketType | null;
+  colorTheme: ColorTheme;
 };
 
 export const AppContext = React.createContext<AppContextType>({
@@ -20,4 +23,5 @@ export const AppContext = React.createContext<AppContextType>({
   notificationsMenuOpen: false,
   hamburgerMenuOpen: false,
   favoriteMarketName: null,
+  colorTheme: "light",
 });
