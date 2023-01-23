@@ -195,7 +195,7 @@ export const CryptoList = ({
 
               <MarketButton
                 className={styles.marketButton}
-                caption="Buy on"
+                caption={t("buy_on")}
                 marketName={market}
                 onClick={() => openInNewTab(item.marketUrl)}
               />

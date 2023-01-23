@@ -50,5 +50,6 @@
 
   "price_alert": "Nastąpiła nagła zmiana ceny",
   "no_notification": "Brak nowych powiadomień",
-  "favorite_market": "Ulubiona giełda"
+  "favorite_market": "Ulubiona giełda",
+  "buy_on": "Kup na"
 }
