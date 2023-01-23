@@ -6,7 +6,7 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
 
   if (
     currentEnv === "production" &&
-    req.nextUrl.hostname.includes("coin-view.krzotki.com")
+    req.headers.get("host")?.includes("coin-view.krzotki.com")
   ) {
     return NextResponse.redirect(
       `https://coin-view.herokuapp.com${req.nextUrl.pathname}`,
