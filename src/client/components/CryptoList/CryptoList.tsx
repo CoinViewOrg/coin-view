@@ -9,10 +9,9 @@ import { HistoricalDataType } from "../../hooks";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { AppContext } from "@coin-view/context";
 import Image from "next/image";
-import { Button, MarketButton, ThresholdSelect } from "@coin-view/client";
+import { MarketButton, ThresholdSelect } from "@coin-view/client";
 import { useCustomTranslation } from "@coin-view/client";
-import { getMarketImageSrc, getMarketUrlByType } from "@coin-view/markets";
-import { useRouter } from "next/router";
+import { getMarketUrlByType } from "@coin-view/markets";
 
 type PropsType = {
   loading: boolean;
@@ -69,11 +68,6 @@ export const CryptoList = ({
   const market = React.useMemo(
     () => favoriteMarketName || "COINBASE",
     [favoriteMarketName]
-  );
-
-  const marketImageSrc = React.useMemo(
-    () => getMarketImageSrc(market),
-    [market]
   );
 
   const listWithLinksToMarkets = React.useMemo(
@@ -150,23 +144,26 @@ export const CryptoList = ({
               onClick={(evt) => addToFavorites(evt, item.id)}
             >
               {favorites?.includes(item.id) ? (
-                <Image src={"/star-full.svg"} width={15} height={15} />
+                <Image src={"/star-full.svg"} width={15} height={15} alt="star" />
               ) : (
                 <Image
                   src={"/star-empty.svg"}
                   className="svg-adaptive"
                   width={15}
                   height={15}
+                  alt='empty star'
                 />
               )}
             </div>
             <div className={styles.gridRank}>{item.cmc_rank}</div>
             <div className={styles.gridIcon}>
-              <img
+              <Image
                 alt={`${item.symbol} logo`}
                 className={styles.cryptoIcon}
                 src={metaList[item.id]?.logo}
-              ></img>
+                width={22}
+                height={22}
+              ></Image>
             </div>
             <div className={styles.gridName}>{item.name} </div>
             <div className={styles.gridPrice}>

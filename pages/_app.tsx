@@ -1,4 +1,5 @@
 import "../styles/globals.scss";
+import "../styles/fonts.css";
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
@@ -77,15 +78,7 @@ function MyApp({
         />
         <meta name="author" content="Karol Rzotki" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="https://use.typekit.net/rta5gsp.css" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Montserrat"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        />
+
       </Head>
 
       <Script id="google-tag-manager" strategy="afterInteractive">
