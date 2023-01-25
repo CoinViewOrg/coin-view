@@ -34,7 +34,12 @@ export const MarketButton = ({
       onClick={handleClick}
     >
       {caption && <span>{caption}</span>}
-      <Image width={size} height={size} src={getMarketImageSrc(marketName)} />
+      <Image
+        width={size}
+        height={size}
+        src={getMarketImageSrc(marketName)}
+        alt={marketName}
+      />
       <span>{marketName.toLowerCase()}</span>
     </div>
   );

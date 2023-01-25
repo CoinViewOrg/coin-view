@@ -1,5 +1,4 @@
 import React from "react";
-import { NotificationsIcon } from "./NotificationsIcon";
 import styles from "./NotificationsMenu.module.css";
 import cx from "classnames";
 import { useSession } from "next-auth/react";
@@ -73,6 +72,7 @@ export const NotificationsMenu = ({
           height={32}
           className={cx("svg-adaptive", styles.bell)}
           onClick={handleNotificationsClick}
+          alt="Notifications"
         />
 
         {menuOpen && (
