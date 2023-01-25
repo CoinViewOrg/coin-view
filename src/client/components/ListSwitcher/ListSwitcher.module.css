@@ -13,11 +13,12 @@
   border-radius: 5px;
   box-sizing: border-box;
   border: none;
-  outline: 1px solid;
-  background-color: transparent;
-  font-family: "LilitaOne-Regular";
+  font-family: "Montserrat";
+  color: white;
+  background-color: var(--button-color-secondary);
 }
 
 .button.active {
-  box-shadow: inset 0px 0px 15px;
+  background-color: var(--button-color-secondary-active);
+  font-weight: bold;
 }

@@ -17,9 +17,8 @@
 
 .container {
   padding: 0 1rem;
-  font-family: "LilitaOne-Regular";
-  background-color: white;
-  color: black;
+  font-family: "Montserrat";
+
 }
 
 .main {
@@ -57,20 +56,12 @@
 
 .title {
   padding: 0 0.2em;
-  font-family: "Magical", "LilitaOne-Regular", sans-serif;
   margin: 0;
   font-size: 13vmin;
-  color: #3a3a3a;
   line-height: 15vmin;
   height: 13vmin;
-}
 
-@media (prefers-color-scheme: dark) {
-  .container {
-    background-color: #0e0c0b;
-    color: #c5c5c5;
-  }
-  .title {
-    color: #c5c5c5;
-  }
+  font-family: p22-underground-sc, sans-serif;
+  font-weight: 100;
+  font-style: normal;
 }

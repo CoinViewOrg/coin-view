@@ -1,4 +1,4 @@
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
@@ -6,16 +6,18 @@ import {
   CurrencyToggler,
   HamburgerMenu,
   useCurrencyToggle,
+  NotificationsMenu,
 } from "@coin-view/client";
 import styles from "../styles/App.module.css";
 import { useRouter } from "next/router";
 import React from "react";
-import { AppContext, defaultCurrency } from "@coin-view/context";
+import { AppContext, ColorTheme, defaultCurrency } from "@coin-view/context";
 import Image from "next/future/image";
 import { CoinListItem } from "@coin-view/types";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { appWithTranslation } from "next-i18next";
+import { MarketType } from "@coin-view/markets";
 
 const GTM_ID = "G-R8PPSMRFS0";
 
@@ -26,11 +28,40 @@ function MyApp({
   data: CoinListItem[];
   meta: any;
   session: Session;
-  favorites?: number[];
-  thresholds?: Record<number, number>;
+  favorites?: number[] | null;
+  thresholds?: Record<number, number> | null;
+  favoriteMarketName: MarketType | null;
 }>) {
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
+  const [notificationsMenuOpen, setNotificationsMenuOpen] =
+    React.useState(false);
+  const [hamburgerMenuOpen, setHamburgerMenuOpen] = React.useState(false);
   const { push } = useRouter();
+
+  const openHamburger = React.useCallback(() => {
+    setHamburgerMenuOpen((open) => !open);
+    setNotificationsMenuOpen(false);
+  }, []);
+
+  const openNotifications = React.useCallback(() => {
+    setNotificationsMenuOpen((open) => !open);
+    setHamburgerMenuOpen(false);
+  }, []);
+
+  /**
+   * @todo
+   * move state, toggler and useEffect to a separate hook
+   */
+  const [colorTheme, setColorTheme] = React.useState<ColorTheme>("dark");
+
+  const toggleDarkMode = React.useCallback(
+    () => setColorTheme((theme) => (theme === "dark" ? "light" : "dark")),
+    []
+  );
+
+  React.useEffect(() => {
+    document.documentElement.setAttribute("data-theme", colorTheme);
+  }, [colorTheme]);
 
   return (
     <>
@@ -46,6 +77,15 @@ function MyApp({
         />
         <meta name="author" content="Karol Rzotki" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="https://use.typekit.net/rta5gsp.css" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Montserrat"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
       </Head>
 
       <Script id="google-tag-manager" strategy="afterInteractive">
@@ -63,17 +103,26 @@ function MyApp({
             currency,
             favorites: pageProps.favorites || [],
             thresholds: pageProps.thresholds || {},
+            notificationsMenuOpen,
+            hamburgerMenuOpen,
+            favoriteMarketName: pageProps.favoriteMarketName,
+            colorTheme,
           }}
         >
           <div className={styles.container}>
             <header className={styles.header}>
-              <HamburgerMenu toggleCurrency={toggleCurrency} />
+              <NotificationsMenu onOpenCallback={openNotifications} />
+              <HamburgerMenu
+                onOpenCallback={openHamburger}
+                toggleCurrency={toggleCurrency}
+                toggleDarkMode={toggleDarkMode}
+              />
             </header>
             <main className={styles.main}>
               <div className={styles.mainLogo} onClick={() => push("/list")}>
                 <div className={styles.logoContainer}>
                   <Image
-                    src="/logo-square.svg"
+                    src={`/logo-${colorTheme}.png`}
                     alt="logo"
                     fill
                     sizes="15 vmin"

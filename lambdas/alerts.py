@@ -6,6 +6,9 @@ import requests
 import os
 import boto3
 from botocore.exceptions import ClientError
+import time
+import datetime
+
 
 rds_host = rds_config.db_endpoint
 name = rds_config.db_username
@@ -27,6 +30,12 @@ headers = {
     'X-CMC_PRO_API_KEY': os.environ["api_key"]
 }
 
+def add_notification(cur, user_id, type, text):
+    ts = time.time()
+    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    content = conn.escape_string(text)
+    qry = "insert into UserNotifications (Ua_Id, Content, Date, Type, Seen) values (%d, '%s', '%s', '%s', 0)" % (user_id, content, timestamp, type)
+    cur.execute(qry)
 
 def send_email(recipient, text):
     SENDER = "aws.krzotki@gmail.com"
@@ -38,17 +47,11 @@ def send_email(recipient, text):
     BODY_HTML = """<html>
     <head>
         <style>
-            .green {
-                color: green;
-            }
-            .red {
-                color: red;
-            }
         </style>
     </head>
     <body>
       <h1>Hi %s! Here is the alert for crypto price threshold you have set up.</h1>
-      <ul>%s</ul>
+      %s
     </body>
     </html>
                 """ % (recipient["Ua_login"], BODY_TEXT)
@@ -122,7 +125,7 @@ def lambda_handler(event, context):
             if (abs(crypto_change) >= threshold):
                 color_class = 'green' if crypto_change > 0 else 'red'
                 arrow = '&#8599;' if crypto_change > 0 else '&#8600;'
-                item = ("%s : <b class='%s'>%s %f%%</b> - current price: <b>%f$</b>") % (
+                item = ("%s : <b style='color: %s;'>%s %f%%</b> - current price: <b>%f$</b>") % (
                     crypto_name, color_class, arrow, crypto_change, crypto_price)
 
                 if (userid in alerts_to_send_per_user):
@@ -134,7 +137,11 @@ def lambda_handler(event, context):
             text = '\n'.join(list(map(lambda item: "<li>%s</li>" %
                              (item), alerts_to_send_per_user[key])))
             user = users[key]
-            send_email(user, text)
+            notification_list = '<ul>%s</ul>' % (text)
+            send_email(user, notification_list)
+            add_notification(cur, key, "PRICE_ALERT", notification_list)
+        
+        conn.commit()
 
     return {
         'statusCode': 200,

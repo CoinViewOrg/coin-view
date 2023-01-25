@@ -1,4 +1,4 @@
-import { querySQL } from "@coin-view/api";
+import { decryptWithAES, querySQL } from "@coin-view/api";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -29,7 +29,7 @@ export const authOptions = {
           Ua_login: string;
         }>;
 
-        if (credentials?.password === found?.Ua_Password) {
+        if (credentials?.password === decryptWithAES(found?.Ua_Password)) {
           // Any object returned will be saved in `user` property of the JWT
           return {
             id: String(found.Ua_Id),

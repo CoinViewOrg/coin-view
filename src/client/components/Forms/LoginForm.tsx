@@ -9,7 +9,7 @@ export const LoginForm = () => {
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const usernameRef = React.useRef<HTMLInputElement>(null);
 
-  const { t } = useCustomTranslation();
+  const { t, language } = useCustomTranslation();
 
   const { query, push } = useRouter();
 
@@ -44,10 +44,12 @@ export const LoginForm = () => {
       }
 
       if (response?.url) {
-        push(response.url);
+        push(response.url, undefined, {
+          locale: language,
+        });
       }
     },
-    [passwordRef, push]
+    [passwordRef, push, language]
   );
 
   return (

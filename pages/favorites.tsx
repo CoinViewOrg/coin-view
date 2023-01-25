@@ -7,6 +7,7 @@ import {
   getCoinsMetadata,
   getCryptothresholds,
   getFavoriteCryptos,
+  getFavoriteMarket,
   getFilteredCoinList,
 } from "@coin-view/api";
 import {
@@ -28,11 +29,8 @@ const Favorites: NextPage<{
 }> = (props) => {
   const { data, meta } = props;
 
-  const {
-    getHistoricalData,
-    historicalData,
-    loadingHistorical,
-  } = useHistoricalData();
+  const { getHistoricalData, historicalData, loadingHistorical } =
+    useHistoricalData();
 
   const { replace } = useRouter();
 
@@ -83,7 +81,8 @@ export async function getServerSideProps({
   // Pass data to the page via props
 
   let favorites = null,
-    thresholds = null;
+    thresholds = null,
+    favoriteMarket = null;
 
   if (session) {
     // @ts-ignore
@@ -96,6 +95,7 @@ export async function getServerSideProps({
         row.Cn_Treshold,
       ])
     );
+    favoriteMarket = await getFavoriteMarket(userid);
   }
 
   const traslations = await serverSideTranslations(locale, ["common"]);
@@ -108,6 +108,7 @@ export async function getServerSideProps({
         session: null,
         favorites: [],
         thresholds: {},
+        favoriteMarketName: null,
         ...traslations,
       },
     };
@@ -125,6 +126,7 @@ export async function getServerSideProps({
     "name",
     "quote",
     "cmc_rank",
+    "slug",
     "circulating_supply",
     "symbol",
   ];
@@ -154,6 +156,7 @@ export async function getServerSideProps({
       session: JSON.parse(JSON.stringify(session)),
       favorites,
       thresholds,
+      favoriteMarketName: favoriteMarket,
       ...traslations,
     },
   };

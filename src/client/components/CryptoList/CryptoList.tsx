@@ -9,8 +9,10 @@ import { HistoricalDataType } from "../../hooks";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { AppContext } from "@coin-view/context";
 import Image from "next/image";
-import { ThresholdSelect } from "@coin-view/client";
+import { Button, MarketButton, ThresholdSelect } from "@coin-view/client";
 import { useCustomTranslation } from "@coin-view/client";
+import { getMarketImageSrc, getMarketUrlByType } from "@coin-view/markets";
+import { useRouter } from "next/router";
 
 type PropsType = {
   loading: boolean;
@@ -39,9 +41,8 @@ export const CryptoList = ({
   thresholds,
   setThreshold,
 }: PropsType) => {
-  const { currency } = React.useContext(AppContext);
-  const { t } = useCustomTranslation();
-
+  const { currency, favoriteMarketName } = React.useContext(AppContext);
+  const { t, language } = useCustomTranslation();
   const [selectedSymbol, setSelectedSymbol] = React.useState<string>();
 
   const sort = React.useCallback(
@@ -63,6 +64,35 @@ export const CryptoList = ({
       setSelectedSymbol(symbol);
     },
     [getHistoricalData, selectedSymbol]
+  );
+
+  const market = React.useMemo(
+    () => favoriteMarketName || "COINBASE",
+    [favoriteMarketName]
+  );
+
+  const marketImageSrc = React.useMemo(
+    () => getMarketImageSrc(market),
+    [market]
+  );
+
+  const listWithLinksToMarkets = React.useMemo(
+    () =>
+      cryptoList.map((item) => ({
+        ...item,
+        marketUrl: getMarketUrlByType(market, {
+          cryptoSlug: item.slug,
+          cryptoSymbol: item.symbol,
+          currency,
+          locale: language,
+        }),
+      })),
+    [cryptoList, language, currency, market]
+  );
+
+  const openInNewTab = React.useCallback(
+    (href: string) => window.open(href, "_blank"),
+    []
   );
 
   return (
@@ -108,7 +138,7 @@ export const CryptoList = ({
           {t("volume24h")}
         </div>
       </div>
-      {cryptoList.map((item) => (
+      {listWithLinksToMarkets.map((item) => (
         <React.Fragment key={item.id}>
           <div
             className={cx(styles.grid, styles.listItem)}
@@ -161,6 +191,13 @@ export const CryptoList = ({
                 className={styles.chart}
                 loading={loadingHistorical}
                 historicalData={historicalData[currency][item.symbol]}
+              />
+
+              <MarketButton
+                className={styles.marketButton}
+                caption={t("buy_on")}
+                marketName={market}
+                onClick={() => openInNewTab(item.marketUrl)}
               />
             </div>
           )}
