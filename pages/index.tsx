@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
-import { getSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "../styles/Home.module.css";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const Index: NextPage = (props) => {
   const { replace } = useRouter();
@@ -26,8 +27,7 @@ export async function getServerSideProps({
   res: any;
   locale: string;
 }) {
-  const session = await getSession({ req });
-
+  const session = await unstable_getServerSession(req, res, authOptions);
   return {
     props: {
       session: JSON.parse(JSON.stringify(session)),

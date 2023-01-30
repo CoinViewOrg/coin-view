@@ -1,7 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 import { querySQL } from "@coin-view/api";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 
 type Data = {
   error: number;
@@ -18,7 +19,7 @@ export default async function handler(
 
   const threshold = Number(req.query.threshold || 0);
 
-  const session = await getSession({ req });
+  const session = await unstable_getServerSession(req, res, authOptions);
 
   // @ts-ignore
   const userid = session?.user?.id;

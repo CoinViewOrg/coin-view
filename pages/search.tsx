@@ -20,8 +20,9 @@ import {
   usePrevious,
 } from "@coin-view/client";
 import { AppContext } from "@coin-view/context";
-import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const Search: NextPage<{
   data: CoinListItem[];
@@ -73,10 +74,12 @@ const Search: NextPage<{
 export async function getServerSideProps({
   query,
   req,
+  res,
   locale,
 }: {
   query: NextApiRequestQuery;
   req: any;
+  res: any;
   locale: string;
 }) {
   // Fetch data from external API
@@ -113,7 +116,7 @@ export async function getServerSideProps({
       Object.fromEntries(metaKeys.map((key) => [key, metaItem[key]])),
     ])
   ) as Record<string, CoinMetaType>;
-  const session = await getSession({ req });
+  const session = await unstable_getServerSession(req, res, authOptions);
   // Pass data to the page via props
 
   let favorites = null,
