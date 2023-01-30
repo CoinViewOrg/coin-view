@@ -1,8 +1,19 @@
-import { decryptWithAES, querySQL } from "@coin-view/api";
-import NextAuth from "next-auth";
+import { decryptWithAES, getUserById, querySQL } from "@coin-view/api";
+import { NextApiRequest, NextApiResponse } from "next";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
+  callbacks: {
+    jwt: async ({ token, user }: any) => {
+      user && (token.user = user);
+      return token;
+    },
+    session: async ({ session, token }: any) => {
+      session.user = token.user as any;
+      return session;
+    },
+  },
   pages: {
     signIn: "/login",
   },
@@ -46,11 +57,30 @@ export const authOptions = {
   ],
 };
 
-export default NextAuth({
+const createOptions = (req: NextApiRequest): NextAuthOptions => ({
   ...authOptions,
   callbacks: {
     jwt: async ({ token, user }) => {
-      user && (token.user = user);
+      if (req.url === "/api/auth/session?update" && token.sub) {
+        const updatedUser = await getUserById(Number(token.sub));
+        if (!updatedUser) {
+          return token;
+        }
+        const user = {
+          id: updatedUser.Ua_Id,
+          name: updatedUser.Ua_login,
+          email: updatedUser.Ua_Email,
+        };
+
+        token = {
+          ...token,
+          ...user,
+          user,
+        };
+      } else {
+        user && (token.user = user);
+      }
+
       return token;
     },
     session: async ({ session, token }) => {
@@ -59,3 +89,7 @@ export default NextAuth({
     },
   },
 });
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  return NextAuth(req, res, createOptions(req));
+};

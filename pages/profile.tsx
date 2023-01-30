@@ -1,19 +1,15 @@
 import type { NextPage } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import React, { useContext } from "react";
 import styles from "../styles/Profile.module.css";
 import { MarketButton, useCustomTranslation } from "@coin-view/client";
-import {
-  getMarketImageSrc,
-  MarketType,
-  MARKET_NAMES,
-} from "@coin-view/markets";
-import Image from "next/image";
-import cx from "classnames";
+import { MarketType, MARKET_NAMES } from "@coin-view/markets";
 import { getFavoriteMarket } from "@coin-view/api";
 import { AppContext } from "@coin-view/context";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { unstable_getServerSession } from "next-auth";
 
 const Profile: NextPage = (props) => {
   const { t } = useCustomTranslation();
@@ -84,7 +80,7 @@ export async function getServerSideProps({
   res: any;
   locale: string;
 }) {
-  const session = await getSession({ req });
+  const session = await unstable_getServerSession(req, res, authOptions);
 
   let favoriteMarket = null;
 

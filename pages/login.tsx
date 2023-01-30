@@ -1,7 +1,6 @@
 import { LoginForm } from "@coin-view/client";
 import type { NextPage } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { getSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import React from "react";
 import styles from "../styles/Home.module.css";
@@ -26,8 +25,7 @@ export async function getServerSideProps({
   res: any;
   locale: string;
 }) {
-  const session = await getSession({ req });
-
+  const session = await unstable_getServerSession(req, res, authOptions);
   return {
     props: {
       session: JSON.parse(JSON.stringify(session)),

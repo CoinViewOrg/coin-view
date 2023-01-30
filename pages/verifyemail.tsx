@@ -1,12 +1,13 @@
 import { querySQL } from "@coin-view/api";
 import { useCustomTranslation } from "@coin-view/client";
 import type { NextPage } from "next";
-import { getSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NextApiRequestQuery } from "next/dist/server/api-utils";
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/Home.module.css";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const VerifyEmail: NextPage<{ message: string }> = (props) => {
   const { t } = useCustomTranslation();
@@ -21,10 +22,12 @@ const VerifyEmail: NextPage<{ message: string }> = (props) => {
 export async function getServerSideProps({
   query,
   req,
+  res,
   locale,
 }: {
   query: NextApiRequestQuery;
   req: any;
+  res: any;
   locale: string;
 }) {
   const requestId = query.requestid;
@@ -41,8 +44,7 @@ export async function getServerSideProps({
     message = "verify_email_already";
   }
 
-  const session = await getSession({ req });
-
+  const session = await unstable_getServerSession(req, res, authOptions);
   return {
     props: {
       message,
