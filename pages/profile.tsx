@@ -15,8 +15,6 @@ const Profile: NextPage = (props) => {
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
 
-  console.log({ userSession: session });
-
   const { favoriteMarketName } = useContext(AppContext);
 
   const [selectedMarket, setSelectedMarket] = React.useState<MarketType | null>(

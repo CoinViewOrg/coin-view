@@ -292,7 +292,7 @@ export async function getServerSideProps({
   ) as Record<string, CoinMetaType>;
 
   const session = await unstable_getServerSession(req, res, authOptions);
-  console.log({ session });
+
   let favorites = null,
     thresholds = null,
     favoriteMarket = null;

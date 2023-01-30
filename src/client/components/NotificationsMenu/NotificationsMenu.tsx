@@ -27,7 +27,6 @@ export const NotificationsMenu = ({
       const response = fetch("/api/notifications?param=count")
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
           const { error, notifications } = json;
           setNotificationsCount(notifications[0].count);
         });
