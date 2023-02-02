@@ -56,5 +56,10 @@
 
   "form_save_button": "Zapisz",
   "profile_form_checkbox_label": "Chce otrzymywać powiadomienia o nowościach, kryptowalutach oraz aktualizacjach.",
-  "profile_form_label": "Ustawienia profilu"
+  "profile_form_label": "Ustawienia profilu",
+
+  "password_form_label": "Bezpieczeństwo",
+  "password_form_old": "Obecne hasło",
+  "password_form_new": "Nowe hasło",
+  "password_form_repeat": "Powtórz hasło"
 }

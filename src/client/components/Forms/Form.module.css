@@ -11,7 +11,7 @@
 }
 
 .profileForm {
-  margin-top: 0;
+  margin-top: 5px;
 }
 
 .profileForm form {
@@ -79,6 +79,10 @@
   color: var(--font-color);
   padding: 0.6em;
   border-radius: 10px;
+}
+
+.formLabel p {
+  margin-left: 0.4em;
 }
 
 .rightFormLabelIcon {

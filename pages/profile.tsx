@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useContext } from "react";
 import styles from "../styles/Profile.module.css";
 import {
+  ChangePasswordForm,
   MarketButton,
   ModifyProfileForm,
   useCustomTranslation,
@@ -56,6 +57,7 @@ const Profile: NextPage = (props) => {
           </h2>
           <p>{t("logged_in_paragraph")}</p>
           <ModifyProfileForm />
+          <ChangePasswordForm />
           <div className={styles.settings}>
             <div className={styles.settingsItem}>
               <p>{t("favorite_market")}</p>
