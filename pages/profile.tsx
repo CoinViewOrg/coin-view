@@ -4,8 +4,18 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import React, { useContext } from "react";
 import styles from "../styles/Profile.module.css";
-import { MarketButton, useCustomTranslation } from "@coin-view/client";
-import { MarketType, MARKET_NAMES } from "@coin-view/markets";
+import {
+  MarketButton,
+  ModifyProfileForm,
+  useCustomTranslation,
+} from "@coin-view/client";
+import {
+  getMarketImageSrc,
+  MarketType,
+  MARKET_NAMES,
+} from "@coin-view/markets";
+import Image from "next/image";
+import cx from "classnames";
 import { getFavoriteMarket } from "@coin-view/api";
 import { AppContext } from "@coin-view/context";
 import { authOptions } from "./api/auth/[...nextauth]";
@@ -45,7 +55,7 @@ const Profile: NextPage = (props) => {
             {t("logged_in_header")} {session.user?.name}
           </h2>
           <p>{t("logged_in_paragraph")}</p>
-
+          <ModifyProfileForm />
           <div className={styles.settings}>
             <div className={styles.settingsItem}>
               <p>{t("favorite_market")}</p>

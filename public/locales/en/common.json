@@ -52,5 +52,9 @@
   "no_notification": "There are no new notifications",
   "favorite_market": "Favorite market",
   "buy_on": "Buy on",
-  "dark_mode": "Dark mode"
+  "dark_mode": "Dark mode",
+
+  "form_save_button": "Save",
+  "profile_form_checkbox_label": "I want to receive notifications about news, cryptocurrencies and product updates",
+  "profile_form_label": "Profile settings"
 }
