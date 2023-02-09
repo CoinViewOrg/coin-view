@@ -24,7 +24,7 @@ export const ChangePasswordForm = () => {
     setOpen((open) => (open = !open));
   }, []);
 
-  const chevronIconMode = React.useMemo(
+  const arrowIconMode = React.useMemo(
     () => (open === false ? "down" : "up"),
     [open]
   );
@@ -83,7 +83,7 @@ export const ChangePasswordForm = () => {
         />
         <p>{t("password_form_label")}</p>
         <Image
-          src={`/chevron_${chevronIconMode}.svg`}
+          src={`/arrow_${arrowIconMode}.svg`}
           width={32}
           height={32}
           className={cx("svg-adaptive", styles.rightFormLabelIcon)}

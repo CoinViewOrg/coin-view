@@ -48,7 +48,7 @@ export const ModifyProfileForm = () => {
     setOpen((open) => (open = !open));
   }, []);
 
-  const chevronIconMode = React.useMemo(
+  const arrowIconMode = React.useMemo(
     () => (open === false ? "down" : "up"),
     [open]
   );
@@ -95,7 +95,7 @@ export const ModifyProfileForm = () => {
         />
         <p>{t("profile_form_label")}</p>
         <Image
-          src={`/chevron_${chevronIconMode}.svg`}
+          src={`/arrow_${arrowIconMode}.svg`}
           width={32}
           height={32}
           className={cx("svg-adaptive", styles.rightFormLabelIcon)}
