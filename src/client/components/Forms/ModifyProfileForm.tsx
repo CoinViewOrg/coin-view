@@ -71,7 +71,6 @@ export const ModifyProfileForm = () => {
           email_sub,
         }),
       });
-      console.log(email_sub);
       const { error } = await response.json();
 
       if (error) {
@@ -155,12 +154,6 @@ export const ModifyProfileForm = () => {
                 "User with given username or email already exists!"}
             </span>
           )}
-
-          {/* {result && (
-            <span className={cx(styles.success, styles.profileFormSpan)}>
-              {"Your profile data has been updated."}
-            </span>
-          )} */}
         </form>
       )}
     </div>

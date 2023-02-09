@@ -134,12 +134,6 @@ export const ChangePasswordForm = () => {
               {error == 2 && "Your provided wrong current password."}
             </span>
           )}
-
-          {/* {result && (
-            <span className={cx(styles.success, styles.profileFormSpan)}>
-              {"Your profile data has been updated."}
-            </span>
-          )} */}
         </form>
       )}
     </div>
