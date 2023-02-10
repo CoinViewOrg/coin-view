@@ -22,11 +22,8 @@ export const ModifyProfileForm = () => {
   const { reload } = useRouter();
 
   React.useEffect(() => {
-    // @ts-ignore
     const cryptoalerts = session?.user?.cryptoalerts;
-    // @ts-ignore
     const newsletters = session?.user?.newsletters;
-    // @ts-ignore
     const productupdate = session?.user?.productupdate;
 
     if (cryptoalerts && newsletters && productupdate) {
@@ -36,11 +33,8 @@ export const ModifyProfileForm = () => {
     }
   }, [
     open,
-    // @ts-ignore
     session?.user?.cryptoalerts,
-    // @ts-ignore
     session?.user?.newsletters,
-    // @ts-ignore
     session?.user?.productupdate,
   ]);
 
