@@ -52,5 +52,14 @@
   "no_notification": "Brak nowych powiadomień",
   "favorite_market": "Ulubiona giełda",
   "buy_on": "Kup na",
-  "dark_mode": "Tryb ciemny"
+  "dark_mode": "Tryb ciemny",
+
+  "form_save_button": "Zapisz",
+  "profile_form_checkbox_label": "Chce otrzymywać powiadomienia o nowościach, kryptowalutach oraz aktualizacjach.",
+  "profile_form_label": "Ustawienia profilu",
+
+  "password_form_label": "Bezpieczeństwo",
+  "password_form_old": "Obecne hasło",
+  "password_form_new": "Nowe hasło",
+  "password_form_repeat": "Powtórz hasło"
 }

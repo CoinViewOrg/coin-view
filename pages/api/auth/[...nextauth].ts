@@ -70,6 +70,9 @@ const createOptions = (req: NextApiRequest): NextAuthOptions => ({
           id: updatedUser.Ua_Id,
           name: updatedUser.Ua_login,
           email: updatedUser.Ua_Email,
+          cryptoalerts: updatedUser.CryptoAlerts,
+          newsletters: updatedUser.Newsletters,
+          productupdate: updatedUser.ProductUpdate,
         };
 
         token = {
