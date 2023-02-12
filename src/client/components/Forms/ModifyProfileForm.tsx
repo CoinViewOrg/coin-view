@@ -81,7 +81,7 @@ export const ModifyProfileForm = () => {
     <div className={cx(styles.container, styles.profileForm)}>
       <div className={cx(styles.formLabel)} onClick={handleClick}>
         <Image
-          src={"/Profile.svg"}
+          src={"/profile.svg"}
           width={32}
           height={32}
           className={cx("svg-adaptive")}
