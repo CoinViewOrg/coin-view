@@ -24,7 +24,7 @@ const connection = registerService("db", () =>
     password: process.env.DB_PASS,
     database: process.env.DB_DATABASE,
   })
-) as mysql.Connection;
+);
 
 export const querySQL = (query: string) =>
   new Promise((resolve, reject) => {
