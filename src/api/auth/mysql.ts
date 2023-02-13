@@ -1,17 +1,35 @@
 import mysql from "mysql";
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_DATABASE,
-  connectionLimit: 99,
-});
+declare global {
+  var SERVICES: Record<string, any>;
+}
+
+function registerService<T>(name: string, initFn: () => T): T {
+  if (!global.SERVICES) {
+    global.SERVICES = {};
+  }
+  if (process.env.NODE_ENV === "development") {
+    if (!global.SERVICES[name]) {
+      global.SERVICES[name] = initFn();
+    }
+    return global.SERVICES[name];
+  }
+  return initFn();
+}
+
+const connection = registerService("db", () =>
+  mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE,
+  })
+);
 
 export const querySQL = (query: string) =>
   new Promise((resolve, reject) => {
     try {
-      pool.query(query, function (err, result) {
+      connection.query(query, function (err, result) {
         if (err) throw err;
         resolve(result);
       });
