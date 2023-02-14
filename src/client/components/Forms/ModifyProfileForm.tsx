@@ -130,7 +130,7 @@ export const ModifyProfileForm = () => {
               onClick={() =>
                 setEmailSubscribed((subscribed) => (subscribed = !subscribed))
               }
-              checked={emailSubscribed ? true : false}
+              defaultChecked={emailSubscribed ? true : false}
             />
             <label htmlFor="email_sub">
               {t("profile_form_checkbox_label")}
