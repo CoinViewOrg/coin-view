@@ -38,14 +38,26 @@ export const authOptions = {
           Ua_Id: string;
           Ua_Email: string;
           Ua_login: string;
+          CryptoAlerts: number;
+          Newsletters: number;
+          ProductUpdate: number;
         }>;
 
         if (credentials?.password === decryptWithAES(found?.Ua_Password)) {
           // Any object returned will be saved in `user` property of the JWT
+          const notificationPreferencesQuery = `SELECT CryptoAlerts, Newsletters, ProductUpdate FROM UserEmailSubscriptions WHERE UserId = '${found.Ua_Id}'`;
+
+          const [notificationPreferences] = (await querySQL(
+            notificationPreferencesQuery
+          )) as Array<any>;
+
           return {
             id: String(found.Ua_Id),
             name: found.Ua_login,
             email: found.Ua_Email,
+            cryptoalerts: notificationPreferences.CryptoAlerts,
+            newsletters: notificationPreferences.Newsletters,
+            productupdate: notificationPreferences.ProductUpdate,
           };
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
