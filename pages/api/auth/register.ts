@@ -1,8 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { encryptWithAES, querySQL } from "@coin-view/api";
+import { querySQL } from "@coin-view/api";
 import ses from "node-ses";
 import { v4 as uuidv4 } from "uuid";
+
+const bcrypt = require("bcrypt");
 
 const sesClient = ses.createClient({
   key: process.env.AWS_SES_ACCESS_KEY_ID || "",
@@ -12,6 +14,17 @@ const sesClient = ses.createClient({
 
 type Data = {
   error: number;
+};
+
+type InsertPromise = {
+  fieldCount: number;
+  affectedRows: number;
+  insertId: number;
+  serverStatus: number;
+  warningCount: number;
+  message: string;
+  protocol41: boolean;
+  changedRows: number;
 };
 
 export default async function handler(
@@ -37,10 +50,16 @@ export default async function handler(
 
   const requestId = uuidv4();
 
-  const newUserSql = `INSERT INTO UsrAccount(Ua_login, Ua_email, Ua_password, VerificationId, EmailVerified) VALUES('${username}',
-    '${email}', '${encryptWithAES(password)}', '${requestId}', 0)`;
+  bcrypt.hash(password, 10).then(async function (result: string) {
+    const newUserSql = `INSERT INTO UsrAccount(Ua_login, Ua_email, Ua_password, VerificationId, EmailVerified) VALUES('${username}',
+    '${email}', '${result}', '${requestId}', 0)`;
 
-  await querySQL(newUserSql);
+    const insertedUser = (await querySQL(newUserSql)) as InsertPromise;
+
+    const newUserNotificationPreferences = `INSERT INTO UserEmailSubscriptions VALUES('${insertedUser.insertId}', '1', '1', '1')`;
+
+    await querySQL(newUserNotificationPreferences);
+  });
 
   const href = `https://coin-view.krzotki.com/verifyemail?requestid=${requestId}`;
 

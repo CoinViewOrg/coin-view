@@ -1,7 +1,9 @@
-import { decryptWithAES, getUserById, querySQL } from "@coin-view/api";
+import { getUserById, querySQL } from "@coin-view/api";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+const bcrypt = require("bcrypt");
 
 export const authOptions = {
   callbacks: {
@@ -43,7 +45,12 @@ export const authOptions = {
           ProductUpdate: number;
         }>;
 
-        if (credentials?.password === decryptWithAES(found?.Ua_Password)) {
+        const match = await bcrypt.compare(
+          credentials?.password,
+          found?.Ua_Password
+        );
+
+        if (match) {
           // Any object returned will be saved in `user` property of the JWT
           const notificationPreferencesQuery = `SELECT CryptoAlerts, Newsletters, ProductUpdate FROM UserEmailSubscriptions WHERE UserId = '${found.Ua_Id}'`;
 
