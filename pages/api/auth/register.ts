@@ -3,8 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { querySQL } from "@coin-view/api";
 import ses from "node-ses";
 import { v4 as uuidv4 } from "uuid";
-
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 
 const sesClient = ses.createClient({
   key: process.env.AWS_SES_ACCESS_KEY_ID || "",

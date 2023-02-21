@@ -2,8 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { querySQL } from "@coin-view/api";
 import { getSession } from "next-auth/react";
-
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 
 type Data = {
   error: number;
