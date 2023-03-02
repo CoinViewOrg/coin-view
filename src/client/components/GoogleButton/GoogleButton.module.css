@@ -1,0 +1,15 @@
+.button {
+  border: solid 1px;
+  padding: 0.5em;
+  border-radius: 2em;
+  display: flex;
+  width: 250px;
+  justify-content: space-evenly;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}

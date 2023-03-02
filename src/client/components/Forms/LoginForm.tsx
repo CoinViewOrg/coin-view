@@ -4,6 +4,7 @@ import styles from "./Form.module.css";
 import { useCustomTranslation } from "@coin-view/client";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import { GoogleButton } from "../GoogleButton";
 
 export const LoginForm = () => {
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -59,44 +60,41 @@ export const LoginForm = () => {
     });
   }, []);
   return (
-    <>
-      <form className={styles.container} onSubmit={submitForm}>
-        <h2>{t("login_form_header")}</h2>
-        <div className={styles.formItem}>
-          <label htmlFor="username">{t("login_form_username")}</label>
-          <input
-            id="username"
-            type="username"
-            name="username"
-            required
-            ref={usernameRef}
-          />
-        </div>
-        <div className={styles.formItem}>
-          <label htmlFor="password">{t("login_form_password")}</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            required
-            ref={passwordRef}
-          />
-        </div>
+    <form className={styles.container} onSubmit={submitForm}>
+      <h2>{t("login_form_header")}</h2>
+      <GoogleButton onClick={googleSSO} />
+      <hr></hr>
+      <div className={styles.formItem}>
+        <label htmlFor="username">{t("login_form_username")}</label>
+        <input
+          id="username"
+          type="username"
+          name="username"
+          required
+          ref={usernameRef}
+        />
+      </div>
+      <div className={styles.formItem}>
+        <label htmlFor="password">{t("login_form_password")}</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          required
+          ref={passwordRef}
+        />
+      </div>
 
-        <input className={styles.formSubmit} type="submit" value="Login" />
+      <input className={styles.formSubmit} type="submit" value="Login" />
 
-        <Link href="/register">{t("login_form_redirect_register")}</Link>
-        {error && (
-          <span className={styles.error}>{t("login_form_invalid")}</span>
-        )}
-        {registered && (
-          <span className={styles.success}>
-            {t("login_form_register_succesful_1")} <br></br>{" "}
-            {t("login_form_register_succesful_2")}
-          </span>
-        )}
-        <button onClick={googleSSO}>Sign in with google</button>
-      </form>
-    </>
+      <Link href="/register">{t("login_form_redirect_register")}</Link>
+      {error && <span className={styles.error}>{t("login_form_invalid")}</span>}
+      {registered && (
+        <span className={styles.success}>
+          {t("login_form_register_succesful_1")} <br></br>{" "}
+          {t("login_form_register_succesful_2")}
+        </span>
+      )}
+    </form>
   );
 };

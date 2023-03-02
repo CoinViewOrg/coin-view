@@ -18,8 +18,8 @@ export const registerSSOUser = async (
   email: string,
   accessToken: string
 ) => {
-  const newUserSql = `INSERT INTO UsrAccount(Ua_Id, Ua_login, Ua_email, Ua_password, EmailVerified) VALUES( '${providerId}', '${username}',
-    '${email}', '${accessToken}', 1)`;
+  const newUserSql = `INSERT INTO UsrAccount(Ua_Id, Ua_login, Ua_email, Ua_password, EmailVerified, GoogleSSO) VALUES( '${providerId}', '${username}',
+    '${email}', '${accessToken}', 1, 1)`;
 
   const insertedUser = (await querySQL(newUserSql)) as InsertPromise;
 

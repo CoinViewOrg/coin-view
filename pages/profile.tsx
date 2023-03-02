@@ -32,6 +32,8 @@ const Profile: NextPage = (props) => {
     favoriteMarketName
   );
 
+  console.log({ session });
+
   const setNewMarket = React.useCallback(
     async (market: MarketType) => {
       setSelectedMarket(market);

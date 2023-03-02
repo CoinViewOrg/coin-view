@@ -101,6 +101,7 @@ const createOptions = (req: NextApiRequest): NextAuthOptions => ({
           cryptoalerts: updatedUser.CryptoAlerts,
           newsletters: updatedUser.Newsletters,
           productupdate: updatedUser.ProductUpdate,
+          google_sso: updatedUser.GoogleSSO,
         };
 
         token = {

@@ -61,5 +61,6 @@
   "password_form_label": "Security",
   "password_form_old": "Current password",
   "password_form_new": "New password",
-  "password_form_repeat": "Repeat password"
+  "password_form_repeat": "Repeat password",
+  "google_sign_in": "Sign in with Google"
 }

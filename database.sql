@@ -5,7 +5,8 @@ CREATE TABLE `UsrAccount` (
     `Ua_Password` varchar(60) DEFAULT NULL,
     `Ua_FavoriteMarket` int DEFAULT NULL,
     `VerificationId` varchar(64) DEFAULT NULL,
-    `EmailVerified` int DEFAULT NULL,
+    `EmailVerified` tinyint(1) DEFAULT NULL,
+    `GoogleSSO` tinyint(1) DEFAULT NULL,
     PRIMARY KEY (`Ua_Id`),
     KEY `Ua_FavoriteMarket` (`Ua_FavoriteMarket`),
     CONSTRAINT `UsrAccount_ibfk_1` FOREIGN KEY (`Ua_FavoriteMarket`) REFERENCES `MarketList` (`Ml_Id`)

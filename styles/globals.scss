@@ -43,3 +43,10 @@ body {
   background-color: var(--background-color);
   color: var(--font-color);
 }
+
+hr {
+  width: 100%;
+  margin: 1.5em auto;
+  filter: brightness(0.6);
+  
+}
