@@ -52,40 +52,51 @@ export const LoginForm = () => {
     [passwordRef, push, language]
   );
 
+  const googleSSO = React.useCallback(async () => {
+    await signIn("google", {
+      redirect: false,
+      callbackUrl: "/list",
+    });
+  }, []);
   return (
-    <form className={styles.container} onSubmit={submitForm}>
-      <h2>{t("login_form_header")}</h2>
-      <div className={styles.formItem}>
-        <label htmlFor="username">{t("login_form_username")}</label>
-        <input
-          id="username"
-          type="username"
-          name="username"
-          required
-          ref={usernameRef}
-        />
-      </div>
-      <div className={styles.formItem}>
-        <label htmlFor="password">{t("login_form_password")}</label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          required
-          ref={passwordRef}
-        />
-      </div>
+    <>
+      <form className={styles.container} onSubmit={submitForm}>
+        <h2>{t("login_form_header")}</h2>
+        <div className={styles.formItem}>
+          <label htmlFor="username">{t("login_form_username")}</label>
+          <input
+            id="username"
+            type="username"
+            name="username"
+            required
+            ref={usernameRef}
+          />
+        </div>
+        <div className={styles.formItem}>
+          <label htmlFor="password">{t("login_form_password")}</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            required
+            ref={passwordRef}
+          />
+        </div>
 
-      <input className={styles.formSubmit} type="submit" value="Login" />
+        <input className={styles.formSubmit} type="submit" value="Login" />
 
-      <Link href="/register">{t("login_form_redirect_register")}</Link>
-      {error && <span className={styles.error}>{t("login_form_invalid")}</span>}
-      {registered && (
-        <span className={styles.success}>
-          {t("login_form_register_succesful_1")} <br></br>{" "}
-          {t("login_form_register_succesful_2")}
-        </span>
-      )}
-    </form>
+        <Link href="/register">{t("login_form_redirect_register")}</Link>
+        {error && (
+          <span className={styles.error}>{t("login_form_invalid")}</span>
+        )}
+        {registered && (
+          <span className={styles.success}>
+            {t("login_form_register_succesful_1")} <br></br>{" "}
+            {t("login_form_register_succesful_2")}
+          </span>
+        )}
+        <button onClick={googleSSO}>Sign in with google</button>
+      </form>
+    </>
   );
 };

@@ -1,8 +1,22 @@
-import { getUserById, querySQL } from "@coin-view/api";
+import {
+  getExistingSSOUser,
+  getExistingUser,
+  getUserById,
+  querySQL,
+  registerSSOUser,
+} from "@coin-view/api";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import GoogleProvider from "next-auth/providers/google";
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
+if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+  throw new Error("Please provide google auth credentials!");
+}
 
 export const authOptions = {
   callbacks: {
@@ -19,6 +33,10 @@ export const authOptions = {
     signIn: "/login",
   },
   providers: [
+    GoogleProvider({
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+    }),
     CredentialsProvider({
       name: "Credentials",
 
@@ -51,19 +69,11 @@ export const authOptions = {
 
         if (match) {
           // Any object returned will be saved in `user` property of the JWT
-          const notificationPreferencesQuery = `SELECT CryptoAlerts, Newsletters, ProductUpdate FROM UserEmailSubscriptions WHERE UserId = '${found.Ua_Id}'`;
-
-          const [notificationPreferences] = (await querySQL(
-            notificationPreferencesQuery
-          )) as Array<any>;
 
           return {
             id: String(found.Ua_Id),
             name: found.Ua_login,
             email: found.Ua_Email,
-            cryptoalerts: notificationPreferences.CryptoAlerts,
-            newsletters: notificationPreferences.Newsletters,
-            productupdate: notificationPreferences.ProductUpdate,
           };
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
@@ -79,8 +89,8 @@ const createOptions = (req: NextApiRequest): NextAuthOptions => ({
   ...authOptions,
   callbacks: {
     jwt: async ({ token, user }) => {
-      if (req.url === "/api/auth/session?update" && token.sub) {
-        const updatedUser = await getUserById(Number(token.sub));
+      if ((!user || req.url === "/api/auth/session?update") && token.sub) {
+        const updatedUser = await getUserById(token.sub);
         if (!updatedUser) {
           return token;
         }
@@ -105,8 +115,33 @@ const createOptions = (req: NextApiRequest): NextAuthOptions => ({
       return token;
     },
     session: async ({ session, token }) => {
+      console.log({ session, token });
       session.user = token.user as any;
       return session;
+    },
+    signIn: async ({ account, profile }: any) => {
+      console.log({ account, profile });
+      if (account.provider === "google") {
+        const id = profile.sub;
+        const existingSSOUser = await getUserById(id);
+
+        if (existingSSOUser) {
+          return true;
+        }
+
+        const existing = await getExistingSSOUser(profile.email);
+        if (existing.length) {
+          return "/login?error=1";
+        }
+
+        await registerSSOUser(
+          id,
+          profile.name,
+          profile.email,
+          account.access_token
+        );
+      }
+      return true;
     },
   },
 });
