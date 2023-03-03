@@ -38,6 +38,10 @@
   border-radius: 10px;
 }
 
+.formItem input:disabled {
+  background-color: transparent;
+}
+
 .formSubmit {
   padding: 0.5em 1em;
   border-radius: 10px;

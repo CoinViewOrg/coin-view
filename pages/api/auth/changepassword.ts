@@ -13,9 +13,15 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const session = await getSession({ req });
+  const google_sso = Boolean(session?.user?.google_sso);
+
+  if (google_sso) {
+    res.status(403).json({ error: 3 });
+    return;
+  }
+
   const { oldPassword, newPassword, repeatNewPassword } = req.body;
 
-  // @ts-ignore
   const userid = session?.user?.id;
 
   if (!oldPassword || !newPassword || !repeatNewPassword) {
