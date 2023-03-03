@@ -61,5 +61,8 @@
   "password_form_label": "Bezpieczeństwo",
   "password_form_old": "Obecne hasło",
   "password_form_new": "Nowe hasło",
-  "password_form_repeat": "Powtórz hasło"
+  "password_form_repeat": "Powtórz hasło",
+  "google_sign_in": "Zaloguj się z Google",
+  "email_already_used": "Email został użyty do stworzenia innego konta. \nSpróbuj się zalogować lub zresetuj hasło.",
+  "gemeric_sso_error": "Kurza twarz! Coś poszło nie tak. \nSpróbuj ponownie później."
 }

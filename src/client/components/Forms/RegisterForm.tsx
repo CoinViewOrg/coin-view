@@ -4,6 +4,9 @@ import React from "react";
 import { Button } from "../Button";
 import styles from "./Form.module.css";
 import { useCustomTranslation } from "@coin-view/client";
+import { GoogleButton } from "../GoogleButton";
+import { signIn } from "next-auth/react";
+import { setCookie } from "@coin-view/utils";
 
 export const RegisterForm = () => {
   const { t, language } = useCustomTranslation();
@@ -14,7 +17,7 @@ export const RegisterForm = () => {
 
   const [error, setError] = React.useState();
 
-  const { push } = useRouter();
+  const { push, locale } = useRouter();
 
   const checkPasswordValidity = React.useCallback(() => {
     const password = passwordRef.current?.value;
@@ -59,9 +62,18 @@ export const RegisterForm = () => {
     [passwordRef, emailRef, push, language]
   );
 
+  const googleSSO = React.useCallback(async () => {
+    setCookie("locale", locale || "en", 1);
+    await signIn("google", {
+      callbackUrl: "/list",
+    });
+  }, [locale]);
+
   return (
     <form className={styles.container} onSubmit={submitForm}>
       <h2>{t("register_form_header")}</h2>
+      <GoogleButton onClick={googleSSO} />
+      <hr></hr>
       <div className={styles.formItem}>
         <label htmlFor="username">{t("register_form_username")}</label>
         <input

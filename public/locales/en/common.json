@@ -61,5 +61,8 @@
   "password_form_label": "Security",
   "password_form_old": "Current password",
   "password_form_new": "New password",
-  "password_form_repeat": "Repeat password"
+  "password_form_repeat": "Repeat password",
+  "google_sign_in": "Sign in with Google",
+  "email_already_used": "Email was already used to create an account.\n Try loggin in or reset your password.",
+  "gemeric_sso_error": "Oops. Something went wrong. \nTry again later."
 }

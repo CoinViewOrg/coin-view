@@ -10,13 +10,7 @@ import {
   ModifyProfileForm,
   useCustomTranslation,
 } from "@coin-view/client";
-import {
-  getMarketImageSrc,
-  MarketType,
-  MARKET_NAMES,
-} from "@coin-view/markets";
-import Image from "next/image";
-import cx from "classnames";
+import { MarketType, MARKET_NAMES } from "@coin-view/markets";
 import { getFavoriteMarket } from "@coin-view/api";
 import { AppContext } from "@coin-view/context";
 import { authOptions } from "./api/auth/[...nextauth]";
@@ -57,7 +51,7 @@ const Profile: NextPage = (props) => {
           </h2>
           <p>{t("logged_in_paragraph")}</p>
           <ModifyProfileForm />
-          <ChangePasswordForm />
+          {!Boolean(session.user?.google_sso) && <ChangePasswordForm />}
           <div className={styles.settings}>
             <div className={styles.settingsItem}>
               <p>{t("favorite_market")}</p>
@@ -97,8 +91,7 @@ export async function getServerSideProps({
   let favoriteMarket = null;
 
   if (session) {
-    // @ts-ignore
-    const userid = session?.user?.id;
+    const userid = session?.user?.id!;
     favoriteMarket = await getFavoriteMarket(userid);
   }
 

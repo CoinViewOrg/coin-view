@@ -5,7 +5,7 @@
   padding-top: 0;
   border-radius: 10px;
   border: solid 1px #858585;
-  padding: 0.5em;
+  padding: 2em;
   background-color: var(--background-color-2);
   color: var(--font-color);
 }
@@ -38,6 +38,10 @@
   border-radius: 10px;
 }
 
+.formItem input:disabled {
+  background-color: transparent;
+}
+
 .formSubmit {
   padding: 0.5em 1em;
   border-radius: 10px;
@@ -60,6 +64,7 @@
   text-align: center;
   line-height: 1.5em;
   max-width: 350px;
+  font-size: 0.9em;
 }
 
 .success {

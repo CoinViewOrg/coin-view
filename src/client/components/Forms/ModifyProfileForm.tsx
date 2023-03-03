@@ -107,6 +107,7 @@ export const ModifyProfileForm = () => {
               required
               ref={usernameRef}
               defaultValue={session?.user?.name || ""}
+              disabled={Boolean(session?.user?.google_sso)}
             />
           </div>
           <div className={styles.formItem}>
@@ -119,6 +120,7 @@ export const ModifyProfileForm = () => {
               required
               ref={emailRef}
               defaultValue={session?.user?.email || ""}
+              disabled={Boolean(session?.user?.google_sso)}
             />
           </div>
           <div className={styles.formCheckboxContainer}>

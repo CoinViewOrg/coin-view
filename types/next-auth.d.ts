@@ -6,6 +6,8 @@ declare module "next-auth" {
       cryptoalerts: number;
       newsletters: number;
       productupdate: number;
+      google_sso: number;
+      id: string;
     } & DefaultSession["user"];
   }
 }

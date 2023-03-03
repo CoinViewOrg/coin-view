@@ -14,8 +14,8 @@ export default async function handler(
   const session = await getSession({ req });
   const { username, email, email_sub } = req.body;
 
-  // @ts-ignore
   const userid = session?.user?.id;
+  const google_sso = Boolean(session?.user?.google_sso);
 
   if (!username || !email) {
     res.status(400).json({ error: 1 });
@@ -35,11 +35,17 @@ export default async function handler(
   const subscribeEmail = `UPDATE UserEmailSubscriptions SET CryptoAlerts = '1', Newsletters = '1', ProductUpdate = '1' WHERE UserId = '${userid}'`;
   const unsubscribeEmail = `UPDATE UserEmailSubscriptions SET CryptoAlerts = '0', Newsletters = '0', ProductUpdate = '0' WHERE UserId = '${userid}'`;
 
-  email_sub ? await querySQL(subscribeEmail) : await querySQL(unsubscribeEmail);
+  if (email_sub) {
+    await querySQL(subscribeEmail);
+  } else {
+    await querySQL(unsubscribeEmail);
+  }
 
-  const updateUserSql = `UPDATE UsrAccount SET Ua_login = '${username}', Ua_Email = '${email}' WHERE Ua_Id = '${userid}'`;
+  if (!google_sso) {
+    const updateUserSql = `UPDATE UsrAccount SET Ua_login = '${username}', Ua_Email = '${email}' WHERE Ua_Id = '${userid}'`;
 
-  await querySQL(updateUserSql);
+    await querySQL(updateUserSql);
+  }
 
   res.status(200).json({ error: 0 });
 }
