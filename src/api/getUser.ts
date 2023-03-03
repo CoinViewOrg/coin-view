@@ -1,4 +1,3 @@
-import { NumberReference } from "aws-sdk/clients/connect";
 import { querySQL } from "./auth";
 
 type UserType = {
@@ -11,7 +10,7 @@ type UserType = {
   ProductUpdate: number;
 };
 
-export const getUserById = async (id: string) => {
+export const getUserDataById = async (id: string) => {
   const findUser = `SELECT Ua.Ua_Id, Ua.Ua_login, Ua.Ua_Email, Ua.GoogleSSO, Ues.CryptoAlerts, Ues.Newsletters, 
   Ues.ProductUpdate FROM UsrAccount Ua INNER JOIN UserEmailSubscriptions Ues ON Ua.Ua_Id = Ues.UserId where Ua.Ua_Id = '${id}'`;
   const response = (await querySQL(findUser)) as Array<any>;

@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getExistingUser, registerUser } from "@coin-view/api";
+import { getExistingUserByNameOrEmail, registerUser } from "@coin-view/api";
 
 type Data = {
   error: number;
@@ -16,7 +16,7 @@ export default async function handler(
     return;
   }
 
-  let response = await getExistingUser(username, email);
+  let response = await getExistingUserByNameOrEmail(username, email);
 
   if (response.length) {
     res.status(400).json({ error: 2 });

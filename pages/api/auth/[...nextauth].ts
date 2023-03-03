@@ -1,7 +1,7 @@
 import {
-  getExistingSSOUser,
-  getExistingUser,
-  getUserById,
+  getExistingUserByEmail,
+  getExistingUserByID,
+  getUserDataById,
   querySQL,
   registerSSOUser,
 } from "@coin-view/api";
@@ -90,7 +90,7 @@ const createOptions = (req: NextApiRequest): NextAuthOptions => ({
   callbacks: {
     jwt: async ({ token, user }) => {
       if ((!user || req.url === "/api/auth/session?update") && token.sub) {
-        const updatedUser = await getUserById(token.sub);
+        const updatedUser = await getUserDataById(token.sub);
         if (!updatedUser) {
           return token;
         }
@@ -116,23 +116,22 @@ const createOptions = (req: NextApiRequest): NextAuthOptions => ({
       return token;
     },
     session: async ({ session, token }) => {
-      console.log({ session, token });
       session.user = token.user as any;
       return session;
     },
     signIn: async ({ account, profile }: any) => {
-      console.log({ account, profile });
       if (account.provider === "google") {
         const id = profile.sub;
-        const existingSSOUser = await getUserById(id);
+        const existingSSOUser = await getExistingUserByID(id);
 
-        if (existingSSOUser) {
+        if (existingSSOUser.length) {
           return true;
         }
 
-        const existing = await getExistingSSOUser(profile.email);
+        const existing = await getExistingUserByEmail(profile.email);
         if (existing.length) {
-          return "/login?error=1";
+          const locale = req.cookies["locale"] || "en";
+          return `/${locale}/login?google_sso_error=1`;
         }
 
         await registerSSOUser(

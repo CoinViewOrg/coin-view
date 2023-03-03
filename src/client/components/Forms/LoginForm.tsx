@@ -5,6 +5,13 @@ import { useCustomTranslation } from "@coin-view/client";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { GoogleButton } from "../GoogleButton";
+import { setCookie } from "@coin-view/utils";
+
+const GOOGLE_SSO_ERRORS = new Map([["1", "email_already_used"]]);
+
+const getGoogleSSOErrorMessage = (code: number | string | string[]) => {
+  return GOOGLE_SSO_ERRORS.get(String(code)) || "gemeric_sso_error";
+};
 
 export const LoginForm = () => {
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -12,11 +19,11 @@ export const LoginForm = () => {
 
   const { t, language } = useCustomTranslation();
 
-  const { query, push } = useRouter();
+  const { query, push, locale } = useRouter();
 
   const [error, setError] = React.useState(false);
 
-  const { registered } = query;
+  const { registered, google_sso_error } = query;
 
   const submitForm = React.useCallback(
     async (evt: React.FormEvent<HTMLFormElement>) => {
@@ -54,15 +61,20 @@ export const LoginForm = () => {
   );
 
   const googleSSO = React.useCallback(async () => {
+    setCookie("locale", locale || "en", 1);
     await signIn("google", {
-      redirect: false,
       callbackUrl: "/list",
     });
-  }, []);
+  }, [locale]);
   return (
     <form className={styles.container} onSubmit={submitForm}>
       <h2>{t("login_form_header")}</h2>
       <GoogleButton onClick={googleSSO} />
+      {google_sso_error && (
+        <span className={styles.error}>
+          {t(getGoogleSSOErrorMessage(google_sso_error))}
+        </span>
+      )}
       <hr></hr>
       <div className={styles.formItem}>
         <label htmlFor="username">{t("login_form_username")}</label>
