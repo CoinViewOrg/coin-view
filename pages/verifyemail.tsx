@@ -33,8 +33,8 @@ export async function getServerSideProps({
   const requestId = query.requestid;
   let response;
 
-  const verifySql = `UPDATE UsrAccount SET EmailVerified = 1 WHERE VerificationId='${requestId}'`;
-  response = (await querySQL(verifySql)) as any;
+  const verifySql = `UPDATE UsrAccount SET EmailVerified = 1 WHERE VerificationId= ?`;
+  response = (await querySQL(verifySql, [[requestId]])) as any;
 
   let message = "verify_invalid_request_id";
 

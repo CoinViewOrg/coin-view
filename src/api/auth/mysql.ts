@@ -1,4 +1,4 @@
-import mysql from "mysql";
+import mysql from "mysql2";
 
 declare global {
   var SERVICES: Record<string, any>;
@@ -23,13 +23,14 @@ const connection = registerService("db", () =>
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_DATABASE,
+    multipleStatements: false,
   })
 );
 
-export const querySQL = (query: string) =>
+export const querySQL = (query: string, values: Array<Array<any>>) =>
   new Promise((resolve, reject) => {
     try {
-      connection.query(query, function (err, result) {
+      connection.query(query, [...values], function (err, result) {
         if (err) throw err;
         resolve(result);
       });

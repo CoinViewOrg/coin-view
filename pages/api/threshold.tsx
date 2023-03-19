@@ -21,47 +21,51 @@ export default async function handler(
 
   const session = await unstable_getServerSession(req, res, authOptions);
 
-  // @ts-ignore
   const userid = session?.user?.id;
   if (!userid || !cryptoid || !ALLOWED_THRESHOLDS.includes(threshold)) {
     res.status(400).json({ error: 1 });
     return;
   }
 
+  const sqlParameters = [];
+
   let response;
 
-  const getConfirmedEmail = `select EmailVerified from UsrAccount where Ua_Id = '${userid}'`;
-  response = (await querySQL(getConfirmedEmail)) as Array<any>;
+  const getConfirmedEmail = `SELECT EmailVerified FROM UsrAccount WHERE Ua_Id = ?`;
+  response = (await querySQL(getConfirmedEmail, [[userid]])) as Array<any>;
 
   if (response[0].EmailVerified === 0) {
     res.status(200).json({ error: 2 });
     return;
   }
 
-  const findThreshold = `SELECT Cn_UaId, Cn_CryptoId, Cn_Treshold FROM CryptoNotification where Cn_UaId = '${userid}' and  Cn_CryptoId = '${cryptoid}'`;
+  const findThreshold = `SELECT Cn_UaId, Cn_CryptoId, Cn_Treshold FROM CryptoNotification WHERE Cn_UaId = ? AND Cn_CryptoId = ?`;
 
-  response = (await querySQL(findThreshold)) as Array<any>;
+  response = (await querySQL(findThreshold, [
+    [userid],
+    [cryptoid],
+  ])) as Array<any>;
 
   if (response.length) {
     const currentThreshold = response[0].Cn_Treshold;
 
     if (currentThreshold === threshold) {
-      const deleteQuery = `DELETE FROM CryptoNotification where Cn_UaId = '${userid}' and Cn_CryptoId = '${cryptoid}'`;
-      await querySQL(deleteQuery);
+      const deleteQuery = `DELETE FROM CryptoNotification WHERE Cn_UaId = ? AND Cn_CryptoId = ?`;
+      await querySQL(deleteQuery, [[userid], [cryptoid]]);
 
       res.status(200).json({ error: 0, newthreshold: undefined });
       return;
     }
 
-    const updateQuery = `UPDATE CryptoNotification set Cn_Treshold = '${threshold}'  where Cn_UaId = '${userid}' and Cn_CryptoId = '${cryptoid}'`;
-    await querySQL(updateQuery);
+    const updateQuery = `UPDATE CryptoNotification SET Cn_Treshold = ?  WHERE Cn_UaId = ? AND Cn_CryptoId = ?`;
+    await querySQL(updateQuery, [[threshold], [userid], [cryptoid]]);
 
     res.status(200).json({ error: 0, newthreshold: threshold });
     return;
   }
 
-  const addQuery = `INSERT INTO CryptoNotification values (${userid}, ${cryptoid}, ${threshold})`;
-  await querySQL(addQuery);
+  const addQuery = `INSERT INTO CryptoNotification VALUES (?, ?, ?)`;
+  await querySQL(addQuery, [[userid], [cryptoid], [threshold]]);
 
   res.status(200).json({ error: 0, newthreshold: threshold });
 }

@@ -49,10 +49,11 @@ export const authOptions = {
         if (!credentials?.username || !credentials.password) {
           return null;
         }
+        const sql = `SELECT Ua_Id, Ua_login, Ua_Email, Ua_Password FROM UsrAccount WHERE Ua_login = ?`;
 
-        const sql = `select Ua_Id, Ua_login, Ua_Email, Ua_Password from UsrAccount where Ua_login = '${credentials?.username}'`;
-
-        const [found] = (await querySQL(sql)) as Array<{
+        const [found] = (await querySQL(sql, [
+          [credentials?.username],
+        ])) as Array<{
           Ua_Password: string;
           Ua_Id: string;
           Ua_Email: string;

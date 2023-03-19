@@ -300,18 +300,18 @@ export async function getServerSideProps({
   if (session) {
     // @ts-ignore
     const userid = session?.user?.id;
-    favorites = (await getFavoriteCryptos(userid)).map(
+    favorites = (await getFavoriteCryptos(userid!)).map(
       (row: any) => row.Cf_CryptoId
     );
 
     thresholds = Object.fromEntries(
-      (await getCryptothresholds(userid)).map((row: any) => [
+      (await getCryptothresholds(userid!)).map((row: any) => [
         row.Cn_CryptoId,
         row.Cn_Treshold,
       ])
     );
 
-    favoriteMarket = await getFavoriteMarket(userid);
+    favoriteMarket = await getFavoriteMarket(userid!);
   }
 
   // Pass data to the page via props

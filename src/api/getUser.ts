@@ -11,8 +11,8 @@ type UserType = {
 };
 
 export const getUserDataById = async (id: string) => {
-  const findUser = `SELECT Ua.Ua_Id, Ua.Ua_login, Ua.Ua_Email, Ua.GoogleSSO, Ues.CryptoAlerts, Ues.Newsletters, 
-  Ues.ProductUpdate FROM UsrAccount Ua INNER JOIN UserEmailSubscriptions Ues ON Ua.Ua_Id = Ues.UserId where Ua.Ua_Id = '${id}'`;
-  const response = (await querySQL(findUser)) as Array<any>;
+  const findUser = `SELECT Ua.Ua_Id, Ua.Ua_login, Ua.Ua_Email, Ua.GoogleSSO, Ues.CryptoAlerts, Ues.CryptoAlerts, Ues.Newsletters, 
+  Ues.ProductUpdate FROM UsrAccount Ua INNER JOIN UserEmailSubscriptions Ues ON Ua.Ua_Id = Ues.UserId WHERE Ua.Ua_Id = ?`;
+  const response = (await querySQL(findUser, [[id]])) as Array<any>;
   return response[0] as UserType | undefined;
 };
