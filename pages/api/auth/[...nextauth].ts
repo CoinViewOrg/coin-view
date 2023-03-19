@@ -70,7 +70,7 @@ export const authOptions = {
         }>;
 
         const match = await bcrypt.compare(
-          credentials?.password!,
+          credentials?.password,
           found?.Ua_Password
         );
 
