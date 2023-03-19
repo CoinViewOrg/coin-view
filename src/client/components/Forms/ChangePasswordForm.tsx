@@ -47,9 +47,9 @@ export const ChangePasswordForm = () => {
         return;
       }
 
-      const oldPassword = oldPasswordRef.current?.value;
-      const newPassword = newPasswordRef.current?.value;
-      const repeatNewPassword = repeatNewPasswordRef.current?.value;
+      const oldPassword = oldPasswordRef.current?.value.trim();
+      const newPassword = newPasswordRef.current?.value.trim();
+      const repeatNewPassword = repeatNewPasswordRef.current?.value.trim();
 
       const response = await fetch("/api/auth/changepassword", {
         method: "post",
@@ -98,6 +98,7 @@ export const ChangePasswordForm = () => {
               id="oldpassword"
               type="password"
               name="oldpassword"
+              maxLength={40}
               required
               ref={oldPasswordRef}
             />
@@ -108,6 +109,8 @@ export const ChangePasswordForm = () => {
               id="newpassword"
               type="password"
               name="newpassword"
+              maxLength={40}
+              minLength={6}
               required
               ref={newPasswordRef}
             />
@@ -118,6 +121,7 @@ export const ChangePasswordForm = () => {
               id="repeatpassword"
               type="password"
               name="repeatpassword"
+              maxLength={40}
               required
               ref={repeatNewPasswordRef}
               onChange={checkPasswordValidity}

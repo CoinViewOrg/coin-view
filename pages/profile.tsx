@@ -90,8 +90,8 @@ export async function getServerSideProps({
 
   let favoriteMarket = null;
 
-  if (session) {
-    const userid = session?.user?.id!;
+  const userid = session?.user?.id;
+  if (userid) {
     favoriteMarket = await getFavoriteMarket(userid);
   }
 

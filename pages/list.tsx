@@ -297,9 +297,8 @@ export async function getServerSideProps({
     thresholds = null,
     favoriteMarket = null;
 
-  if (session) {
-    // @ts-ignore
-    const userid = session?.user?.id;
+  const userid = session?.user?.id;
+  if (userid) {
     favorites = (await getFavoriteCryptos(userid)).map(
       (row: any) => row.Cf_CryptoId
     );

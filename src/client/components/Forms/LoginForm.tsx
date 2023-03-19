@@ -33,8 +33,8 @@ export const LoginForm = () => {
         return;
       }
 
-      const password = passwordRef.current?.value;
-      const username = usernameRef.current?.value;
+      const password = passwordRef.current?.value.trim();
+      const username = usernameRef.current?.value.trim();
 
       if (!username || !password) {
         return;
@@ -82,6 +82,8 @@ export const LoginForm = () => {
           id="username"
           type="username"
           name="username"
+          pattern="[A-Za-z0-9._\S]{3,30}\w$"
+          maxLength={30}
           required
           ref={usernameRef}
         />
@@ -92,6 +94,7 @@ export const LoginForm = () => {
           id="password"
           type="password"
           name="password"
+          maxLength={40}
           required
           ref={passwordRef}
         />

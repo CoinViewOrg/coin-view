@@ -26,8 +26,11 @@ export default async function handler(
 
   let response;
 
-  const findFavorite = `SELECT * FROM CryptoFavorites where Cf_UaID = '${userid}' and Cf_CryptoId = '${cryptoid}'`;
-  response = (await querySQL(findFavorite)) as Array<any>;
+  const findFavorite = `SELECT * FROM CryptoFavorites where Cf_UaID = ? and Cf_CryptoId = ?`;
+  response = (await querySQL(findFavorite, [
+    [userid],
+    [cryptoid],
+  ])) as Array<any>;
 
   res.status(200).json({ error: 0, favorites: response });
 }

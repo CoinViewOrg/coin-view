@@ -24,15 +24,22 @@ export default async function handler(
 
   const userid = session?.user?.id;
 
-  if (!oldPassword || !newPassword || !repeatNewPassword) {
+  if (
+    !oldPassword ||
+    !newPassword ||
+    !repeatNewPassword ||
+    oldPassword.length > 40 ||
+    newPassword.length > 40 ||
+    repeatNewPassword.length > 40
+  ) {
     res.status(400).json({ error: 1 });
     return;
   }
 
   let response;
 
-  const findUserSql = `select Ua_Password from UsrAccount where Ua_Id = '${userid}'`;
-  response = (await querySQL(findUserSql)) as Array<any>;
+  const findUserSql = `select Ua_Password from UsrAccount where Ua_Id = ?`;
+  response = (await querySQL(findUserSql, [[userid]])) as Array<any>;
 
   const match = await bcrypt.compare(oldPassword, response[0].Ua_Password);
 
@@ -42,9 +49,9 @@ export default async function handler(
   }
 
   bcrypt.hash(newPassword, 10).then(async function (result: string) {
-    const updateUserSql = `UPDATE UsrAccount SET Ua_Password = '${result}' WHERE Ua_Id = '${userid}'`;
+    const updateUserSql = `UPDATE UsrAccount SET Ua_Password = ? WHERE Ua_Id = ?`;
 
-    await querySQL(updateUserSql);
+    await querySQL(updateUserSql, [[result], [userid]]);
   });
 
   res.status(200).json({ error: 0 });

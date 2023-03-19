@@ -17,34 +17,43 @@ export default async function handler(
   const userid = session?.user?.id;
   const google_sso = Boolean(session?.user?.google_sso);
 
-  if (!username || !email) {
-    res.status(400).json({ error: 1 });
-    return;
+  if (!google_sso) {
+    if (
+      !username ||
+      !email ||
+      !/[A-Za-z0-9._\S]{3,30}\w$/.test(username) ||
+      username.length > 30 ||
+      !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)
+    ) {
+      res.status(400).json({ error: 1 });
+      return;
+    }
+
+    let response;
+
+    const findExistingUserSql = `select Ua_Id from UsrAccount where (Ua_login = ? or Ua_Email = ?) and Ua_Id != ?`;
+    response = (await querySQL(findExistingUserSql, [
+      [username],
+      [email],
+      [userid],
+    ])) as Array<any>;
+
+    if (response.length) {
+      res.status(400).json({ error: 2 });
+      return;
+    }
+    const updateUserSql = `UPDATE UsrAccount SET Ua_login = ?, Ua_Email = ? WHERE Ua_Id = ?`;
+
+    await querySQL(updateUserSql, [[username], [email], [userid]]);
   }
 
-  let response;
-
-  const findExistingUserSql = `select Ua_Id from UsrAccount where (Ua_login = '${username}' or Ua_Email = '${email}') and Ua_Id != '${userid}'`;
-  response = (await querySQL(findExistingUserSql)) as Array<any>;
-
-  if (response.length) {
-    res.status(400).json({ error: 2 });
-    return;
-  }
-
-  const subscribeEmail = `UPDATE UserEmailSubscriptions SET CryptoAlerts = '1', Newsletters = '1', ProductUpdate = '1' WHERE UserId = '${userid}'`;
-  const unsubscribeEmail = `UPDATE UserEmailSubscriptions SET CryptoAlerts = '0', Newsletters = '0', ProductUpdate = '0' WHERE UserId = '${userid}'`;
+  const subscribeEmail = `UPDATE UserEmailSubscriptions SET CryptoAlerts = '1', Newsletters = '1', ProductUpdate = '1' WHERE UserId = ?`;
+  const unsubscribeEmail = `UPDATE UserEmailSubscriptions SET CryptoAlerts = '0', Newsletters = '0', ProductUpdate = '0' WHERE UserId = ?`;
 
   if (email_sub) {
-    await querySQL(subscribeEmail);
+    await querySQL(subscribeEmail, [[userid]]);
   } else {
-    await querySQL(unsubscribeEmail);
-  }
-
-  if (!google_sso) {
-    const updateUserSql = `UPDATE UsrAccount SET Ua_login = '${username}', Ua_Email = '${email}' WHERE Ua_Id = '${userid}'`;
-
-    await querySQL(updateUserSql);
+    await querySQL(unsubscribeEmail, [[userid]]);
   }
 
   res.status(200).json({ error: 0 });

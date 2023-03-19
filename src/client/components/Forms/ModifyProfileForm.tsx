@@ -52,8 +52,8 @@ export const ModifyProfileForm = () => {
       evt.preventDefault();
       const form = evt.target as HTMLFormElement;
 
-      const username = usernameRef.current?.value;
-      const email = emailRef.current?.value;
+      const username = usernameRef.current?.value.trim();
+      const email = emailRef.current?.value.trim();
       const email_sub = emailSubRef.current?.checked;
 
       const response = await fetch("/api/auth/modifyprofile", {
@@ -98,31 +98,35 @@ export const ModifyProfileForm = () => {
       </div>
       {open && (
         <form onSubmit={submitForm}>
-          <div className={styles.formItem}>
-            <label htmlFor="username">{t("register_form_username")}</label>
-            <input
-              id="username"
-              type="username"
-              name="username"
-              required
-              ref={usernameRef}
-              defaultValue={session?.user?.name || ""}
-              disabled={Boolean(session?.user?.google_sso)}
-            />
-          </div>
-          <div className={styles.formItem}>
-            <label htmlFor="email">{t("register_form_email")}</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-              required
-              ref={emailRef}
-              defaultValue={session?.user?.email || ""}
-              disabled={Boolean(session?.user?.google_sso)}
-            />
-          </div>
+          {!Boolean(session?.user?.google_sso) && (
+            <div>
+              <div className={styles.formItem}>
+                <label htmlFor="username">{t("register_form_username")}</label>
+                <input
+                  id="username"
+                  type="username"
+                  name="username"
+                  pattern="[A-Za-z0-9._\S]{3,30}\w$"
+                  maxLength={30}
+                  required
+                  ref={usernameRef}
+                  defaultValue={session?.user?.name || ""}
+                />
+              </div>
+              <div className={styles.formItem}>
+                <label htmlFor="email">{t("register_form_email")}</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  required
+                  ref={emailRef}
+                  defaultValue={session?.user?.email || ""}
+                />
+              </div>
+            </div>
+          )}
           <div className={styles.formCheckboxContainer}>
             <input
               id="email_sub"
