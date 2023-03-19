@@ -16,6 +16,7 @@ export default async function handler(
     !password ||
     !email ||
     !/[A-Za-z0-9._\S]{3,30}\w$/.test(username) ||
+    username.length > 30 ||
     password.length > 40 ||
     !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)
   ) {

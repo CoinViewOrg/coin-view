@@ -49,7 +49,8 @@ export const authOptions = {
         if (
           !credentials?.username ||
           !credentials.password ||
-          !/[A-Za-z0-9._\S]{3,30}\w$/.test(credentials?.username!) ||
+          !/[A-Za-z0-9._\S]{3,30}\w$/.test(credentials?.username) ||
+          credentials?.username.length > 30 ||
           credentials.password.length > 40
         ) {
           return null;

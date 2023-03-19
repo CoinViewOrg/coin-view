@@ -21,6 +21,7 @@ export default async function handler(
     !username ||
     !email ||
     !/[A-Za-z0-9._\S]{3,30}\w$/.test(username) ||
+    username.length > 30 ||
     !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)
   ) {
     res.status(400).json({ error: 1 });
