@@ -24,7 +24,14 @@ export default async function handler(
 
   const userid = session?.user?.id;
 
-  if (!oldPassword || !newPassword || !repeatNewPassword) {
+  if (
+    !oldPassword ||
+    !newPassword ||
+    !repeatNewPassword ||
+    oldPassword.length > 40 ||
+    newPassword.length > 40 ||
+    repeatNewPassword.length > 40
+  ) {
     res.status(400).json({ error: 1 });
     return;
   }

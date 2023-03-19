@@ -17,7 +17,12 @@ export default async function handler(
   const userid = session?.user?.id;
   const google_sso = Boolean(session?.user?.google_sso);
 
-  if (!username || !email) {
+  if (
+    !username ||
+    !email ||
+    !/[A-Za-z0-9._\S]{3,30}\w$/.test(username) ||
+    !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)
+  ) {
     res.status(400).json({ error: 1 });
     return;
   }

@@ -82,6 +82,7 @@ export const LoginForm = () => {
           id="username"
           type="username"
           name="username"
+          pattern="[A-Za-z0-9._\S]{3,30}\w$"
           required
           ref={usernameRef}
         />
@@ -92,6 +93,7 @@ export const LoginForm = () => {
           id="password"
           type="password"
           name="password"
+          maxLength={40}
           required
           ref={passwordRef}
         />

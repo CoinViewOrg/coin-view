@@ -46,7 +46,12 @@ export const authOptions = {
         email: { label: "Email", type: "text" },
       },
       async authorize(credentials, req) {
-        if (!credentials?.username || !credentials.password) {
+        if (
+          !credentials?.username ||
+          !credentials.password ||
+          !/[A-Za-z0-9._\S]{3,30}\w$/.test(credentials?.username!) ||
+          credentials.password.length > 40
+        ) {
           return null;
         }
         const sql = `SELECT Ua_Id, Ua_login, Ua_Email, Ua_Password FROM UsrAccount WHERE Ua_login = ?`;
@@ -64,13 +69,12 @@ export const authOptions = {
         }>;
 
         const match = await bcrypt.compare(
-          credentials?.password,
+          credentials?.password!,
           found?.Ua_Password
         );
 
         if (match) {
           // Any object returned will be saved in `user` property of the JWT
-
           return {
             id: String(found.Ua_Id),
             name: found.Ua_login,

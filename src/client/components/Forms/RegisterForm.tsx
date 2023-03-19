@@ -80,6 +80,8 @@ export const RegisterForm = () => {
           id="username"
           type="username"
           name="username"
+          pattern="[A-Za-z0-9._\S]{3,30}\w$"
+          maxLength={30}
           required
           ref={usernameRef}
         />
@@ -103,6 +105,7 @@ export const RegisterForm = () => {
           id="password"
           type="password"
           name="password"
+          maxLength={40}
           minLength={6}
           required
           ref={passwordRef}
@@ -117,6 +120,7 @@ export const RegisterForm = () => {
           id="confirmpassword"
           type="password"
           name="confirmpassword"
+          maxLength={40}
           required
           ref={confirmPasswordRef}
           onChange={checkPasswordValidity}
