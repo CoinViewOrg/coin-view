@@ -37,9 +37,9 @@ export const RegisterForm = () => {
         return;
       }
 
-      const username = usernameRef.current?.value;
-      const password = passwordRef.current?.value;
-      const email = emailRef.current?.value;
+      const username = usernameRef.current?.value.trim();
+      const password = passwordRef.current?.value.trim();
+      const email = emailRef.current?.value.trim();
 
       const response = await fetch("/api/auth/register", {
         method: "post",

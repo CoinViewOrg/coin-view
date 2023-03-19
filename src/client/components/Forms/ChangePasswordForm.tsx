@@ -47,9 +47,9 @@ export const ChangePasswordForm = () => {
         return;
       }
 
-      const oldPassword = oldPasswordRef.current?.value;
-      const newPassword = newPasswordRef.current?.value;
-      const repeatNewPassword = repeatNewPasswordRef.current?.value;
+      const oldPassword = oldPasswordRef.current?.value.trim();
+      const newPassword = newPasswordRef.current?.value.trim();
+      const repeatNewPassword = repeatNewPasswordRef.current?.value.trim();
 
       const response = await fetch("/api/auth/changepassword", {
         method: "post",

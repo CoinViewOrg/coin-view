@@ -33,8 +33,8 @@ export const LoginForm = () => {
         return;
       }
 
-      const password = passwordRef.current?.value;
-      const username = usernameRef.current?.value;
+      const password = passwordRef.current?.value.trim();
+      const username = usernameRef.current?.value.trim();
 
       if (!username || !password) {
         return;

@@ -52,8 +52,8 @@ export const ModifyProfileForm = () => {
       evt.preventDefault();
       const form = evt.target as HTMLFormElement;
 
-      const username = usernameRef.current?.value;
-      const email = emailRef.current?.value;
+      const username = usernameRef.current?.value.trim();
+      const email = emailRef.current?.value.trim();
       const email_sub = emailSubRef.current?.checked;
 
       const response = await fetch("/api/auth/modifyprofile", {
