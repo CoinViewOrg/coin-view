@@ -29,6 +29,7 @@
   "login_form_username": "Username",
   "login_form_password": "Password",
   "login_form_redirect_register": "Do not have an account? Create one!",
+  "login_form_redirect_recovery": "Forgot password.",
   "login_form_invalid": "Invalid username or password!",
   "login_form_register_succesful_1": "You have successfully created a new account!",
   "login_form_register_succesful_2": "You can log in now.",

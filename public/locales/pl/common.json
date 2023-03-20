@@ -29,6 +29,7 @@
   "login_form_username": "Nazwa użytkownika",
   "login_form_password": "Hasło",
   "login_form_redirect_register": "Nie masz jeszcze konta? Stwórz je teraz",
+  "login_form_redirect_recovery": "Zapomniałem hasła.",
   "login_form_invalid": "Niepoprawna nazwa użytkownika lub hasło!",
   "login_form_register_succesful_1": "Pomyślnie stworzyłes konto!",
   "login_form_register_succesful_2": "Możesz się teraz zalogować.",

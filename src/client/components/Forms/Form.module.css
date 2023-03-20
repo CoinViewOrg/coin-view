@@ -24,6 +24,20 @@
   margin-bottom: 2em;
 }
 
+.formItemColumnWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.formItemColumnWrapper a {
+  font-size: 0.8em;
+  align-self: flex-end;
+  text-decoration: underline;
+  position: absolute;
+  top: 2.7em;
+}
+
 .formItem {
   display: flex;
   justify-content: space-between;

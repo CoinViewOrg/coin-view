@@ -76,6 +76,7 @@ export const LoginForm = () => {
         </span>
       )}
       <hr></hr>
+
       <div className={styles.formItem}>
         <label htmlFor="username">{t("login_form_username")}</label>
         <input
@@ -90,14 +91,17 @@ export const LoginForm = () => {
       </div>
       <div className={styles.formItem}>
         <label htmlFor="password">{t("login_form_password")}</label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          maxLength={40}
-          required
-          ref={passwordRef}
-        />
+        <div className={styles.formItemColumnWrapper}>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            maxLength={40}
+            required
+            ref={passwordRef}
+          />
+          <Link href="/recovery">{t("login_form_redirect_recovery")}</Link>
+        </div>
       </div>
 
       <input className={styles.formSubmit} type="submit" value="Login" />
