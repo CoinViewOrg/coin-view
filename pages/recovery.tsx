@@ -1,10 +1,8 @@
 import { RecoveryForm } from "@coin-view/client";
 import type { NextPage } from "next";
-import { unstable_getServerSession } from "next-auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import React from "react";
 import styles from "../styles/Home.module.css";
-import { authOptions } from "./api/auth/[...nextauth]";
 
 const Recovery: NextPage = () => {
   return (
@@ -16,19 +14,9 @@ const Recovery: NextPage = () => {
 
 export default Recovery;
 
-export async function getServerSideProps({
-  req,
-  res,
-  locale,
-}: {
-  req: any;
-  res: any;
-  locale: string;
-}) {
-  const session = await unstable_getServerSession(req, res, authOptions);
+export async function getServerSideProps({ locale }: { locale: string }) {
   return {
     props: {
-      session: JSON.parse(JSON.stringify(session)),
       ...(await serverSideTranslations(locale, ["common"])),
     },
   };
