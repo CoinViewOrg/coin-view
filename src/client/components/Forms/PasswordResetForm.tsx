@@ -51,7 +51,7 @@ export const PasswordResetForm = (token: any) => {
         push(`/login?passr=1`, undefined, { locale: language });
       }
     },
-    [newPasswordRef, repeatNewPasswordRef]
+    [newPasswordRef, repeatNewPasswordRef, language, push, token]
   );
 
   return (

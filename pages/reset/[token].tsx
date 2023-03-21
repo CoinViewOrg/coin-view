@@ -5,12 +5,9 @@ import React from "react";
 import styles from "../../styles/Home.module.css";
 import { checkResetToken } from "src";
 
-const ResetPage: NextPage = ({
+const ResetPage: NextPage<{ token: string; validatedToken: boolean }> = ({
   token,
   validatedToken,
-}: {
-  token: string;
-  validatedToken: boolean;
 }) => {
   const { t, language } = useCustomTranslation();
   return (
