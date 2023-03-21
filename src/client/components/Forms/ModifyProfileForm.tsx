@@ -149,9 +149,14 @@ export const ModifyProfileForm = () => {
           />
           {error && (
             <span className={cx(styles.error, styles.profileFormSpan)}>
-              {error == 1 && "Please correct your credentials!"}
-              {error == 2 &&
-                "User with given username or email already exists!"}
+              {error == 1 && (
+                <p className={styles.formParagraph}>{t("wrong_credentials")}</p>
+              )}
+              {error == 2 && (
+                <p className={styles.formParagraph}>
+                  {t("user_already_exists")}
+                </p>
+              )}
             </span>
           )}
         </form>

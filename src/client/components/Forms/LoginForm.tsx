@@ -23,7 +23,7 @@ export const LoginForm = () => {
 
   const [error, setError] = React.useState(false);
 
-  const { registered, google_sso_error } = query;
+  const { passr, recoveryrequest, registered, google_sso_error } = query;
 
   const submitForm = React.useCallback(
     async (evt: React.FormEvent<HTMLFormElement>) => {
@@ -66,6 +66,7 @@ export const LoginForm = () => {
       callbackUrl: "/list",
     });
   }, [locale]);
+
   return (
     <form className={styles.container} onSubmit={submitForm}>
       <h2>{t("login_form_header")}</h2>
@@ -76,6 +77,7 @@ export const LoginForm = () => {
         </span>
       )}
       <hr></hr>
+
       <div className={styles.formItem}>
         <label htmlFor="username">{t("login_form_username")}</label>
         <input
@@ -90,14 +92,17 @@ export const LoginForm = () => {
       </div>
       <div className={styles.formItem}>
         <label htmlFor="password">{t("login_form_password")}</label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          maxLength={40}
-          required
-          ref={passwordRef}
-        />
+        <div className={styles.formItemColumnWrapper}>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            maxLength={40}
+            required
+            ref={passwordRef}
+          />
+          <Link href="/recovery">{t("login_form_redirect_recovery")}</Link>
+        </div>
       </div>
 
       <input className={styles.formSubmit} type="submit" value="Login" />
@@ -106,8 +111,29 @@ export const LoginForm = () => {
       {error && <span className={styles.error}>{t("login_form_invalid")}</span>}
       {registered && (
         <span className={styles.success}>
-          {t("login_form_register_succesful_1")} <br></br>{" "}
-          {t("login_form_register_succesful_2")}
+          <p className={styles.formParagraph}>
+            {t("login_form_register_succesful_1")}
+          </p>
+          <p className={styles.formParagraph}>
+            {t("login_form_register_succesful_2")}
+          </p>
+        </span>
+      )}
+      {recoveryrequest && (
+        <span className={styles.success}>
+          <p className={styles.formParagraph}>
+            {t("login_form_recovery_succesful_1")}
+          </p>
+          <p className={styles.formParagraph}>
+            {t("login_form_recovery_succesful_2")}
+          </p>
+        </span>
+      )}
+      {passr && (
+        <span className={styles.success}>
+          <p className={styles.formParagraph}>
+            {t("password_reset_succesful")}
+          </p>
         </span>
       )}
     </form>

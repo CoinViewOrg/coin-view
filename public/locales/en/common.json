@@ -29,6 +29,7 @@
   "login_form_username": "Username",
   "login_form_password": "Password",
   "login_form_redirect_register": "Do not have an account? Create one!",
+  "login_form_redirect_recovery": "Forgot password",
   "login_form_invalid": "Invalid username or password!",
   "login_form_register_succesful_1": "You have successfully created a new account!",
   "login_form_register_succesful_2": "You can log in now.",
@@ -64,5 +65,22 @@
   "password_form_repeat": "Repeat password",
   "google_sign_in": "Sign in with Google",
   "email_already_used": "Email was already used to create an account.\n Try loggin in or reset your password.",
-  "gemeric_sso_error": "Oops. Something went wrong. \nTry again later."
+  "gemeric_sso_error": "Oops. Something went wrong. \nTry again later.",
+
+  "recovery_form_button": "Submit",
+  "recovery_form_header": "Recover password",
+  "recovery_form_input_label": "Username or email",
+
+  "login_form_recovery_succesful_1": "You have submited recovery request.",
+  "login_form_recovery_succesful_2": "If your username or email is correct, we will send you and email with further instructions.",
+
+  "password_reset_form_header": "Set your new password",
+  "bad_token": "Your token has expired or has already been used.",
+  "password_reset_succesful": "Your password has been changed.",
+
+  "bad_current_password": "You provided wrong current password.",
+  "passwords_no_match": "New passwords do not match.",
+  "wrong_credentials": "Please, provide correct username and/or email address.",
+  "user_already_exists": "User with given username/email already exists.",
+  "input_empty_error": "Please fill out all required fields."
 }
