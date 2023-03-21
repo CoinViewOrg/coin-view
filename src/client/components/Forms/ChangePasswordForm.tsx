@@ -15,7 +15,7 @@ export const ChangePasswordForm = () => {
   const repeatNewPasswordRef = React.useRef<HTMLInputElement>(null);
   const { data: session, status } = useSession();
 
-  const [error, setError] = React.useState(2);
+  const [error, setError] = React.useState();
   const [open, setOpen] = React.useState(false);
 
   const { reload } = useRouter();
