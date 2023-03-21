@@ -93,9 +93,14 @@ export const PasswordResetForm = (token: any) => {
         {error && (
           <div>
             <span className={cx(styles.error, styles.profileFormSpan)}>
-              {error == 1 && "Please correct your credentials!"}
-              {error == 2 && "Bad token"}
-              {error == 3 && "Expired token"}
+              {error == 1 && (
+                <p className={styles.formParagraph}>
+                  {t("passwords_no_match")}
+                </p>
+              )}
+              {error == 2 && (
+                <p className={styles.formParagraph}>{t("bad_token")}</p>
+              )}
             </span>
           </div>
         )}

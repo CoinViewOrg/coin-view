@@ -15,7 +15,7 @@ export const ChangePasswordForm = () => {
   const repeatNewPasswordRef = React.useRef<HTMLInputElement>(null);
   const { data: session, status } = useSession();
 
-  const [error, setError] = React.useState();
+  const [error, setError] = React.useState(2);
   const [open, setOpen] = React.useState(false);
 
   const { reload } = useRouter();
@@ -134,8 +134,16 @@ export const ChangePasswordForm = () => {
           />
           {error && (
             <span className={cx(styles.error, styles.profileFormSpan)}>
-              {error == 1 && "Please correct your credentials!"}
-              {error == 2 && "Your provided wrong current password."}
+              {error == 1 && (
+                <p className={styles.formParagraph}>
+                  {t("passwords_no_match")}
+                </p>
+              )}
+              {error == 2 && (
+                <p className={styles.formParagraph}>
+                  {t("bad_current_password")}
+                </p>
+              )}
             </span>
           )}
         </form>

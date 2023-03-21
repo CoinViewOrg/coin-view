@@ -76,5 +76,11 @@
 
   "password_reset_form_header": "Ustaw nowe hasło",
   "bad_token": "Twój token wygasł lub został wykorzystany.",
-  "password_reset_succesful": "Twoje hasło zostało zmienione."
+  "password_reset_succesful": "Twoje hasło zostało zmienione.",
+
+  "bad_current_password": "Podano złe obecne hasło.",
+  "passwords_no_match": "Nowe hasła nie są takie same.",
+  "wrong_credentials": "Proszę podać prawidłową nazwę użytkownika i/lub adres email",
+  "user_already_exists": "Użytkownik z podaną nazwą użytkownika lub adresem email już istnieje.",
+  "input_empty_error": "Należy wypełnić wszystkie wymagane pola."
 }

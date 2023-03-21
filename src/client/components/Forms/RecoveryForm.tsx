@@ -9,7 +9,7 @@ export const RecoveryForm = () => {
 
   const { t, language } = useCustomTranslation();
 
-  const { query, push, locale } = useRouter();
+  const { push } = useRouter();
 
   const [error, setError] = React.useState();
 
@@ -69,7 +69,9 @@ export const RecoveryForm = () => {
       />
       {error && (
         <span className={cx(styles.error, styles.profileFormSpan)}>
-          {error == 1 && "Please, fill out input field!"}
+          {error == 1 && (
+            <p className={styles.formParagraph}>{t("input_empty_error")}</p>
+          )}
         </span>
       )}
     </form>

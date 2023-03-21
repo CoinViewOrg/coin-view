@@ -76,5 +76,11 @@
 
   "password_reset_form_header": "Set your new password",
   "bad_token": "Your token has expired or has already been used.",
-  "password_reset_succesful": "Your password has been changed."
+  "password_reset_succesful": "Your password has been changed.",
+
+  "bad_current_password": "You provided wrong current password.",
+  "passwords_no_match": "New passwords do not match.",
+  "wrong_credentials": "Please, provide correct username and/or email address.",
+  "user_already_exists": "User with given username/email already exists.",
+  "input_empty_error": "Please fill out all required fields."
 }

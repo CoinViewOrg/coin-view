@@ -33,7 +33,7 @@ export default async function handler(
   const tokenExpiresOn = new Date(response[0].TokenExpiration);
   const dateToday = new Date();
   if (dateToday > tokenExpiresOn) {
-    res.status(400).json({ error: 3 });
+    res.status(400).json({ error: 2 });
   }
 
   bcrypt.hash(newPassword, 10).then(async function (result: string) {
