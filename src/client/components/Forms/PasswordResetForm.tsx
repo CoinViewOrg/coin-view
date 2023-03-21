@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./Form.module.css";
 import { useCustomTranslation } from "@coin-view/client";
 import cx from "classnames";
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export const PasswordResetForm = (token: any) => {
@@ -49,7 +48,6 @@ export const PasswordResetForm = (token: any) => {
       if (error) {
         setError(error);
       } else {
-        signOut();
         push(`/login?passr=1`, undefined, { locale: language });
       }
     },
