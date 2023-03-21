@@ -3,6 +3,12 @@ import { querySQL } from "@coin-view/api";
 import { v4 as uuidv4 } from "uuid";
 import ses from "node-ses";
 
+const sesClient = ses.createClient({
+  key: process.env.AWS_SES_ACCESS_KEY_ID || "",
+  secret: process.env.AWS_SES_SECRET_ACCESS_KEY || "",
+  amazon: `https://email.eu-central-1.amazonaws.com`,
+});
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
@@ -37,13 +43,7 @@ export default async function handler(
   ]);
   res.status(200).json({ error: 0 });
 
-  const sesClient = ses.createClient({
-    key: process.env.AWS_SES_ACCESS_KEY_ID || "",
-    secret: process.env.AWS_SES_SECRET_ACCESS_KEY || "",
-    amazon: `https://email.eu-central-1.amazonaws.com`,
-  });
-
-  const href = `127.0.0.1:3000/reset/${resetToken}`;
+  const href = `${req.headers.host}/reset/${resetToken}`;
 
   const emailHTML = `
     <html>
