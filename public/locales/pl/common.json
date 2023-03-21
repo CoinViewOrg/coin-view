@@ -29,7 +29,7 @@
   "login_form_username": "Nazwa użytkownika",
   "login_form_password": "Hasło",
   "login_form_redirect_register": "Nie masz jeszcze konta? Stwórz je teraz",
-  "login_form_redirect_recovery": "Zapomniałem hasła",
+  "login_form_redirect_recovery": "Odzyskaj hasło",
   "login_form_invalid": "Niepoprawna nazwa użytkownika lub hasło!",
   "login_form_register_succesful_1": "Pomyślnie stworzyłes konto!",
   "login_form_register_succesful_2": "Możesz się teraz zalogować.",
@@ -71,8 +71,8 @@
   "recovery_form_header": "Odzyskaj hasło",
   "recovery_form_input_label": "Nazwa użytkownika lub email",
 
-  "login_form_recovery_succesful_1": "Wysłałeś prośbę o odzyskanie hasła.",
-  "login_form_recovery_succesful_2": "Jeżeli podałeś prawidłową nazwę użytkownika lub email, otrzymasz wiadomość z dalszymi instrukcjami",
+  "login_form_recovery_succesful_1": "Wysłano prośbę o odzyskanie hasła.",
+  "login_form_recovery_succesful_2": "Jeżeli podano prawidłową nazwę użytkownika lub email, otrzymasz wiadomość z dalszymi instrukcjami",
 
   "password_reset_form_header": "Ustaw nowe hasło",
   "bad_token": "Twój token wygasł lub został wykorzystany.",
