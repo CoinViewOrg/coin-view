@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { querySQL } from "@coin-view/api";
 import { v4 as uuidv4 } from "uuid";
 import ses from "node-ses";
+import { absoluteUrl } from "@coin-view/api";
 
 const sesClient = ses.createClient({
   key: process.env.AWS_SES_ACCESS_KEY_ID || "",
@@ -43,7 +44,9 @@ export default async function handler(
   ]);
   res.status(200).json({ error: 0 });
 
-  const href = `${req.headers.host}/reset/${resetToken}`;
+  const href = `${
+    absoluteUrl(req, req.headers.host).origin
+  }/reset/${resetToken}`;
 
   const emailHTML = `
     <html>
