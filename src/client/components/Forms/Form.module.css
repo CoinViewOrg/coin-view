@@ -127,3 +127,7 @@
   text-align: start;
   font-size: 0.9em;
 }
+
+.formParagraph {
+  margin: 0;
+}

@@ -94,7 +94,6 @@ export const PasswordResetForm = (token: any) => {
         />
         {error && (
           <div>
-            <br></br>
             <span className={cx(styles.error, styles.profileFormSpan)}>
               {error == 1 && "Please correct your credentials!"}
               {error == 2 && "Bad token"}

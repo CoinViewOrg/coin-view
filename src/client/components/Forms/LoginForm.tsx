@@ -111,18 +111,30 @@ export const LoginForm = () => {
       {error && <span className={styles.error}>{t("login_form_invalid")}</span>}
       {registered && (
         <span className={styles.success}>
-          {t("login_form_register_succesful_1")} <br></br>{" "}
-          {t("login_form_register_succesful_2")}
+          <p className={styles.formParagraph}>
+            {t("login_form_register_succesful_1")}
+          </p>
+          <p className={styles.formParagraph}>
+            {t("login_form_register_succesful_2")}
+          </p>
         </span>
       )}
       {recoveryrequest && (
         <span className={styles.success}>
-          {t("login_form_recovery_succesful_1")} <br></br>{" "}
-          {t("login_form_recovery_succesful_2")}
+          <p className={styles.formParagraph}>
+            {t("login_form_recovery_succesful_1")}
+          </p>
+          <p className={styles.formParagraph}>
+            {t("login_form_recovery_succesful_2")}
+          </p>
         </span>
       )}
       {passr && (
-        <span className={styles.success}>{t("password_reset_succesful")}</span>
+        <span className={styles.success}>
+          <p className={styles.formParagraph}>
+            {t("password_reset_succesful")}
+          </p>
+        </span>
       )}
     </form>
   );
