@@ -1,0 +1,35 @@
+import { RecoveryForm } from "@coin-view/client";
+import type { NextPage } from "next";
+import { unstable_getServerSession } from "next-auth";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import React from "react";
+import styles from "../styles/Home.module.css";
+import { authOptions } from "./api/auth/[...nextauth]";
+
+const Recovery: NextPage = () => {
+  return (
+    <div className={styles.container}>
+      <RecoveryForm />
+    </div>
+  );
+};
+
+export default Recovery;
+
+export async function getServerSideProps({
+  req,
+  res,
+  locale,
+}: {
+  req: any;
+  res: any;
+  locale: string;
+}) {
+  const session = await unstable_getServerSession(req, res, authOptions);
+  return {
+    props: {
+      session: JSON.parse(JSON.stringify(session)),
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}

@@ -1,7 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { querySQL } from "@coin-view/api";
-import { getSession } from "next-auth/react";
 import bcrypt from "bcrypt";
 
 type Data = {
@@ -12,23 +11,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const session = await getSession({ req });
-  const google_sso = Boolean(session?.user?.google_sso);
-
-  if (google_sso) {
-    res.status(403).json({ error: 3 });
-    return;
-  }
-
-  const { oldPassword, newPassword, repeatNewPassword } = req.body;
-
-  const userid = session?.user?.id;
-
+  const { token, newPassword, repeatNewPassword } = req.body;
   if (
-    !oldPassword ||
     !newPassword ||
     !repeatNewPassword ||
-    oldPassword.length > 40 ||
     newPassword.length > 40 ||
     repeatNewPassword.length > 40 ||
     newPassword != repeatNewPassword
@@ -37,23 +23,26 @@ export default async function handler(
     return;
   }
 
-  let response;
-
-  const findUserSql = `select Ua_Password from UsrAccount where Ua_Id = ?`;
-  response = (await querySQL(findUserSql, [[userid]])) as Array<any>;
-
-  const match = await bcrypt.compare(oldPassword, response[0].Ua_Password);
-
-  if (!match) {
+  const findUserId = `SELECT Ua_Id, TokenExpiration FROM PasswordResetTokens WHERE ResetToken = ?`;
+  let response = (await querySQL(findUserId, [[token.token]])) as Array<any>;
+  if (!response.length) {
     res.status(400).json({ error: 2 });
     return;
   }
 
+  const tokenExpiresOn = new Date(response[0].TokenExpiration);
+  const dateToday = new Date();
+  if (dateToday > tokenExpiresOn) {
+    res.status(400).json({ error: 3 });
+  }
+
   bcrypt.hash(newPassword, 10).then(async function (result: string) {
     const updateUserSql = `UPDATE UsrAccount SET Ua_Password = ? WHERE Ua_Id = ?`;
-
-    await querySQL(updateUserSql, [[result], [userid]]);
+    await querySQL(updateUserSql, [[result], [response[0].Ua_Id]]);
   });
+
+  const useToken = `UPDATE PasswordResetTokens SET Used = 1 WHERE Ua_Id = ? AND ResetToken = ?`;
+  await querySQL(useToken, [[response[0].Ua_Id], [token.token]]);
 
   res.status(200).json({ error: 0 });
 }

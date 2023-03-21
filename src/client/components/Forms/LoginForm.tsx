@@ -23,7 +23,7 @@ export const LoginForm = () => {
 
   const [error, setError] = React.useState(false);
 
-  const { registered, google_sso_error } = query;
+  const { passr, recoveryrequest, registered, google_sso_error } = query;
 
   const submitForm = React.useCallback(
     async (evt: React.FormEvent<HTMLFormElement>) => {
@@ -66,6 +66,7 @@ export const LoginForm = () => {
       callbackUrl: "/list",
     });
   }, [locale]);
+
   return (
     <form className={styles.container} onSubmit={submitForm}>
       <h2>{t("login_form_header")}</h2>
@@ -113,6 +114,15 @@ export const LoginForm = () => {
           {t("login_form_register_succesful_1")} <br></br>{" "}
           {t("login_form_register_succesful_2")}
         </span>
+      )}
+      {recoveryrequest && (
+        <span className={styles.success}>
+          {t("login_form_recovery_succesful_1")} <br></br>{" "}
+          {t("login_form_recovery_succesful_2")}
+        </span>
+      )}
+      {passr && (
+        <span className={styles.success}>{t("password_reset_succesful")}</span>
       )}
     </form>
   );
