@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "lint-staged": {
-    "**/*.{js,jsx,json}": [
-      "prettier"
+    "**/*.{js,jsx,json,ts,tsx}": [
+      "prettier --write"
     ]
   },
   "scripts": {
