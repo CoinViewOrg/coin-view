@@ -1,9 +1,9 @@
-name: Lint
+name: Build
 on: push
 
 jobs:
-  eslint:
-    name: ESLint
+  build:
+    name: Build production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
