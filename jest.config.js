@@ -25,7 +25,7 @@ module.exports = {
     "^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp|svg)$/i": `<rootDir>/__mocks__/fileMock.js`,
 
     // Handle module aliases
-    "@coin-view/(.*)": "<rootDir>\\src\\$1",
+    "@coin-view/(.*)": "<rootDir>/src/$1",
   },
   // Add more setup options before each test is run
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
