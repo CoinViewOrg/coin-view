@@ -9,7 +9,8 @@ import { authOptions } from "./api/auth/[...nextauth]";
 const Login: NextPage = () => {
   return (
     <div 
-    className={styles.container}>
+    className=
+    {styles.container}>
       <LoginForm />
     </div>
   );
