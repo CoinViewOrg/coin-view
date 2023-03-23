@@ -34,7 +34,7 @@ def add_notification(cur, user_id, type, text):
     ts = time.time()
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     content = conn.escape_string(text)
-    qry = "insert into UserNotifications (Ua_Id, Content, Date, Type, Seen) values (%d, '%s', '%s', '%s', 0)" % (user_id, content, timestamp, type)
+    qry = "insert into UserNotifications (Ua_Id, Content, Date, Type, Seen) values (%s, '%s', '%s', '%s', 0)" % (user_id, content, timestamp, type)
     cur.execute(qry)
 
 def send_email(recipient, text):
@@ -88,13 +88,13 @@ def send_email(recipient, text):
 
 def lambda_handler(event, context):
     with conn.cursor() as cur:
-        qry = "SELECT * FROM CryptoNotification"
+        qry = "SELECT Cn.Cn_UaId, Cn.Cn_CryptoId, Ua.Cn_Treshold FROM CryptoNotification Cn INNER JOIN UsrAccount Ua ON Cn.Cn_UaId = Ua.Ua_Id"
         cur.execute(qry)
         alerts = cur.fetchall()
         print('ALERTS', alerts)
         cryptoids = list(map(lambda x: str(x['Cn_CryptoId']), alerts))
         userids = list(map(lambda x: str(x['Cn_UaId']), alerts))
-
+        
         qry = "SELECT Ua_Email, Ua_login, Ua_Id  FROM `UsrAccount` where Ua_Id in (%s)" % (
             ",".join(userids))
         cur.execute(qry)
@@ -107,8 +107,7 @@ def lambda_handler(event, context):
 
         alerts_to_send_per_user = {}
 
-        for i in range(0, len(alerts)):
-            alert = alerts[i]
+        for alert in alerts:
             userid = alert["Cn_UaId"]
             cryptoid = alert["Cn_CryptoId"]
             threshold = alert["Cn_Treshold"]
@@ -120,7 +119,6 @@ def lambda_handler(event, context):
                 cryptoid)]["quote"]["USD"]["price"]
 
             crypto_name = cryptos[str(cryptoid)]["name"]
-
             print(userid, cryptoid, crypto_change, crypto_name)
             if (abs(crypto_change) >= threshold):
                 color_class = 'green' if crypto_change > 0 else 'red'
