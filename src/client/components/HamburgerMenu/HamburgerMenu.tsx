@@ -146,7 +146,9 @@ export const HamburgerMenu = ({
                   height={30}
                   alt="profile"
                 />
-                <span>{session.user?.name}</span>
+                <span className={styles.overflowSpan}>
+                  {session.user?.name}
+                </span>
               </div>
               <div className={styles.menuItem} onClick={() => signOut()}>
                 <Image
