@@ -23,7 +23,7 @@ type PageProps = {
 const Profile: NextPage<PageProps> = (props) => {
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
-
+  console.log({ session });
   const { favoriteMarketName } = useContext(AppContext);
 
   const [selectedMarket, setSelectedMarket] = React.useState<MarketType | null>(

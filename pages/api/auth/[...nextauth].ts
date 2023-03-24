@@ -40,6 +40,7 @@ export const createOptions = (
           newsletters: updatedUser.Newsletters,
           productupdate: updatedUser.ProductUpdate,
           google_sso: updatedUser.GoogleSSO,
+          email_verified: updatedUser.EmailVerified,
         };
 
         token = {

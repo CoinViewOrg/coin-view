@@ -4,7 +4,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "../styles/Home.module.css";
-import { crea } from "./api/auth/[...nextauth]";
+import { createOptions } from "./api/auth/[...nextauth]";
 
 const Index: NextPage = (props) => {
   const { replace } = useRouter();
