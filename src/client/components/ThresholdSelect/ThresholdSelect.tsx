@@ -14,8 +14,10 @@ export const ThresholdSelect = ({ className, userThreshold }: PropsType) => {
   const { t } = useCustomTranslation();
 
   const [threshold, setThreshold] = React.useState<number | null>(
-    userThreshold ? userThreshold.threshold : null
+    userThreshold ? userThreshold : null
   );
+
+  console.log(userThreshold);
 
   const handleClick = React.useCallback(async (option: number | null) => {
     await fetch("/api/setuserthreshold", {

@@ -7,7 +7,11 @@ import { useSession } from "next-auth/react";
 import Image from "next/future/image";
 import { ThresholdSelect } from "@coin-view/client";
 
-export const ModifyProfileForm = (threshold: any) => {
+type PropsType = {
+  threshold: number | null;
+};
+
+export const ModifyProfileForm = ({ threshold }: PropsType) => {
   const { t, language } = useCustomTranslation();
   const usernameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);

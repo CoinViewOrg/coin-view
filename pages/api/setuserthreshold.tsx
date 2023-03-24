@@ -20,12 +20,7 @@ export default async function handler(
     return;
   }
 
-  let response;
-
-  const getConfirmedEmail = `SELECT EmailVerified FROM UsrAccount WHERE Ua_Id = ?`;
-  response = (await querySQL(getConfirmedEmail, [[userid]])) as Array<any>;
-
-  if (response[0].EmailVerified === 0) {
+  if (!session?.user?.email_verified) {
     res.status(200).json({ error: 2 });
     return;
   }

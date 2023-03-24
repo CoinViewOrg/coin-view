@@ -110,7 +110,6 @@ def lambda_handler(event, context):
         alerts_to_send_per_user = {}
 
         for alert in alerts:
-            #alert = alerts[i]
             userid = alert["Cf_UaID"]
             cryptoid = alert["Cf_CryptoId"]
             threshold = alert["Cn_Treshold"]
@@ -124,7 +123,6 @@ def lambda_handler(event, context):
             crypto_name = cryptos[str(cryptoid)]["name"]
             print(userid, cryptoid, crypto_change, crypto_name)
             if (abs(crypto_change) >= threshold):
-                print('Sent')
                 color_class = 'green' if crypto_change > 0 else 'red'
                 arrow = '&#8599;' if crypto_change > 0 else '&#8600;'
                 item = ("%s : <b style='color: %s;'>%s %f%%</b> - current price: <b>%f$</b>") % (
