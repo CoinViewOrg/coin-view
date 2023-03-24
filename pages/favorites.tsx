@@ -5,7 +5,6 @@ import React from "react";
 import { CoinListItem, CoinMetaType, CurrencyType } from "@coin-view/types";
 import {
   getCoinsMetadata,
-  getCryptothresholds,
   getFavoriteCryptos,
   getFavoriteMarket,
   getFilteredCoinList,
@@ -14,7 +13,6 @@ import {
   CryptoList,
   ListSwitcher,
   SearchBar,
-  useAlertThresholds,
   useFavorites,
   useHistoricalData,
   usePrevious,
@@ -47,8 +45,6 @@ const Favorites: NextPage<{
 
   const { addToFavorites, favorites } = useFavorites();
 
-  const { setThreshold, thresholds } = useAlertThresholds();
-
   return (
     <>
       <SearchBar />
@@ -62,8 +58,6 @@ const Favorites: NextPage<{
         metaList={meta}
         addToFavorites={addToFavorites}
         favorites={favorites}
-        setThreshold={setThreshold}
-        thresholds={thresholds}
       />
     </>
   );
@@ -84,19 +78,12 @@ export async function getServerSideProps({
   // Pass data to the page via props
 
   let favorites = null,
-    thresholds = null,
     favoriteMarket = null;
 
   const userid = session?.user?.id;
   if (userid) {
     favorites = await getFavoriteCryptos(userid);
     favorites = favorites.map((row: any) => row.Cf_CryptoId);
-    thresholds = Object.fromEntries(
-      (await getCryptothresholds(userid)).map((row: any) => [
-        row.Cn_CryptoId,
-        row.Cn_Treshold,
-      ])
-    );
     favoriteMarket = await getFavoriteMarket(userid);
   }
 
@@ -109,7 +96,6 @@ export async function getServerSideProps({
         meta: {},
         session: null,
         favorites: [],
-        thresholds: {},
         favoriteMarketName: null,
         ...traslations,
       },
@@ -157,7 +143,6 @@ export async function getServerSideProps({
       meta,
       session: JSON.parse(JSON.stringify(session)),
       favorites,
-      thresholds,
       favoriteMarketName: favoriteMarket,
       ...traslations,
     },

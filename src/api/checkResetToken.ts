@@ -1,8 +1,8 @@
 import { querySQL } from "./auth";
 
 export const checkResetToken = async (token: any) => {
-  const thresholds = `SELECT * FROM PasswordResetTokens WHERE ResetToken = ? AND Used = 0`;
-  const response = (await querySQL(thresholds, [[token]])) as Array<any>;
+  const sql = `SELECT * FROM PasswordResetTokens WHERE ResetToken = ? AND Used = 0`;
+  const response = (await querySQL(sql, [[token]])) as Array<any>;
   if (!response.length) {
     return false;
   }

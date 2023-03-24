@@ -6,7 +6,7 @@ export const registerSSOUser = async (
   email: string,
   accessToken: string
 ) => {
-  const newUserSql = `INSERT INTO UsrAccount(Ua_Id, Ua_login, Ua_email, Ua_password, EmailVerified, GoogleSSO) VALUES(?, 1, 1)`;
+  const newUserSql = `INSERT INTO UsrAccount(Ua_Id, Ua_login, Ua_email, Ua_password, EmailVerified, GoogleSSO, Cn_Treshold) VALUES(?, 1, 1, null)`;
   const newUserValues = [providerId, username, email, accessToken];
 
   await querySQL(newUserSql, [newUserValues]);

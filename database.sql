@@ -7,6 +7,7 @@ CREATE TABLE `UsrAccount` (
     `VerificationId` varchar(64) DEFAULT NULL,
     `EmailVerified` tinyint(1) DEFAULT NULL,
     `GoogleSSO` tinyint(1) DEFAULT NULL,
+    `Cn_Treshold` int,
     PRIMARY KEY (`Ua_Id`),
     KEY `Ua_FavoriteMarket` (`Ua_FavoriteMarket`),
     CONSTRAINT `UsrAccount_ibfk_1` FOREIGN KEY (`Ua_FavoriteMarket`) REFERENCES `MarketList` (`Ml_Id`)
@@ -17,14 +18,6 @@ CREATE TABLE `CryptoFavorites` (
     `Cf_CryptoId` int NOT NULL,
     KEY `Cf_UaID` (`Cf_UaID`),
     CONSTRAINT `CryptoFavorites_ibfk_1` FOREIGN KEY (`Cf_UaID`) REFERENCES `UsrAccount` (`Ua_Id`)
-);
-
-CREATE TABLE `CryptoNotification` (
-    `Cn_UaId` varchar(30) NOT NULL,
-    `Cn_CryptoId` int NOT NULL,
-    `Cn_Treshold` int NOT NULL,
-    KEY `Cn_UaId` (`Cn_UaId`),
-    CONSTRAINT `CryptoNotification_ibfk_1` FOREIGN KEY (`Cn_UaId`) REFERENCES `UsrAccount` (`Ua_Id`)
 );
 
 CREATE TABLE `MarketList` (

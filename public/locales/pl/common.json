@@ -23,7 +23,9 @@
 
   "favourites": "Ulubione",
 
-  "threshold": "Wybierz próg alertu",
+  "threshold": "Wybierz próg powiadomień",
+  "notiff_off": "Wyłączone",
+  "confirm_email_reminder": "Zweryfikuj swój adres email aby otrzymywać powiadomienia i uzyskać dostęp do ustawień powiadomień",
 
   "login_form_header": "Zaloguj się na swoje konto",
   "login_form_username": "Nazwa użytkownika",
