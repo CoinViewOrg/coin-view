@@ -2,7 +2,6 @@ import {
   dehydrate,
   getCoinList,
   getCoinsMetadata,
-  getCryptothresholds,
   getFavoriteCryptos,
   getFavoriteMarket,
 } from "@coin-view/api";
@@ -19,7 +18,6 @@ import {
   ListNavigation,
   ListSwitcher,
   SearchBar,
-  useAlertThresholds,
   useAutoRefresh,
   useFavorites,
   useHistoricalData,
@@ -219,8 +217,6 @@ const List: NextPage<{
 
   const { addToFavorites, favorites } = useFavorites();
 
-  const { setThreshold, thresholds } = useAlertThresholds();
-
   return (
     <>
       <SearchBar />
@@ -235,8 +231,6 @@ const List: NextPage<{
         setSorting={setSorting}
         addToFavorites={addToFavorites}
         favorites={favorites}
-        setThreshold={setThreshold}
-        thresholds={thresholds}
       />
 
       <ListNavigation nextPage={nextPage} page={page} prevPage={prevPage} />
@@ -294,20 +288,12 @@ export async function getServerSideProps({
   const session = await unstable_getServerSession(req, res, authOptions);
 
   let favorites = null,
-    thresholds = null,
     favoriteMarket = null;
 
   const userid = session?.user?.id;
   if (userid) {
     favorites = (await getFavoriteCryptos(userid)).map(
       (row: any) => row.Cf_CryptoId
-    );
-
-    thresholds = Object.fromEntries(
-      (await getCryptothresholds(userid)).map((row: any) => [
-        row.Cn_CryptoId,
-        row.Cn_Treshold,
-      ])
     );
 
     favoriteMarket = await getFavoriteMarket(userid);
@@ -320,7 +306,6 @@ export async function getServerSideProps({
       meta,
       session: dehydrate(session),
       favorites: favorites,
-      thresholds: thresholds,
       favoriteMarketName: favoriteMarket,
       ...(await serverSideTranslations(locale, ["common"])),
     },

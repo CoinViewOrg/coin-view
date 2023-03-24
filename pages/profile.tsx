@@ -11,12 +11,16 @@ import {
   useCustomTranslation,
 } from "@coin-view/client";
 import { MarketType, MARKET_NAMES } from "@coin-view/markets";
-import { getFavoriteMarket } from "@coin-view/api";
+import { getCryptothresholds, getFavoriteMarket } from "@coin-view/api";
 import { AppContext } from "@coin-view/context";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 
-const Profile: NextPage = (props) => {
+type PageProps = {
+  userThreshold: number | null;
+};
+
+const Profile: NextPage<PageProps> = (props) => {
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
 
@@ -50,7 +54,7 @@ const Profile: NextPage = (props) => {
             {t("logged_in_header")} {session.user?.name}
           </h2>
           <p>{t("logged_in_paragraph")}</p>
-          <ModifyProfileForm />
+          <ModifyProfileForm threshold={props.userThreshold} />
           {!Boolean(session.user?.google_sso) && <ChangePasswordForm />}
           <div className={styles.settings}>
             <div className={styles.settingsItem}>
@@ -89,16 +93,20 @@ export async function getServerSideProps({
   const session = await unstable_getServerSession(req, res, authOptions);
 
   let favoriteMarket = null;
+  let userThreshold = null;
 
   const userid = session?.user?.id;
+
   if (userid) {
     favoriteMarket = await getFavoriteMarket(userid);
+    userThreshold = await getCryptothresholds(userid);
   }
 
   return {
     props: {
       session: JSON.parse(JSON.stringify(session)),
       favoriteMarketName: favoriteMarket,
+      userThreshold: userThreshold,
       ...(await serverSideTranslations(locale, ["common"])),
     },
   };

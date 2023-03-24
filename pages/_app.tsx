@@ -30,7 +30,6 @@ function MyApp({
   meta: any;
   session: Session;
   favorites?: number[] | null;
-  thresholds?: Record<number, number> | null;
   favoriteMarketName: MarketType | null;
 }>) {
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
@@ -78,7 +77,6 @@ function MyApp({
         />
         <meta name="author" content="Karol Rzotki" />
         <link rel="icon" href="/favicon.ico" />
-
       </Head>
 
       <Script id="google-tag-manager" strategy="afterInteractive">
@@ -95,7 +93,6 @@ function MyApp({
           value={{
             currency,
             favorites: pageProps.favorites || [],
-            thresholds: pageProps.thresholds || {},
             notificationsMenuOpen,
             hamburgerMenuOpen,
             favoriteMarketName: pageProps.favoriteMarketName,

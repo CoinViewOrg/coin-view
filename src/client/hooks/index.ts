@@ -4,5 +4,4 @@ export * from "./useCurrencyToggle";
 export * from "./useAutoRefresh";
 export * from "./useHistoricalData";
 export * from "./useFavorites";
-export * from "./useAlertThresholds";
 export * from "./useCustomTranslation";

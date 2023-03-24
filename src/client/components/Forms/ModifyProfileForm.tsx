@@ -1,14 +1,17 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
-import { Button } from "../Button";
+import React from "react";
 import styles from "./Form.module.css";
 import { useCustomTranslation } from "@coin-view/client";
 import cx from "classnames";
 import { useSession } from "next-auth/react";
 import Image from "next/future/image";
+import { ThresholdSelect } from "@coin-view/client";
 
-export const ModifyProfileForm = () => {
+type PropsType = {
+  threshold: number | null;
+};
+
+export const ModifyProfileForm = ({ threshold }: PropsType) => {
   const { t, language } = useCustomTranslation();
   const usernameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
@@ -97,69 +100,85 @@ export const ModifyProfileForm = () => {
         />
       </div>
       {open && (
-        <form onSubmit={submitForm}>
-          {!Boolean(session?.user?.google_sso) && (
-            <div>
-              <div className={styles.formItem}>
-                <label htmlFor="username">{t("register_form_username")}</label>
-                <input
-                  id="username"
-                  type="username"
-                  name="username"
-                  pattern="[A-Za-z0-9._\S]{3,30}\w$"
-                  maxLength={30}
-                  required
-                  ref={usernameRef}
-                  defaultValue={session?.user?.name || ""}
-                />
-              </div>
-              <div className={styles.formItem}>
-                <label htmlFor="email">{t("register_form_email")}</label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                  required
-                  ref={emailRef}
-                  defaultValue={session?.user?.email || ""}
-                />
-              </div>
-            </div>
-          )}
-          <div className={styles.formCheckboxContainer}>
-            <input
-              id="email_sub"
-              type="checkbox"
-              name="email_sub"
-              ref={emailSubRef}
-              onClick={() =>
-                setEmailSubscribed((subscribed) => (subscribed = !subscribed))
-              }
-              defaultChecked={emailSubscribed ? true : false}
+        <div>
+          {session?.user?.email_verified ? (
+            <ThresholdSelect
+              className={styles.thresholdContainer}
+              userThreshold={threshold}
             />
-            <label htmlFor="email_sub">
-              {t("profile_form_checkbox_label")}
-            </label>
-          </div>
-          <input
-            className={styles.formSubmit}
-            type="submit"
-            value={t("form_save_button")}
-          />
-          {error && (
-            <span className={cx(styles.error, styles.profileFormSpan)}>
-              {error == 1 && (
-                <p className={styles.formParagraph}>{t("wrong_credentials")}</p>
-              )}
-              {error == 2 && (
-                <p className={styles.formParagraph}>
-                  {t("user_already_exists")}
-                </p>
-              )}
-            </span>
+          ) : (
+            <p className={styles.specialParagraph}>
+              {t("confirm_email_reminder")}
+            </p>
           )}
-        </form>
+          <form onSubmit={submitForm}>
+            {!Boolean(session?.user?.google_sso) && (
+              <div>
+                <div className={styles.formItem}>
+                  <label htmlFor="username">
+                    {t("register_form_username")}
+                  </label>
+                  <input
+                    id="username"
+                    type="username"
+                    name="username"
+                    pattern="[A-Za-z0-9._\S]{3,30}\w$"
+                    maxLength={30}
+                    required
+                    ref={usernameRef}
+                    defaultValue={session?.user?.name || ""}
+                  />
+                </div>
+                <div className={styles.formItem}>
+                  <label htmlFor="email">{t("register_form_email")}</label>
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                    required
+                    ref={emailRef}
+                    defaultValue={session?.user?.email || ""}
+                  />
+                </div>
+              </div>
+            )}
+            <div className={styles.formCheckboxContainer}>
+              <input
+                id="email_sub"
+                type="checkbox"
+                name="email_sub"
+                ref={emailSubRef}
+                onClick={() =>
+                  setEmailSubscribed((subscribed) => (subscribed = !subscribed))
+                }
+                defaultChecked={emailSubscribed ? true : false}
+              />
+              <label htmlFor="email_sub">
+                {t("profile_form_checkbox_label")}
+              </label>
+            </div>
+            <input
+              className={styles.formSubmit}
+              type="submit"
+              value={t("form_save_button")}
+            />
+            {error && (
+              <span className={cx(styles.error, styles.profileFormSpan)}>
+                {error == 1 && (
+                  <p className={styles.formParagraph}>
+                    {t("wrong_credentials")}
+                  </p>
+                )}
+                {error == 2 && (
+                  <p className={styles.formParagraph}>
+                    {t("user_already_exists")}
+                  </p>
+                )}
+              </span>
+            )}
+          </form>
+        </div>
       )}
     </div>
   );

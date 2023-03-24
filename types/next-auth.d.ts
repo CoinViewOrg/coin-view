@@ -7,6 +7,7 @@ declare module "next-auth" {
       newsletters: number;
       productupdate: number;
       google_sso: number;
+      email_verified: boolean;
       id: string;
     } & DefaultSession["user"];
   }

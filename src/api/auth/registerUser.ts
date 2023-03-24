@@ -18,7 +18,7 @@ export const registerUser = async (
   const userId = uuidv4();
 
   bcrypt.hash(password, 10).then(async function (result: string) {
-    const newUserSql = `INSERT INTO UsrAccount(Ua_Id, Ua_login, Ua_email, Ua_password, EmailVerified) VALUES(?, 0)`;
+    const newUserSql = `INSERT INTO UsrAccount(Ua_Id, Ua_login, Ua_email, Ua_password, EmailVerified, Cn_Treshold) VALUES(?, 0, null)`;
     const newUserValues = [userId, username, email, result];
 
     await querySQL(newUserSql, [newUserValues]);
