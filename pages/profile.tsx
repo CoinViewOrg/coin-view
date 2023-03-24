@@ -15,6 +15,7 @@ import { getCryptothresholds, getFavoriteMarket } from "@coin-view/api";
 import { AppContext } from "@coin-view/context";
 import { createOptions } from "./api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
+import { useRouter } from "next/router";
 
 type PageProps = {
   userThreshold: number | null;
@@ -23,12 +24,14 @@ type PageProps = {
 const Profile: NextPage<PageProps> = (props) => {
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
-  console.log({ session });
   const { favoriteMarketName } = useContext(AppContext);
 
   const [selectedMarket, setSelectedMarket] = React.useState<MarketType | null>(
     favoriteMarketName
   );
+
+  const { reload } = useRouter();
+  const [modifyFormError, setModifyFormError] = React.useState();
 
   const setNewMarket = React.useCallback(
     async (market: MarketType) => {
@@ -46,6 +49,36 @@ const Profile: NextPage<PageProps> = (props) => {
     [setSelectedMarket]
   );
 
+  const handleSubmitModifyForm = React.useCallback(
+    async ({
+      email_sub,
+      email,
+      username,
+    }: {
+      username?: string;
+      email?: string;
+      email_sub: boolean;
+    }) => {
+      const response = await fetch("/api/auth/modifyprofile", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          email,
+          email_sub,
+        }),
+      });
+      const { error } = await response.json();
+
+      if (error) {
+        setModifyFormError(error);
+      } else {
+        reload();
+      }
+    },
+    [reload]
+  );
+
   return (
     <div className={styles.container}>
       {session ? (
@@ -54,7 +87,12 @@ const Profile: NextPage<PageProps> = (props) => {
             {t("logged_in_header")} {session.user?.name}
           </h2>
           <p>{t("logged_in_paragraph")}</p>
-          <ModifyProfileForm threshold={props.userThreshold} />
+          <ModifyProfileForm
+            threshold={props.userThreshold}
+            onSubmit={handleSubmitModifyForm}
+            error={modifyFormError}
+            session={session}
+          />
           {!Boolean(session.user?.google_sso) && <ChangePasswordForm />}
           <div className={styles.settings}>
             <div className={styles.settingsItem}>

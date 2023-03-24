@@ -6,23 +6,32 @@ import cx from "classnames";
 import { useSession } from "next-auth/react";
 import Image from "next/future/image";
 import { ThresholdSelect } from "@coin-view/client";
+import { Session } from "next-auth";
 
 type PropsType = {
   threshold: number | null;
+  session: Session | null;
+  onSubmit: (props: {
+    username?: string;
+    email?: string;
+    email_sub: boolean;
+  }) => void;
+  error?: number;
 };
 
-export const ModifyProfileForm = ({ threshold }: PropsType) => {
+export const ModifyProfileForm = ({
+  threshold,
+  session,
+  onSubmit,
+  error,
+}: PropsType) => {
   const { t, language } = useCustomTranslation();
   const usernameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
   const emailSubRef = React.useRef<HTMLInputElement>(null);
-  const { data: session, status } = useSession();
 
-  const [error, setError] = React.useState();
   const [open, setOpen] = React.useState(false);
   const [emailSubscribed, setEmailSubscribed] = React.useState(false);
-
-  const { reload } = useRouter();
 
   React.useEffect(() => {
     const cryptoalerts = session?.user?.cryptoalerts;
@@ -50,31 +59,16 @@ export const ModifyProfileForm = ({ threshold }: PropsType) => {
     [open]
   );
 
-  const submitForm = React.useCallback(
-    async (evt: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = React.useCallback(
+    (evt: React.FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
       const username = usernameRef.current?.value.trim();
       const email = emailRef.current?.value.trim();
-      const email_sub = emailSubRef.current?.checked;
+      const email_sub = emailSubRef.current?.checked || false;
 
-      const response = await fetch("/api/auth/modifyprofile", {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          email,
-          email_sub,
-        }),
-      });
-      const { error } = await response.json();
-
-      if (error) {
-        setError(error);
-      } else {
-        reload();
-      }
+      onSubmit({ username, email, email_sub });
     },
-    [usernameRef, emailRef, reload]
+    [onSubmit]
   );
 
   return (
@@ -108,7 +102,7 @@ export const ModifyProfileForm = ({ threshold }: PropsType) => {
               {t("confirm_email_reminder")}
             </p>
           )}
-          <form onSubmit={submitForm}>
+          <form onSubmit={handleSubmit}>
             {!Boolean(session?.user?.google_sso) && (
               <div>
                 <div className={styles.formItem}>
