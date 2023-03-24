@@ -13,7 +13,7 @@ import {
 import { MarketType, MARKET_NAMES } from "@coin-view/markets";
 import { getCryptothresholds, getFavoriteMarket } from "@coin-view/api";
 import { AppContext } from "@coin-view/context";
-import { authOptions } from "./api/auth/[...nextauth]";
+import { createOptions } from "./api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 
 type PageProps = {
@@ -23,7 +23,7 @@ type PageProps = {
 const Profile: NextPage<PageProps> = (props) => {
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
-
+  console.log({ session });
   const { favoriteMarketName } = useContext(AppContext);
 
   const [selectedMarket, setSelectedMarket] = React.useState<MarketType | null>(
@@ -90,7 +90,11 @@ export async function getServerSideProps({
   res: any;
   locale: string;
 }) {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await unstable_getServerSession(
+    req,
+    res,
+    createOptions(req, true)
+  );
 
   let favoriteMarket = null;
   let userThreshold = null;

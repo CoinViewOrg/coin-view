@@ -7,7 +7,7 @@ import { NextApiRequestQuery } from "next/dist/server/api-utils";
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/Home.module.css";
-import { authOptions } from "./api/auth/[...nextauth]";
+import { createOptions } from "./api/auth/[...nextauth]";
 
 const VerifyEmail: NextPage<{ message: string }> = (props) => {
   const { t } = useCustomTranslation();
@@ -44,7 +44,7 @@ export async function getServerSideProps({
     message = "verify_email_already";
   }
 
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await unstable_getServerSession(req, res, createOptions(req));
   return {
     props: {
       message,

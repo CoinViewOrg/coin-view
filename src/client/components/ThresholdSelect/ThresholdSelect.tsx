@@ -17,8 +17,6 @@ export const ThresholdSelect = ({ className, userThreshold }: PropsType) => {
     userThreshold ? userThreshold : null
   );
 
-  console.log(userThreshold);
-
   const handleClick = React.useCallback(async (option: number | null) => {
     await fetch("/api/setuserthreshold", {
       method: "post",

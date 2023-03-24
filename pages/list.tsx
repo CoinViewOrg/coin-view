@@ -27,7 +27,7 @@ import { AppContext, defaultCurrency } from "@coin-view/context";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useSession } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
+import { createOptions } from "./api/auth/[...nextauth]";
 
 const defaultSort: SortingType = "market_cap";
 const pageSize = 20;
@@ -285,7 +285,7 @@ export async function getServerSideProps({
     ])
   ) as Record<string, CoinMetaType>;
 
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await unstable_getServerSession(req, res, createOptions(req));
 
   let favorites = null,
     favoriteMarket = null;

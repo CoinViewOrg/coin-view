@@ -18,15 +18,69 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
   throw new Error("Please provide google auth credentials!");
 }
 
-export const authOptions = {
+export const createOptions = (
+  req: NextApiRequest,
+  forceRefreshSession?: boolean
+): NextAuthOptions => ({
   callbacks: {
-    jwt: async ({ token, user }: any) => {
-      user && (token.user = user);
+    jwt: async ({ token, user }) => {
+      const shouldRefresh =
+        !user || req.url === "/api/auth/session?update" || forceRefreshSession;
+
+      if (shouldRefresh && token.sub) {
+        const updatedUser = await getUserDataById(token.sub);
+        if (!updatedUser) {
+          return token;
+        }
+        const user = {
+          id: updatedUser.Ua_Id,
+          name: updatedUser.Ua_login,
+          email: updatedUser.Ua_Email,
+          cryptoalerts: updatedUser.CryptoAlerts,
+          newsletters: updatedUser.Newsletters,
+          productupdate: updatedUser.ProductUpdate,
+          google_sso: updatedUser.GoogleSSO,
+          email_verified: updatedUser.EmailVerified,
+        };
+
+        token = {
+          ...token,
+          ...user,
+          user,
+        };
+      } else {
+        user && (token.user = user);
+      }
+
       return token;
     },
-    session: async ({ session, token }: any) => {
+    session: async ({ session, token }) => {
       session.user = token.user as any;
       return session;
+    },
+    signIn: async ({ account, profile }: any) => {
+      if (account.provider === "google") {
+        const id = profile.sub;
+        const existingSSOUser = await getExistingUserByID(id);
+
+        if (existingSSOUser.length) {
+          return true;
+        }
+
+        const existing = await getExistingUserByEmail(profile.email);
+        if (existing.length) {
+          const locale = req.cookies["locale"] || "en";
+          return `/${locale}/login?google_sso_error=1`;
+        }
+
+        await registerSSOUser(
+          id,
+          profile.name,
+          profile.email,
+          account.access_token
+        );
+      }
+      return true;
     },
   },
   pages: {
@@ -90,68 +144,6 @@ export const authOptions = {
       },
     }),
   ],
-};
-
-const createOptions = (req: NextApiRequest): NextAuthOptions => ({
-  ...authOptions,
-  callbacks: {
-    jwt: async ({ token, user }) => {
-      if ((!user || req.url === "/api/auth/session?update") && token.sub) {
-        const updatedUser = await getUserDataById(token.sub);
-        if (!updatedUser) {
-          return token;
-        }
-        const user = {
-          id: updatedUser.Ua_Id,
-          name: updatedUser.Ua_login,
-          email: updatedUser.Ua_Email,
-          cryptoalerts: updatedUser.CryptoAlerts,
-          newsletters: updatedUser.Newsletters,
-          productupdate: updatedUser.ProductUpdate,
-          google_sso: updatedUser.GoogleSSO,
-          email_verified: updatedUser.EmailVerified,
-        };
-
-        token = {
-          ...token,
-          ...user,
-          user,
-        };
-      } else {
-        user && (token.user = user);
-      }
-
-      return token;
-    },
-    session: async ({ session, token }) => {
-      session.user = token.user as any;
-      return session;
-    },
-    signIn: async ({ account, profile }: any) => {
-      if (account.provider === "google") {
-        const id = profile.sub;
-        const existingSSOUser = await getExistingUserByID(id);
-
-        if (existingSSOUser.length) {
-          return true;
-        }
-
-        const existing = await getExistingUserByEmail(profile.email);
-        if (existing.length) {
-          const locale = req.cookies["locale"] || "en";
-          return `/${locale}/login?google_sso_error=1`;
-        }
-
-        await registerSSOUser(
-          id,
-          profile.name,
-          profile.email,
-          account.access_token
-        );
-      }
-      return true;
-    },
-  },
 });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

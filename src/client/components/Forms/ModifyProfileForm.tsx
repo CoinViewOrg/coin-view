@@ -53,8 +53,6 @@ export const ModifyProfileForm = ({ threshold }: PropsType) => {
   const submitForm = React.useCallback(
     async (evt: React.FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
-      const form = evt.target as HTMLFormElement;
-
       const username = usernameRef.current?.value.trim();
       const email = emailRef.current?.value.trim();
       const email_sub = emailSubRef.current?.checked;
@@ -73,7 +71,6 @@ export const ModifyProfileForm = ({ threshold }: PropsType) => {
       if (error) {
         setError(error);
       } else {
-        const updateSession = await fetch("/api/auth/session?update");
         reload();
       }
     },

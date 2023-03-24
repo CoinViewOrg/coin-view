@@ -2,7 +2,7 @@
 import { querySQL, setCryptothreshold } from "@coin-view/api";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./auth/[...nextauth]";
+import { createOptions } from "./auth/[...nextauth]";
 
 const ALLOWED_THRESHOLDS = [null, 5, 8, 10];
 
@@ -11,7 +11,11 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   const { option } = req.body;
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await unstable_getServerSession(
+    req,
+    res,
+    createOptions(req, true)
+  );
 
   const userid = session?.user?.id;
 

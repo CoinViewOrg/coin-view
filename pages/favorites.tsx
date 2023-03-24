@@ -20,7 +20,7 @@ import {
 import { AppContext } from "@coin-view/context";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
+import { createOptions } from "./api/auth/[...nextauth]";
 
 const Favorites: NextPage<{
   data: CoinListItem[];
@@ -74,7 +74,7 @@ export async function getServerSideProps({
   res: any;
   locale: string;
 }) {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await unstable_getServerSession(req, res, createOptions(req));
   // Pass data to the page via props
 
   let favorites = null,
