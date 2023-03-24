@@ -9,7 +9,7 @@ import { HistoricalDataType } from "../../hooks";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { AppContext } from "@coin-view/context";
 import Image from "next/image";
-import { MarketButton, ThresholdSelect } from "@coin-view/client";
+import { MarketButton } from "@coin-view/client";
 import { useCustomTranslation } from "@coin-view/client";
 import { getMarketUrlByType } from "@coin-view/markets";
 
@@ -24,8 +24,6 @@ type PropsType = {
   historicalData: Record<CurrencyType, HistoricalDataType>;
   addToFavorites: (evt: any, cryptoId: number) => void;
   favorites: number[];
-  thresholds: Record<number, number>;
-  setThreshold: (cryptoId: number, threshold: number) => void;
 };
 export const CryptoList = ({
   loading,
@@ -37,8 +35,6 @@ export const CryptoList = ({
   historicalData,
   addToFavorites,
   favorites,
-  thresholds,
-  setThreshold,
 }: PropsType) => {
   const { currency, favoriteMarketName } = React.useContext(AppContext);
   const { t, language } = useCustomTranslation();
@@ -144,14 +140,19 @@ export const CryptoList = ({
               onClick={(evt) => addToFavorites(evt, item.id)}
             >
               {favorites?.includes(item.id) ? (
-                <Image src={"/star-full.svg"} width={15} height={15} alt="star" />
+                <Image
+                  src={"/star-full.svg"}
+                  width={15}
+                  height={15}
+                  alt="star"
+                />
               ) : (
                 <Image
                   src={"/star-empty.svg"}
                   className="svg-adaptive"
                   width={15}
                   height={15}
-                  alt='empty star'
+                  alt="empty star"
                 />
               )}
             </div>
@@ -178,18 +179,11 @@ export const CryptoList = ({
           </div>
           {selectedSymbol === item.symbol && (
             <div className={styles.cryptoDetails}>
-              <ThresholdSelect
-                className={styles.thresholdSelect}
-                cryptoId={item.id}
-                cryptoThresholds={thresholds}
-                setCryptothreshold={setThreshold}
-              />
               <CryptoChart
                 className={styles.chart}
                 loading={loadingHistorical}
                 historicalData={historicalData[currency][item.symbol]}
               />
-
               <MarketButton
                 className={styles.marketButton}
                 caption={t("buy_on")}

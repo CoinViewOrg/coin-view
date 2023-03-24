@@ -23,7 +23,9 @@
 
   "favourites": "Favourites",
 
-  "threshold": "Select alert threshold",
+  "threshold": "Select notification threshold",
+  "notiff_off": "Off",
+  "confirm_email_reminder": "Please verify your emaiil address to receive notifications adn gain access to notifications settings",
 
   "login_form_header": "Log in to your account",
   "login_form_username": "Username",

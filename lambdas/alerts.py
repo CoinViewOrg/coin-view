@@ -34,7 +34,7 @@ def add_notification(cur, user_id, type, text):
     ts = time.time()
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     content = conn.escape_string(text)
-    qry = "insert into UserNotifications (Ua_Id, Content, Date, Type, Seen) values (%s, '%s', '%s', '%s', 0)" % (user_id, content, timestamp, type)
+    qry = "insert into UserNotifications (Ua_Id, Content, Date, Type, Seen) values ('%s', '%s', '%s', '%s', 0)" % (user_id, content, timestamp, type)
     cur.execute(qry)
 
 def send_email(recipient, text):
@@ -88,15 +88,17 @@ def send_email(recipient, text):
 
 def lambda_handler(event, context):
     with conn.cursor() as cur:
-        qry = "SELECT Cn.Cn_UaId, Cn.Cn_CryptoId, Ua.Cn_Treshold FROM CryptoNotification Cn INNER JOIN UsrAccount Ua ON Cn.Cn_UaId = Ua.Ua_Id"
+        qry = "SELECT Cf.Cf_UaID, Cf.Cf_CryptoId, Ua.Cn_Treshold FROM CryptoFavorites Cf INNER JOIN UsrAccount Ua ON Cf.Cf_UaID = Ua.Ua_Id WHERE Ua.Cn_Treshold IS NOT NULL"
         cur.execute(qry)
+        if cur.rowcount == 0:
+            return
         alerts = cur.fetchall()
         print('ALERTS', alerts)
-        cryptoids = list(map(lambda x: str(x['Cn_CryptoId']), alerts))
-        userids = list(map(lambda x: str(x['Cn_UaId']), alerts))
+        cryptoids = list(map(lambda x: str(x['Cf_CryptoId']), alerts))
+        userids = list(map(lambda x: str(x['Cf_UaID']), alerts))
         
-        qry = "SELECT Ua_Email, Ua_login, Ua_Id  FROM `UsrAccount` where Ua_Id in (%s)" % (
-            ",".join(userids))
+        qry = "SELECT Ua_Email, Ua_login, Ua_Id FROM `UsrAccount` WHERE Ua_Id IN ('%s')" % (
+            "', '".join(userids))
         cur.execute(qry)
         users = cur.fetchall()
         users = dict(map(lambda user: (user["Ua_Id"], user), users))
@@ -108,8 +110,9 @@ def lambda_handler(event, context):
         alerts_to_send_per_user = {}
 
         for alert in alerts:
-            userid = alert["Cn_UaId"]
-            cryptoid = alert["Cn_CryptoId"]
+            #alert = alerts[i]
+            userid = alert["Cf_UaID"]
+            cryptoid = alert["Cf_CryptoId"]
             threshold = alert["Cn_Treshold"]
 
             crypto_change = cryptos[str(
@@ -121,6 +124,7 @@ def lambda_handler(event, context):
             crypto_name = cryptos[str(cryptoid)]["name"]
             print(userid, cryptoid, crypto_change, crypto_name)
             if (abs(crypto_change) >= threshold):
+                print('Sent')
                 color_class = 'green' if crypto_change > 0 else 'red'
                 arrow = '&#8599;' if crypto_change > 0 else '&#8600;'
                 item = ("%s : <b style='color: %s;'>%s %f%%</b> - current price: <b>%f$</b>") % (

@@ -10,6 +10,14 @@
   color: var(--font-color);
 }
 
+.thresholdContainer {
+  margin-bottom: 1em;
+}
+
+.thresholdContainer p {
+  margin: 0;
+}
+
 .profileForm {
   margin-top: 5px;
 }
@@ -22,6 +30,13 @@
 
 .container h2 {
   margin-bottom: 2em;
+}
+
+.container .specialParagraph {
+  max-width: 350px;
+  border-radius: 10px;
+  border: solid 2px #858585;
+  padding: 6px;
 }
 
 .container .smallerMarginHeader {

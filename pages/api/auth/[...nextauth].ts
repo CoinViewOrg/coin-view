@@ -55,7 +55,7 @@ export const authOptions = {
         ) {
           return null;
         }
-        const sql = `SELECT Ua_Id, Ua_login, Ua_Email, Ua_Password FROM UsrAccount WHERE Ua_login = ?`;
+        const sql = `SELECT Ua_Id, Ua_login, Ua_Email, Ua_Password, EmailVerified FROM UsrAccount WHERE Ua_login = ?`;
 
         const [found] = (await querySQL(sql, [
           [credentials?.username],
@@ -67,6 +67,7 @@ export const authOptions = {
           CryptoAlerts: number;
           Newsletters: number;
           ProductUpdate: number;
+          EmailVerified: boolean;
         }>;
 
         const match = await bcrypt.compare(
@@ -108,6 +109,7 @@ const createOptions = (req: NextApiRequest): NextAuthOptions => ({
           newsletters: updatedUser.Newsletters,
           productupdate: updatedUser.ProductUpdate,
           google_sso: updatedUser.GoogleSSO,
+          email_verified: updatedUser.EmailVerified,
         };
 
         token = {

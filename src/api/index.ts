@@ -6,6 +6,7 @@ export * from "./getFilteredCoinList";
 export * from "./auth";
 export * from "./getFavoriteCryptos";
 export * from "./getCryptothresholds";
+export * from "./setCryptothreshold";
 export * from "./getFavoriteMarket";
 export * from "./getUser";
 export * from "./utils";

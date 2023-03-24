@@ -9,7 +9,7 @@ type Data = {
   newthreshold?: number;
 };
 
-const ALLOWED_THRESHOLDS = [5, 8, 10];
+const ALLOWED_THRESHOLDS = [null, 5, 8, 10];
 
 export default async function handler(
   req: NextApiRequest,
