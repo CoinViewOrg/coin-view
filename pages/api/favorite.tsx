@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { querySQL } from "@coin-view/api";
 import { unstable_getServerSession } from "next-auth";
-import { authOptions } from "./auth/[...nextauth]";
+import { createOptions } from "./auth/[...nextauth]";
 
 type Data = {
   error: number;
@@ -15,7 +15,7 @@ export default async function handler(
 ) {
   const { id: cryptoid } = req.query;
 
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await unstable_getServerSession(req, res, createOptions(req));
 
   const userid = session?.user?.id;
   if (!userid || !cryptoid) {

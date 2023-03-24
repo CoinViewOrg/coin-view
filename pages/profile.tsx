@@ -13,7 +13,7 @@ import {
 import { MarketType, MARKET_NAMES } from "@coin-view/markets";
 import { getFavoriteMarket } from "@coin-view/api";
 import { AppContext } from "@coin-view/context";
-import { authOptions } from "./api/auth/[...nextauth]";
+import { createOptions } from "./api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 
 const Profile: NextPage = (props) => {
@@ -86,7 +86,11 @@ export async function getServerSideProps({
   res: any;
   locale: string;
 }) {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await unstable_getServerSession(
+    req,
+    res,
+    createOptions(req, true)
+  );
 
   let favoriteMarket = null;
 
