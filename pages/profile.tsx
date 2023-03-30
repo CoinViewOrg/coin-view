@@ -16,6 +16,7 @@ import { AppContext } from "@coin-view/context";
 import { createOptions } from "./api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 
 type PageProps = {
   userThreshold: number | null;
@@ -32,6 +33,7 @@ const Profile: NextPage<PageProps> = (props) => {
 
   const { reload } = useRouter();
   const [modifyFormError, setModifyFormError] = React.useState();
+  const [modifyPasswordError, setModifyPasswordFormError] = React.useState();
 
   const setNewMarket = React.useCallback(
     async (market: MarketType) => {
@@ -79,6 +81,36 @@ const Profile: NextPage<PageProps> = (props) => {
     [reload]
   );
 
+  const handleSubmitModifyPasswordForm = React.useCallback(
+    async ({
+      oldPassword,
+      newPassword,
+      repeatNewPassword,
+    }: {
+      oldPassword?: string;
+      newPassword?: string;
+      repeatNewPassword?: string;
+    }) => {
+      const response = await fetch("/api/auth/changepassword", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          oldPassword,
+          newPassword,
+          repeatNewPassword,
+        }),
+      });
+      const { error } = await response.json();
+
+      if (error) {
+        setModifyPasswordFormError(error);
+      } else {
+        signOut();
+      }
+    },
+    []
+  );
+
   return (
     <div className={styles.container}>
       {session ? (
@@ -93,7 +125,12 @@ const Profile: NextPage<PageProps> = (props) => {
             error={modifyFormError}
             session={session}
           />
-          {!Boolean(session.user?.google_sso) && <ChangePasswordForm />}
+          {!Boolean(session.user?.google_sso) && (
+            <ChangePasswordForm
+              onSubmit={handleSubmitModifyPasswordForm}
+              error={modifyPasswordError}
+            />
+          )}
           <div className={styles.settings}>
             <div className={styles.settingsItem}>
               <p>{t("favorite_market")}</p>
