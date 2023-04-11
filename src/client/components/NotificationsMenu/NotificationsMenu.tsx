@@ -8,41 +8,38 @@ import { NotificationsBadge } from "./NotificationsBadge";
 import { AppContext } from "@coin-view/context";
 import Image from "next/image";
 
-export const NotificationsMenu = ({
-  onOpenCallback,
-}: {
+type PropsType = {
+  notificationsCount?: number;
   onOpenCallback: () => void;
-}) => {
+  fetchNotifications: () => any;
+};
+
+export const NotificationsMenu = ({
+  notificationsCount,
+  onOpenCallback,
+  fetchNotifications,
+}: PropsType) => {
   const { t } = useCustomTranslation();
   const { data: session, status } = useSession();
   const [notifications, setNotifications] = React.useState<any[]>([]);
-  const [notificationsCount, setNotificationsCount] = React.useState<number>(0);
+  const [notificationsCounter, setNotificationsCounter] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
 
-  const { notificationsMenuOpen: menuOpen } = React.useContext(AppContext);
-
   React.useEffect(() => {
-    if (status === "authenticated") {
-      const response = fetch("/api/notifications?param=count")
-        .then((response) => response.json())
-        .then((json) => {
-          const { error, notifications } = json;
-          setNotificationsCount(notifications[0].count);
-        });
-    }
-  }, [status]);
+    setNotificationsCounter(notificationsCount!);
+  }, [notificationsCount]);
+
+  const { notificationsMenuOpen: menuOpen } = React.useContext(AppContext);
 
   const handleNotificationsClick = React.useCallback(async () => {
     onOpenCallback();
     if (!menuOpen && notifications.length === 0) {
       setLoading(true);
-      const response = await fetch("/api/notifications?param=fetch");
-      const { error, notifications } = await response.json();
+      setNotifications(await fetchNotifications());
       setLoading(false);
-      setNotifications(notifications);
-      setNotificationsCount(0);
+      setNotificationsCounter(0);
     }
-  }, [menuOpen, notifications, onOpenCallback]);
+  }, [menuOpen, notifications, onOpenCallback, fetchNotifications]);
 
   const notificationHeaders = React.useCallback(
     (type: string): string => {
@@ -62,8 +59,8 @@ export const NotificationsMenu = ({
   return (
     <div className={styles.menu}>
       <>
-        {notificationsCount > 0 && (
-          <NotificationsBadge count={notificationsCount} />
+        {notificationsCounter > 0 && (
+          <NotificationsBadge count={notificationsCounter} />
         )}
         <Image
           src={"/bell.svg"}
