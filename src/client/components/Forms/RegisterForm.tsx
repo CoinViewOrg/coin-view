@@ -1,27 +1,28 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
-import { Button } from "../Button";
 import styles from "./Form.module.css";
 import { useCustomTranslation } from "@coin-view/client";
 import { GoogleButton } from "../GoogleButton";
-import { signIn } from "next-auth/react";
-import { setCookie } from "@coin-view/utils";
 
-export const RegisterForm = () => {
+type PropsType = {
+  register: (props: {
+    password?: string;
+    username?: string;
+    email?: string;
+  }) => void;
+  ssoRegister: () => void;
+  error?: number;
+};
+export const RegisterForm = ({ register, ssoRegister, error }: PropsType) => {
   const { t, language } = useCustomTranslation();
   const usernameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const confirmPasswordRef = React.useRef<HTMLInputElement>(null);
 
-  const [error, setError] = React.useState();
-
-  const { push, locale } = useRouter();
-
   const checkPasswordValidity = React.useCallback(() => {
-    const password = passwordRef.current?.value;
-    const confirmpassword = confirmPasswordRef.current?.value;
+    const password = passwordRef.current?.value.trim();
+    const confirmpassword = confirmPasswordRef.current?.value.trim();
     if (password !== confirmpassword && confirmPasswordRef.current) {
       confirmPasswordRef.current?.setCustomValidity("Passwords don't match!");
     } else {
@@ -41,33 +42,14 @@ export const RegisterForm = () => {
       const password = passwordRef.current?.value.trim();
       const email = emailRef.current?.value.trim();
 
-      const response = await fetch("/api/auth/register", {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          password,
-          username,
-          email,
-        }),
-      });
-
-      const { error } = await response.json();
-
-      if (error) {
-        setError(error);
-      } else {
-        push(`/login?registered=1`, undefined, { locale: language });
-      }
+      register({ username, password, email });
     },
-    [passwordRef, emailRef, push, language]
+    [register, passwordRef, usernameRef, emailRef]
   );
 
   const googleSSO = React.useCallback(async () => {
-    setCookie("locale", locale || "en", 1);
-    await signIn("google", {
-      callbackUrl: "/list",
-    });
-  }, [locale]);
+    ssoRegister();
+  }, [ssoRegister]);
 
   return (
     <form className={styles.container} onSubmit={submitForm}>
