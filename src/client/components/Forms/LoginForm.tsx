@@ -2,10 +2,7 @@ import Link from "next/link";
 import React from "react";
 import styles from "./Form.module.css";
 import { useCustomTranslation } from "@coin-view/client";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
 import { GoogleButton } from "../GoogleButton";
-import { setCookie } from "@coin-view/utils";
 
 const GOOGLE_SSO_ERRORS = new Map([["1", "email_already_used"]]);
 
@@ -13,17 +10,29 @@ const getGoogleSSOErrorMessage = (code: number | string | string[]) => {
   return GOOGLE_SSO_ERRORS.get(String(code)) || "gemeric_sso_error";
 };
 
-export const LoginForm = () => {
+type PropsType = {
+  nextSignIn: (props: { username?: string; password?: string }) => void;
+  ssoSignIn: () => void;
+  passr?: string | string[];
+  recoveryrequest?: string | string[];
+  registered?: string | string[];
+  google_sso_error?: string | string[];
+  error?: boolean;
+};
+
+export const LoginForm = ({
+  nextSignIn,
+  ssoSignIn,
+  passr,
+  recoveryrequest,
+  registered,
+  google_sso_error,
+  error,
+}: PropsType) => {
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const usernameRef = React.useRef<HTMLInputElement>(null);
 
   const { t, language } = useCustomTranslation();
-
-  const { query, push, locale } = useRouter();
-
-  const [error, setError] = React.useState(false);
-
-  const { passr, recoveryrequest, registered, google_sso_error } = query;
 
   const submitForm = React.useCallback(
     async (evt: React.FormEvent<HTMLFormElement>) => {
@@ -39,33 +48,14 @@ export const LoginForm = () => {
       if (!username || !password) {
         return;
       }
-
-      const response = await signIn("credentials", {
-        password,
-        username,
-        redirect: false,
-        callbackUrl: "/list",
-      });
-
-      if (response?.error) {
-        setError(true);
-      }
-
-      if (response?.url) {
-        push(response.url, undefined, {
-          locale: language,
-        });
-      }
+      nextSignIn({ username, password });
     },
-    [passwordRef, push, language]
+    [passwordRef, nextSignIn]
   );
 
   const googleSSO = React.useCallback(async () => {
-    setCookie("locale", locale || "en", 1);
-    await signIn("google", {
-      callbackUrl: "/list",
-    });
-  }, [locale]);
+    ssoSignIn();
+  }, [ssoSignIn]);
 
   return (
     <form className={styles.container} onSubmit={submitForm}>
