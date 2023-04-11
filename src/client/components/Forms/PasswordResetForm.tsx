@@ -24,7 +24,7 @@ export const PasswordResetForm = ({ onSubmit, error }: PropsType) => {
     }
   }, [newPasswordRef, repeatNewPasswordRef]);
 
-  const submitForm = React.useCallback(
+  const handleSubmit = React.useCallback(
     async (evt: React.FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
       const form = evt.target as HTMLFormElement;
@@ -50,7 +50,7 @@ export const PasswordResetForm = ({ onSubmit, error }: PropsType) => {
         {t("password_reset_form_header")}
       </h2>
       <hr></hr>
-      <form onSubmit={submitForm}>
+      <form onSubmit={handleSubmit}>
         <div className={styles.formItem}>
           <label htmlFor="newpassword">{t("password_form_new")}</label>
           <input
