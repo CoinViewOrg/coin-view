@@ -8,9 +8,14 @@ const threshold_OPTIONS = [null, 5, 8, 10];
 type PropsType = {
   className: string;
   userThreshold: any;
+  thresholdSelect: (props: { option?: number | null }) => void;
 };
 
-export const ThresholdSelect = ({ className, userThreshold }: PropsType) => {
+export const ThresholdSelect = ({
+  className,
+  userThreshold,
+  thresholdSelect,
+}: PropsType) => {
   const { t } = useCustomTranslation();
 
   const [threshold, setThreshold] = React.useState<number | null>(
@@ -18,13 +23,7 @@ export const ThresholdSelect = ({ className, userThreshold }: PropsType) => {
   );
 
   const handleClick = React.useCallback(async (option: number | null) => {
-    await fetch("/api/setuserthreshold", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        option,
-      }),
-    });
+    thresholdSelect({ option });
     setThreshold(option);
   }, []);
 

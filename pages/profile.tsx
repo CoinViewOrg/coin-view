@@ -111,6 +111,19 @@ const Profile: NextPage<PageProps> = (props) => {
     []
   );
 
+  const handleThresholdSelect = React.useCallback(
+    async ({ option }: { option?: number | null }) => {
+      await fetch("/api/setuserthreshold", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          option,
+        }),
+      });
+    },
+    []
+  );
+
   return (
     <div className={styles.container}>
       {session ? (
@@ -124,6 +137,7 @@ const Profile: NextPage<PageProps> = (props) => {
             onSubmit={handleSubmitModifyForm}
             error={modifyFormError}
             session={session}
+            thresholdSelect={handleThresholdSelect}
           />
           {!Boolean(session.user?.google_sso) && (
             <ChangePasswordForm

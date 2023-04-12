@@ -17,6 +17,7 @@ type PropsType = {
     email_sub: boolean;
   }) => void;
   error?: number;
+  thresholdSelect: (props: { option?: number | null }) => void;
 };
 
 export const ModifyProfileForm = ({
@@ -24,6 +25,7 @@ export const ModifyProfileForm = ({
   session,
   onSubmit,
   error,
+  thresholdSelect,
 }: PropsType) => {
   const { t, language } = useCustomTranslation();
   const usernameRef = React.useRef<HTMLInputElement>(null);
@@ -96,6 +98,7 @@ export const ModifyProfileForm = ({
             <ThresholdSelect
               className={styles.thresholdContainer}
               userThreshold={threshold}
+              thresholdSelect={thresholdSelect}
             />
           ) : (
             <p className={styles.specialParagraph}>
