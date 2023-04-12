@@ -22,10 +22,13 @@ export const ThresholdSelect = ({
     userThreshold ? userThreshold : null
   );
 
-  const handleClick = React.useCallback(async (option: number | null) => {
-    thresholdSelect({ option });
-    setThreshold(option);
-  }, []);
+  const handleClick = React.useCallback(
+    async (option: number | null) => {
+      thresholdSelect({ option });
+      setThreshold(option);
+    },
+    [thresholdSelect]
+  );
 
   return (
     <div className={cx(styles.container, className)}>
