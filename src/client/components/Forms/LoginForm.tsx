@@ -14,9 +14,9 @@ type PropsType = {
   nextSignIn: (props: { username?: string; password?: string }) => void;
   ssoSignIn: () => void;
   passr?: string | string[];
-  recoveryrequest?: string | string[];
+  recoveryRequest?: string | string[];
   registered?: string | string[];
-  google_sso_error?: string | string[];
+  googleSSOError?: string | string[];
   error?: boolean;
 };
 
@@ -24,9 +24,9 @@ export const LoginForm = ({
   nextSignIn,
   ssoSignIn,
   passr,
-  recoveryrequest,
+  recoveryRequest,
   registered,
-  google_sso_error,
+  googleSSOError,
   error,
 }: PropsType) => {
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -61,9 +61,9 @@ export const LoginForm = ({
     <form className={styles.container} onSubmit={submitForm}>
       <h2>{t("login_form_header")}</h2>
       <GoogleButton onClick={googleSSO} />
-      {google_sso_error && (
+      {googleSSOError && (
         <span className={styles.error}>
-          {t(getGoogleSSOErrorMessage(google_sso_error))}
+          {t(getGoogleSSOErrorMessage(googleSSOError))}
         </span>
       )}
       <hr></hr>
@@ -109,7 +109,7 @@ export const LoginForm = ({
           </p>
         </span>
       )}
-      {recoveryrequest && (
+      {recoveryRequest && (
         <span className={styles.success}>
           <p className={styles.formParagraph}>
             {t("login_form_recovery_succesful_1")}

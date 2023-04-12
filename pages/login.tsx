@@ -63,9 +63,9 @@ const Login: NextPage = () => {
         nextSignIn={handleSignIn}
         ssoSignIn={handleSSOSignIn}
         passr={passr}
-        recoveryrequest={recoveryrequest}
+        recoveryRequest={recoveryrequest}
         registered={registered}
-        google_sso_error={google_sso_error}
+        googleSSOError={google_sso_error}
         error={signInError}
       />
     </div>
