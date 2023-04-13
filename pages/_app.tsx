@@ -35,6 +35,7 @@ function MyApp({
   const { currency, toggleCurrency } = useCurrencyToggle(defaultCurrency);
   const [notificationsMenuOpen, setNotificationsMenuOpen] =
     React.useState(false);
+  const [notificationsCount, setNotificationsCount] = React.useState(0);
   const [hamburgerMenuOpen, setHamburgerMenuOpen] = React.useState(false);
   const { push } = useRouter();
 
@@ -46,6 +47,12 @@ function MyApp({
   const openNotifications = React.useCallback(() => {
     setNotificationsMenuOpen((open) => !open);
     setHamburgerMenuOpen(false);
+  }, []);
+
+  const fetchNotifcations = React.useCallback(async () => {
+    const response = await fetch("/api/notifications?param=fetch");
+    const { error, notifications } = await response.json();
+    return notifications;
   }, []);
 
   /**
@@ -61,7 +68,15 @@ function MyApp({
 
   React.useEffect(() => {
     document.documentElement.setAttribute("data-theme", colorTheme);
-  }, [colorTheme]);
+    if (pageProps.session) {
+      const response = fetch("/api/notifications?param=count")
+        .then((response) => response.json())
+        .then((json) => {
+          const { error, notifications } = json;
+          setNotificationsCount(notifications[0].count);
+        });
+    }
+  }, [colorTheme, pageProps.session]);
 
   return (
     <>
@@ -101,7 +116,11 @@ function MyApp({
         >
           <div className={styles.container}>
             <header className={styles.header}>
-              <NotificationsMenu onOpenCallback={openNotifications} />
+              <NotificationsMenu
+                onOpenCallback={openNotifications}
+                notificationsCount={notificationsCount}
+                fetchNotifications={fetchNotifcations}
+              />
               <HamburgerMenu
                 onOpenCallback={openHamburger}
                 toggleCurrency={toggleCurrency}

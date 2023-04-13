@@ -1,24 +1,25 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useMemo } from "react";
-import { Button } from "../Button";
+import React from "react";
 import styles from "./Form.module.css";
 import { useCustomTranslation } from "@coin-view/client";
 import cx from "classnames";
-import { signOut, useSession } from "next-auth/react";
 import Image from "next/future/image";
 
-export const ChangePasswordForm = () => {
-  const { t, language } = useCustomTranslation();
+type PropsType = {
+  onSubmit: (props: {
+    oldPassword?: string;
+    newPassword?: string;
+    repeatNewPassword?: string;
+  }) => void;
+  error?: number;
+};
+
+export const ChangePasswordForm = ({ onSubmit, error }: PropsType) => {
+  const { t } = useCustomTranslation();
   const oldPasswordRef = React.useRef<HTMLInputElement>(null);
   const newPasswordRef = React.useRef<HTMLInputElement>(null);
   const repeatNewPasswordRef = React.useRef<HTMLInputElement>(null);
-  const { data: session, status } = useSession();
 
-  const [error, setError] = React.useState();
   const [open, setOpen] = React.useState(false);
-
-  const { reload } = useRouter();
 
   const handleClick = React.useCallback(() => {
     setOpen((open) => (open = !open));
@@ -39,36 +40,20 @@ export const ChangePasswordForm = () => {
     }
   }, [newPasswordRef, repeatNewPasswordRef]);
 
-  const submitForm = React.useCallback(
-    async (evt: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = React.useCallback(
+    (evt: React.FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
       const form = evt.target as HTMLFormElement;
       if (!form.checkValidity()) {
         return;
       }
-
       const oldPassword = oldPasswordRef.current?.value.trim();
       const newPassword = newPasswordRef.current?.value.trim();
       const repeatNewPassword = repeatNewPasswordRef.current?.value.trim();
 
-      const response = await fetch("/api/auth/changepassword", {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          oldPassword,
-          newPassword,
-          repeatNewPassword,
-        }),
-      });
-      const { error } = await response.json();
-
-      if (error) {
-        setError(error);
-      } else {
-        signOut();
-      }
+      onSubmit({ oldPassword, newPassword, repeatNewPassword });
     },
-    [oldPasswordRef, newPasswordRef, repeatNewPasswordRef]
+    [onSubmit]
   );
 
   return (
@@ -91,7 +76,7 @@ export const ChangePasswordForm = () => {
         />
       </div>
       {open && (
-        <form onSubmit={submitForm}>
+        <form onSubmit={handleSubmit}>
           <div className={styles.formItem}>
             <label htmlFor="oldpassword">{t("password_form_old")}</label>
             <input
