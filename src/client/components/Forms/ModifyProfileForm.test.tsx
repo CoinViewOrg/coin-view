@@ -20,7 +20,7 @@ let mockSession: Session = {
   },
   expires: expireDate.toISOString(),
 };
-describe("Change Password Form", () => {
+describe("Modify Profile Form", () => {
   it("Basic render (subscribed)", () => {
     render(
       <I18nextProvider i18n={instanceEN}>

@@ -5,7 +5,7 @@ import { instanceEN } from "@coin-view/mocks";
 
 const onSubmit = jest.fn();
 
-describe("Change Password Form", () => {
+describe("Password Reset Form", () => {
   it("Basic render", () => {
     render(
       <I18nextProvider i18n={instanceEN}>
