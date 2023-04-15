@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { LoginForm } from "@coin-view/client";
 import { I18nextProvider } from "react-i18next";
-import { instanceEN } from "@coin-view/tests-data";
+import { instanceEN } from "@coin-view/mocks";
 
 const nextSignIn = jest.fn();
 const ssoSignIn = jest.fn();

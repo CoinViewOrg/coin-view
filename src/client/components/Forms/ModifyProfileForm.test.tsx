@@ -1,12 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { ModifyProfileForm } from "@coin-view/client";
 import { I18nextProvider } from "react-i18next";
-import { instanceEN } from "@coin-view/tests-data";
+import { instanceEN } from "@coin-view/mocks";
 import { Session } from "next-auth";
 
 const onSubmit = jest.fn();
 const thresholdSelect = jest.fn();
-
 const expireDate = new Date();
 let mockSession: Session = {
   user: {
@@ -16,6 +15,8 @@ let mockSession: Session = {
     google_sso: 0,
     email_verified: false,
     id: "1",
+    name: "mockuser",
+    email: "mockemail@mail.com",
   },
   expires: expireDate.toISOString(),
 };
@@ -33,16 +34,17 @@ describe("Change Password Form", () => {
     );
     expect(screen.getByText("Profile settings")).toBeVisible();
     const button = screen.getByAltText("profile_set");
-    fireEvent(
-      button,
-      new MouseEvent("click", {
-        bubbles: true,
-      })
-    );
+    fireEvent.click(button);
     const checkbox = screen.getByLabelText(
       "I want to receive notifications about news, cryptocurrencies and product updates"
     ) as HTMLInputElement;
+    const nameField = screen.getByLabelText("Username") as HTMLInputElement;
+    const emailField = screen.getByLabelText(
+      "E-mail address"
+    ) as HTMLInputElement;
     expect(checkbox.checked).toEqual(true);
+    expect(nameField.value).toEqual(mockSession.user?.name);
+    expect(emailField.value).toEqual(mockSession.user?.email);
   });
 
   it("Basic render (unsubscribed)", () => {
@@ -61,16 +63,17 @@ describe("Change Password Form", () => {
     );
     expect(screen.getByText("Profile settings")).toBeVisible();
     const button = screen.getByAltText("profile_set");
-    fireEvent(
-      button,
-      new MouseEvent("click", {
-        bubbles: true,
-      })
-    );
+    fireEvent.click(button);
     const checkbox = screen.getByLabelText(
       "I want to receive notifications about news, cryptocurrencies and product updates"
     ) as HTMLInputElement;
+    const nameField = screen.getByLabelText("Username") as HTMLInputElement;
+    const emailField = screen.getByLabelText(
+      "E-mail address"
+    ) as HTMLInputElement;
     expect(checkbox.checked).toEqual(false);
+    expect(nameField.value).toEqual(mockSession.user?.name);
+    expect(emailField.value).toEqual(mockSession.user?.email);
   });
 
   it("Bad credentials error render", () => {
@@ -86,12 +89,7 @@ describe("Change Password Form", () => {
       </I18nextProvider>
     );
     const button = screen.getByAltText("profile_set");
-    fireEvent(
-      button,
-      new MouseEvent("click", {
-        bubbles: true,
-      })
-    );
+    fireEvent.click(button);
     expect(
       screen.getByText("Please, provide correct username and/or email address.")
     ).toBeVisible();
@@ -110,12 +108,7 @@ describe("Change Password Form", () => {
       </I18nextProvider>
     );
     const button = screen.getByAltText("profile_set");
-    fireEvent(
-      button,
-      new MouseEvent("click", {
-        bubbles: true,
-      })
-    );
+    fireEvent.click(button);
     expect(
       screen.getByText("User with given username/email already exists.")
     ).toBeVisible();
@@ -133,12 +126,7 @@ describe("Change Password Form", () => {
       </I18nextProvider>
     );
     const button = screen.getByAltText("profile_set");
-    fireEvent(
-      button,
-      new MouseEvent("click", {
-        bubbles: true,
-      })
-    );
+    fireEvent.click(button);
     expect(
       screen.getByText(
         "Please verify your email address to receive notifications and gain access to notifications settings"
@@ -159,12 +147,7 @@ describe("Change Password Form", () => {
       </I18nextProvider>
     );
     const button = screen.getByAltText("profile_set");
-    fireEvent(
-      button,
-      new MouseEvent("click", {
-        bubbles: true,
-      })
-    );
+    fireEvent.click(button);
     expect(screen.getByText("Off")).toBeVisible();
   });
 });

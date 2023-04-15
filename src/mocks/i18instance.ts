@@ -1,6 +1,6 @@
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
-import { commonEN } from "@coin-view/tests-data";
+import { commonEN } from "@coin-view/mocks";
 
 export const instanceEN = i18next.createInstance();
 

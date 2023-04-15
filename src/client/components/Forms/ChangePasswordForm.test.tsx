@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { ChangePasswordForm } from "@coin-view/client";
 import { I18nextProvider } from "react-i18next";
-import { instanceEN } from "@coin-view/tests-data";
+import { instanceEN } from "@coin-view/mocks";
 
 const onSubmit = jest.fn();
 
@@ -21,12 +21,7 @@ describe("Change Password Form", () => {
       </I18nextProvider>
     );
     const button = screen.getByAltText("security");
-    fireEvent(
-      button,
-      new MouseEvent("click", {
-        bubbles: true,
-      })
-    );
+    fireEvent.click(button);
     expect(screen.getByText("New passwords do not match.")).toBeVisible();
   });
   it("Bad current password error render", () => {
@@ -36,12 +31,7 @@ describe("Change Password Form", () => {
       </I18nextProvider>
     );
     const button = screen.getByAltText("security");
-    fireEvent(
-      button,
-      new MouseEvent("click", {
-        bubbles: true,
-      })
-    );
+    fireEvent.click(button);
     expect(
       screen.getByText("You provided wrong current password.")
     ).toBeVisible();
