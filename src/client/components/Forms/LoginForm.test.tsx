@@ -1,21 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { LoginForm } from "@coin-view/client";
 import { I18nextProvider } from "react-i18next";
-import i18next from "i18next";
-import { initReactI18next } from "react-i18next";
-import { commonEN } from "@coin-view/tests-data";
-
-const instanceEN = i18next.createInstance();
-
-instanceEN.use(initReactI18next).init({
-  debug: true,
-  lng: "en",
-  resources: {
-    en: {
-      translation: commonEN,
-    },
-  },
-});
+import { instanceEN } from "@coin-view/tests-data";
 
 const nextSignIn = jest.fn();
 const ssoSignIn = jest.fn();
