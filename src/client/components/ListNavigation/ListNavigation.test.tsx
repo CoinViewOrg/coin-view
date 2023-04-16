@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { ListNavigation } from "./ListNavigation";
+import { ListNavigation } from "../ListNavigation";
 import { I18nextProvider } from "react-i18next";
 import { instanceEN } from "@coin-view/mocks";
 

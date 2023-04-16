@@ -6,7 +6,7 @@ import { instanceEN } from "@coin-view/mocks";
 const register = jest.fn();
 const ssoRegister = jest.fn();
 
-describe("Login Form", () => {
+describe("Register Form", () => {
   it("Basic render", () => {
     render(
       <I18nextProvider i18n={instanceEN}>

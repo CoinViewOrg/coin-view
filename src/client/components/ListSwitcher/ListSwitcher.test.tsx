@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { ListSwitcher } from "./ListSwitcher";
+import { ListSwitcher } from "../ListSwitcher";
 import { I18nextProvider } from "react-i18next";
 import { instanceEN } from "@coin-view/mocks";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ const mockRouter = {
   replace: jest.fn(),
 };
 
-describe("List navigation", () => {
+describe("List switcher", () => {
   it("Basic render", () => {
     (useRouter as jest.Mock).mockReturnValue(mockRouter);
     render(
