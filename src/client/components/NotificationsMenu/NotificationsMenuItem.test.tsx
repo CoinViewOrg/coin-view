@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { NotificationsMenuItem } from "@coin-view/client";
 import { I18nextProvider } from "react-i18next";
 import { instanceEN } from "@coin-view/mocks";
@@ -23,22 +23,14 @@ describe("Notifications menu item", () => {
         />
       </I18nextProvider>
     );
+    const button = screen.getByAltText("alert");
+    fireEvent.click(button);
     expect(
       screen.getByText("There's been a sudden change in price")
     ).toBeVisible();
-  });
-
-  it("Opened render", () => {
-    render(
-      <I18nextProvider i18n={instanceEN}>
-        <NotificationsMenuItem
-          header={"There's been a sudden change in price"}
-          content={mockNotification.Content}
-          seen={mockNotification.Seen}
-        />
-      </I18nextProvider>
-    );
-    const button = screen.getByAltText("alert");
     expect(screen.getByText("Notification content")).toBeVisible();
+    expect(
+      screen.getByText("Notification content").parentElement?.parentElement
+    ).toHaveClass("notificationActive");
   });
 });
