@@ -1,0 +1,88 @@
+{
+  "search": "Search",
+  "find_by_name": "Find by name...",
+  "all": "All",
+  "verify_invalid_request_id": "Invalid request id!",
+
+  "language": "Language",
+  "login": "Login",
+  "register": "Register",
+  "sign_out": "Sign out",
+
+  "rank": "Rank",
+  "name": "Name",
+  "price": "Price",
+  "volume24h": "Volume 24h",
+
+  "High_price": "High price",
+  "Low_price": "Low price",
+  "chart_no_hist_data": "No historical data for given cryptocurrency :(",
+
+  "prev_page": "Previous page",
+  "next_page": "Next page",
+
+  "favourites": "Favourites",
+
+  "threshold": "Select notification threshold",
+  "notiff_off": "Off",
+  "confirm_email_reminder": "Please verify your email address to receive notifications and gain access to notifications settings",
+
+  "login_form_header": "Log in to your account",
+  "login_form_username": "Username",
+  "login_form_password": "Password",
+  "login_form_redirect_register": "Do not have an account? Create one!",
+  "login_form_redirect_recovery": "Forgot password",
+  "login_form_invalid": "Invalid username or password!",
+  "login_form_register_succesful_1": "You have successfully created a new account!",
+  "login_form_register_succesful_2": "You can log in now.",
+
+  "register_form_header": "Create new account",
+  "register_form_username": "Username",
+  "register_form_email": "E-mail address",
+  "register_form_password": "Password",
+  "register_form_password_confirm": "Confirm password",
+  "register_form_redirect_login": "Already have an account? Log in here!",
+
+  "logged_in_header": "Hello",
+  "logged_in_paragraph": "You can change your settings here.",
+  "logged_in_redirect_login": "Please log in to see this page.",
+
+  "verify_email_header": "Go to main page.",
+  "verify_email_succesful": "Successfully verified!",
+  "verify_email_already": "Email already verified!",
+
+  "price_alert": "There's been a sudden change in price",
+  "no_notification": "There are no new notifications",
+  "favorite_market": "Favorite market",
+  "buy_on": "Buy on",
+  "dark_mode": "Dark mode",
+
+  "form_save_button": "Save",
+  "profile_form_checkbox_label": "I want to receive notifications about news, cryptocurrencies and product updates",
+  "profile_form_label": "Profile settings",
+
+  "password_form_label": "Security",
+  "password_form_old": "Current password",
+  "password_form_new": "New password",
+  "password_form_repeat": "Repeat password",
+  "google_sign_in": "Sign in with Google",
+  "email_already_used": "Email was already used to create an account.\n Try loggin in or reset your password.",
+  "gemeric_sso_error": "Oops. Something went wrong. \nTry again later.",
+
+  "recovery_form_button": "Submit",
+  "recovery_form_header": "Recover password",
+  "recovery_form_input_label": "Username or email",
+
+  "login_form_recovery_succesful_1": "You have submited recovery request.",
+  "login_form_recovery_succesful_2": "If your username or email is correct, we will send you and email with further instructions.",
+
+  "password_reset_form_header": "Set your new password",
+  "bad_token": "Your token has expired or has already been used.",
+  "password_reset_succesful": "Your password has been changed.",
+
+  "bad_current_password": "You provided wrong current password.",
+  "passwords_no_match": "New passwords do not match.",
+  "wrong_credentials": "Please, provide correct username and/or email address.",
+  "user_already_exists": "User with given username/email already exists.",
+  "input_empty_error": "Please fill out all required fields."
+}
