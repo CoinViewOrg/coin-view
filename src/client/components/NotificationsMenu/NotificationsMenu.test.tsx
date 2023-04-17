@@ -5,6 +5,7 @@ import { instanceEN } from "@coin-view/mocks";
 import { SessionProvider } from "next-auth/react";
 import { AppContext } from "@coin-view/context";
 import { Session } from "next-auth";
+import { Quote } from "@coin-view/types";
 
 const fetchNotifications = jest.fn();
 const onOpenCallback = jest.fn();
@@ -24,55 +25,60 @@ const mockSession: Session = {
   expires: expireDate.toISOString(),
 };
 
+const Wrapper = ({
+  children,
+  session,
+  currency,
+  menuOpen,
+}: {
+  children: JSX.Element;
+  session: Session | null;
+  currency?: keyof Quote;
+  menuOpen?: boolean;
+}) => {
+  return (
+    <I18nextProvider i18n={instanceEN}>
+      <SessionProvider session={session}>
+        <AppContext.Provider
+          value={{
+            currency: currency ? currency : "PLN",
+            favorites: [],
+            notificationsMenuOpen: menuOpen ? menuOpen : false,
+            hamburgerMenuOpen: true,
+            favoriteMarketName: null,
+            colorTheme: "dark",
+          }}
+        >
+          {children}
+        </AppContext.Provider>
+      </SessionProvider>
+    </I18nextProvider>
+  );
+};
+
 describe("Notifications menu", () => {
   it("Basic render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
-        <SessionProvider session={mockSession}>
-          <AppContext.Provider
-            value={{
-              currency: "PLN",
-              favorites: [],
-              notificationsMenuOpen: false,
-              hamburgerMenuOpen: false,
-              favoriteMarketName: null,
-              colorTheme: "dark",
-            }}
-          >
-            <NotificationsMenu
-              notificationsCount={14}
-              onOpenCallback={onOpenCallback}
-              fetchNotifications={fetchNotifications}
-            />
-          </AppContext.Provider>
-        </SessionProvider>
-      </I18nextProvider>
+      <Wrapper session={mockSession}>
+        <NotificationsMenu
+          notificationsCount={14}
+          onOpenCallback={onOpenCallback}
+          fetchNotifications={fetchNotifications}
+        />
+      </Wrapper>
     );
     expect(screen.getByText("14")).toBeVisible();
   });
 
   it("Opened render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
-        <SessionProvider session={mockSession}>
-          <AppContext.Provider
-            value={{
-              currency: "PLN",
-              favorites: [],
-              notificationsMenuOpen: true,
-              hamburgerMenuOpen: false,
-              favoriteMarketName: null,
-              colorTheme: "dark",
-            }}
-          >
-            <NotificationsMenu
-              notificationsCount={14}
-              onOpenCallback={onOpenCallback}
-              fetchNotifications={fetchNotifications}
-            />
-          </AppContext.Provider>
-        </SessionProvider>
-      </I18nextProvider>
+      <Wrapper session={mockSession} menuOpen={true}>
+        <NotificationsMenu
+          notificationsCount={14}
+          onOpenCallback={onOpenCallback}
+          fetchNotifications={fetchNotifications}
+        />
+      </Wrapper>
     );
     expect(screen.getByText("There are no new notifications")).toBeVisible();
   });

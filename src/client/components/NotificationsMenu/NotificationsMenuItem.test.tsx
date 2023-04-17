@@ -12,16 +12,20 @@ const mockNotification = {
   Ua_Id: "1",
 };
 
+const Wrapper = ({ children }: { children: JSX.Element }) => {
+  return <I18nextProvider i18n={instanceEN}>{children}</I18nextProvider>;
+};
+
 describe("Notifications menu item", () => {
   it("Basic render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <NotificationsMenuItem
           header={"There's been a sudden change in price"}
           content={mockNotification.Content}
           seen={mockNotification.Seen}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     const button = screen.getByAltText("alert");
     fireEvent.click(button);

@@ -5,20 +5,24 @@ import { instanceEN } from "@coin-view/mocks";
 
 const onSubmit = jest.fn();
 
+const Wrapper = ({ children }: { children: JSX.Element }) => {
+  return <I18nextProvider i18n={instanceEN}>{children}</I18nextProvider>;
+};
+
 describe("Change Password Form", () => {
   it("Basic render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ChangePasswordForm onSubmit={onSubmit} />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(screen.getByText("Security")).toBeVisible();
   });
   it("Password match error render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ChangePasswordForm onSubmit={onSubmit} error={1} />
-      </I18nextProvider>
+      </Wrapper>
     );
     const button = screen.getByAltText("security");
     fireEvent.click(button);
@@ -26,9 +30,9 @@ describe("Change Password Form", () => {
   });
   it("Bad current password error render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ChangePasswordForm onSubmit={onSubmit} error={2} />
-      </I18nextProvider>
+      </Wrapper>
     );
     const button = screen.getByAltText("security");
     fireEvent.click(button);

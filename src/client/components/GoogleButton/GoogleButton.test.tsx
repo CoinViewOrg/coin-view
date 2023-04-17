@@ -5,12 +5,16 @@ import { instanceEN } from "@coin-view/mocks";
 
 const onClick = jest.fn();
 
+const Wrapper = ({ children }: { children: JSX.Element }) => {
+  return <I18nextProvider i18n={instanceEN}>{children}</I18nextProvider>;
+};
+
 describe("Google Button", () => {
   it("Basic render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <GoogleButton onClick={onClick} />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(screen.getByText("Sign in with Google")).toBeVisible();
   });

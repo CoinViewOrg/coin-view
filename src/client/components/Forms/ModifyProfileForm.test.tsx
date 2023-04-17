@@ -6,6 +6,7 @@ import { Session } from "next-auth";
 
 const onSubmit = jest.fn();
 const thresholdSelect = jest.fn();
+
 const expireDate = new Date();
 let mockSession: Session = {
   user: {
@@ -20,17 +21,38 @@ let mockSession: Session = {
   },
   expires: expireDate.toISOString(),
 };
+
+beforeEach(() => {
+  mockSession = {
+    user: {
+      cryptoalerts: 1,
+      newsletters: 1,
+      productupdate: 1,
+      google_sso: 0,
+      email_verified: false,
+      id: "1",
+      name: "mockuser",
+      email: "mockemail@mail.com",
+    },
+    expires: expireDate.toISOString(),
+  };
+});
+
+const Wrapper = ({ children }: { children: JSX.Element }) => {
+  return <I18nextProvider i18n={instanceEN}>{children}</I18nextProvider>;
+};
+
 describe("Modify Profile Form", () => {
   it("Basic render (subscribed)", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ModifyProfileForm
           session={mockSession}
           threshold={null}
           onSubmit={onSubmit}
           thresholdSelect={thresholdSelect}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(screen.getByText("Profile settings")).toBeVisible();
     const button = screen.getByAltText("profile_set");
@@ -52,14 +74,14 @@ describe("Modify Profile Form", () => {
     mockSession.user!.newsletters = 0;
     mockSession.user!.productupdate = 0;
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ModifyProfileForm
           session={mockSession}
           threshold={null}
           onSubmit={onSubmit}
           thresholdSelect={thresholdSelect}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(screen.getByText("Profile settings")).toBeVisible();
     const button = screen.getByAltText("profile_set");
@@ -78,7 +100,7 @@ describe("Modify Profile Form", () => {
 
   it("Bad credentials error render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ModifyProfileForm
           session={mockSession}
           threshold={null}
@@ -86,7 +108,7 @@ describe("Modify Profile Form", () => {
           thresholdSelect={thresholdSelect}
           error={1}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     const button = screen.getByAltText("profile_set");
     fireEvent.click(button);
@@ -97,7 +119,7 @@ describe("Modify Profile Form", () => {
 
   it("User already exists error render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ModifyProfileForm
           session={mockSession}
           threshold={null}
@@ -105,7 +127,7 @@ describe("Modify Profile Form", () => {
           thresholdSelect={thresholdSelect}
           error={2}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     const button = screen.getByAltText("profile_set");
     fireEvent.click(button);
@@ -116,14 +138,14 @@ describe("Modify Profile Form", () => {
 
   it("Unverified email render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ModifyProfileForm
           session={mockSession}
           threshold={null}
           onSubmit={onSubmit}
           thresholdSelect={thresholdSelect}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     const button = screen.getByAltText("profile_set");
     fireEvent.click(button);
@@ -137,14 +159,14 @@ describe("Modify Profile Form", () => {
   it("Verified email render", () => {
     mockSession.user!.email_verified = true;
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ModifyProfileForm
           session={mockSession}
           threshold={null}
           onSubmit={onSubmit}
           thresholdSelect={thresholdSelect}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     const button = screen.getByAltText("profile_set");
     fireEvent.click(button);

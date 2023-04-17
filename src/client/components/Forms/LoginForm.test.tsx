@@ -6,32 +6,36 @@ import { instanceEN } from "@coin-view/mocks";
 const nextSignIn = jest.fn();
 const ssoSignIn = jest.fn();
 
+const Wrapper = ({ children }: { children: JSX.Element }) => {
+  return <I18nextProvider i18n={instanceEN}>{children}</I18nextProvider>;
+};
+
 describe("Login Form", () => {
   it("Basic render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <LoginForm nextSignIn={nextSignIn} ssoSignIn={ssoSignIn} />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(screen.getByText("Log in to your account")).toBeVisible();
   });
   it("Error render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <LoginForm nextSignIn={nextSignIn} ssoSignIn={ssoSignIn} error={true} />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(screen.getByText("Invalid username or password!")).toBeVisible();
   });
   it("Registered render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <LoginForm
           nextSignIn={nextSignIn}
           ssoSignIn={ssoSignIn}
           registered={"1"}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(
       screen.getByText("You have successfully created a new account!")
@@ -40,21 +44,21 @@ describe("Login Form", () => {
   });
   it("Password recovery success", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <LoginForm nextSignIn={nextSignIn} ssoSignIn={ssoSignIn} passr={"1"} />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(screen.getByText("Your password has been changed.")).toBeVisible();
   });
   it("Password recovery request", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <LoginForm
           nextSignIn={nextSignIn}
           ssoSignIn={ssoSignIn}
           recoveryRequest={"1"}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(
       screen.getByText("You have submited recovery request.")
@@ -67,13 +71,13 @@ describe("Login Form", () => {
   });
   it("SSO Login Error", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <LoginForm
           nextSignIn={nextSignIn}
           ssoSignIn={ssoSignIn}
           googleSSOError={"1"}
         />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(
       screen.getByText(

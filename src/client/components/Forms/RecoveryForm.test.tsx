@@ -5,20 +5,24 @@ import { instanceEN } from "@coin-view/mocks";
 
 const onSubmit = jest.fn();
 
+const Wrapper = ({ children }: { children: JSX.Element }) => {
+  return <I18nextProvider i18n={instanceEN}>{children}</I18nextProvider>;
+};
+
 describe("Recovery Form", () => {
   it("Basic render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <RecoveryForm onSubmit={onSubmit} />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(screen.getByText("Recover password")).toBeVisible();
   });
   it("Empty input error render", () => {
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <RecoveryForm onSubmit={onSubmit} error={1} />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(
       screen.getByText("Please fill out all required fields.")

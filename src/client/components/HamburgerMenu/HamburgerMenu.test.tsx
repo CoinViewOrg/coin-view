@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import { AppContext } from "@coin-view/context";
 import { Session } from "next-auth";
+import { Quote } from "@coin-view/types";
 
 const toggleCurrency = jest.fn();
 const onOpenCallback = jest.fn();
@@ -20,36 +21,51 @@ const mockRouter = {
   pathname: "/",
   replace: jest.fn(),
 };
+(useRouter as jest.Mock).mockReturnValue(mockRouter);
 
 const expireDate = new Date();
 
+const Wrapper = ({
+  children,
+  session,
+  currency,
+}: {
+  children: JSX.Element;
+  session: Session | null;
+  currency?: keyof Quote;
+}) => {
+  return (
+    <I18nextProvider i18n={instanceEN}>
+      <SessionProvider session={session}>
+        <AppContext.Provider
+          value={{
+            currency: currency ? currency : "PLN",
+            favorites: [],
+            notificationsMenuOpen: false,
+            hamburgerMenuOpen: true,
+            favoriteMarketName: null,
+            colorTheme: "dark",
+          }}
+        >
+          {children}
+        </AppContext.Provider>
+      </SessionProvider>
+    </I18nextProvider>
+  );
+};
+
 describe("Humburger Menu", () => {
   it("Unauthenticated basic render (PLN selected)", () => {
-    (useRouter as jest.Mock).mockReturnValue(mockRouter);
-
     const mockSession = null;
 
     render(
-      <I18nextProvider i18n={instanceEN}>
-        <SessionProvider session={mockSession}>
-          <AppContext.Provider
-            value={{
-              currency: "PLN",
-              favorites: [],
-              notificationsMenuOpen: false,
-              hamburgerMenuOpen: true,
-              favoriteMarketName: null,
-              colorTheme: "dark",
-            }}
-          >
-            <HamburgerMenu
-              toggleCurrency={toggleCurrency}
-              onOpenCallback={onOpenCallback}
-              toggleDarkMode={toggleDarkMode}
-            />
-          </AppContext.Provider>
-        </SessionProvider>
-      </I18nextProvider>
+      <Wrapper session={mockSession}>
+        <HamburgerMenu
+          toggleCurrency={toggleCurrency}
+          onOpenCallback={onOpenCallback}
+          toggleDarkMode={toggleDarkMode}
+        />
+      </Wrapper>
     );
     expect(screen.getByText("PLN")).toHaveClass("currencySelected");
     expect(screen.getByText("USD")).toBeVisible();
@@ -61,8 +77,6 @@ describe("Humburger Menu", () => {
   });
 
   it("Authenticated basic render (USD selected)", () => {
-    (useRouter as jest.Mock).mockReturnValue(mockRouter);
-
     const mockSession: Session = {
       user: {
         cryptoalerts: 1,
@@ -78,26 +92,13 @@ describe("Humburger Menu", () => {
     };
 
     render(
-      <I18nextProvider i18n={instanceEN}>
-        <SessionProvider session={mockSession}>
-          <AppContext.Provider
-            value={{
-              currency: "USD",
-              favorites: [],
-              notificationsMenuOpen: false,
-              hamburgerMenuOpen: true,
-              favoriteMarketName: null,
-              colorTheme: "dark",
-            }}
-          >
-            <HamburgerMenu
-              toggleCurrency={toggleCurrency}
-              onOpenCallback={onOpenCallback}
-              toggleDarkMode={toggleDarkMode}
-            />
-          </AppContext.Provider>
-        </SessionProvider>
-      </I18nextProvider>
+      <Wrapper session={mockSession} currency="USD">
+        <HamburgerMenu
+          toggleCurrency={toggleCurrency}
+          onOpenCallback={onOpenCallback}
+          toggleDarkMode={toggleDarkMode}
+        />
+      </Wrapper>
     );
     expect(screen.getByText("PLN")).toBeVisible();
     expect(screen.getByText("USD")).toHaveClass("currencySelected");

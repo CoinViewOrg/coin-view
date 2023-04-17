@@ -13,14 +13,18 @@ const mockRouter = {
   pathname: "/",
   replace: jest.fn(),
 };
+(useRouter as jest.Mock).mockReturnValue(mockRouter);
+
+const Wrapper = ({ children }: { children: JSX.Element }) => {
+  return <I18nextProvider i18n={instanceEN}>{children}</I18nextProvider>;
+};
 
 describe("List switcher", () => {
   it("Basic render", () => {
-    (useRouter as jest.Mock).mockReturnValue(mockRouter);
     render(
-      <I18nextProvider i18n={instanceEN}>
+      <Wrapper>
         <ListSwitcher />
-      </I18nextProvider>
+      </Wrapper>
     );
     expect(screen.getByText("All")).toBeVisible();
     expect(screen.getByText("Favourites")).toBeVisible();
